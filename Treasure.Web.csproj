@@ -68,7 +68,6 @@
     <Content Include="Content\Common.css" />
     <Content Include="Content\green.css" />
     <Content Include="Content\red.css" />
-    <Content Include="Default.aspx" />
     <Content Include="Scripts\bootstrap\css\bootstrap-theme.css.map" />
     <Content Include="Scripts\bootstrap\css\bootstrap.css.map" />
     <Content Include="Scripts\bootstrap\fonts\glyphicons-halflings-regular.eot" />
@@ -125,13 +124,6 @@
     </Compile>
     <Compile Include="AboutDataBase\DataSynchron\DataSynchron.aspx.designer.cs">
       <DependentUpon>DataSynchron.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Treasure.Web.Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Treasure.Main.Default" %>
 
 <!DOCTYPE html>
 
@@ -17,17 +17,17 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><a href="Treasure/Encrypt_Decrypt/Encrypt_Decrypt.aspx" target="_blank">加密解密</a></td>
+                    <td><a href="SmallTool/EncryptAndDecrypt/Encrypt_Decrypt.aspx" target="_blank">加密解密</a></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><a href="AboutDataBase/DataSynchron/DataSynchron.aspx" target="_blank">数据同步</a></td>
+                    <td><a href="SmallTool/DataSynchron/DataSynchron.aspx" target="_blank">数据同步</a></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><a href="Treasure/SecondToDatetime.aspx" target="_blank">时间转换</a></td>
                 </tr>
-            </table>           
+            </table>
         </div>
     </form>
 </body>
