@@ -4,10 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Treasure.Web.Extend;
-//using Treasure.Utils.Web.EnumUtils;
 
-namespace Treasure.Web.Treasure.Encrypt_Decrypt
+namespace Treasure.Main.SmallTool.EncryptAndDecrypt
 {
     public partial class Encrypt_Decrypt : System.Web.UI.Page
     {
@@ -15,7 +13,7 @@ namespace Treasure.Web.Treasure.Encrypt_Decrypt
         {
             if (!IsPostBack)
             {
-                EnumHelper.BindToEnum<Encrypt_Decrypt_Type>(ddlType);
+                EncyptAndDecryptEnumeration.BindToEnum<Encrypt_Decrypt_Type>(ddlType);
             }
         }
 

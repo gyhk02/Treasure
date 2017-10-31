@@ -116,8 +116,6 @@
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\bg.jpg" />
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\img.gif" />
-    <Content Include="Treasure\Encrypt_Decrypt\Encrypt_Decrypt.aspx" />
-    <Content Include="Treasure\SecondToDatetime.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +126,6 @@
     <Compile Include="AboutDataBase\DataSynchron\DataSynchron.aspx.designer.cs">
       <DependentUpon>DataSynchron.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AboutDataBase\DataSynchron\DataSynchronInfo.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -136,32 +133,9 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Extend\DropDownListExtend.cs" />
-    <Compile Include="Extend\EnumHelper.cs" />
-    <Compile Include="Extend\TypeConversion.cs" />
-    <Compile Include="Helper\SQLHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Treasure\Encrypt_Decrypt\ChildProjDEncrypt.cs" />
-    <Compile Include="Treasure\Encrypt_Decrypt\EncryptHelper.cs" />
-    <Compile Include="Treasure\Encrypt_Decrypt\Encrypt_Decrypt.aspx.cs">
-      <DependentUpon>Encrypt_Decrypt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Treasure\Encrypt_Decrypt\Encrypt_Decrypt.aspx.designer.cs">
-      <DependentUpon>Encrypt_Decrypt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Treasure\Encrypt_Decrypt\MainAndAXDESCrypt.cs" />
-    <Compile Include="Treasure\SecondToDatetime.aspx.cs">
-      <DependentUpon>SecondToDatetime.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Treasure\SecondToDatetime.aspx.designer.cs">
-      <DependentUpon>SecondToDatetime.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Template\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
@@ -169,6 +143,10 @@
     <ProjectReference Include="Treasure.Model\Treasure.Model.csproj">
       <Project>{03e7cb0b-9167-4c9e-8447-5465c9927ac3}</Project>
       <Name>Treasure.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="Treasure.Utility\Treasure.Utility.csproj">
+      <Project>{4096d029-7e19-484b-8a89-845cbba977bd}</Project>
+      <Name>Treasure.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

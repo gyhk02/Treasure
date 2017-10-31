@@ -6,12 +6,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
-namespace Treasure.Web.Treasure.Encrypt_Decrypt
+namespace Treasure.Main.SmallTool.EncryptAndDecrypt
 {
-     public static    class EncryptHelper
-    {
-
-           /// <summary>
+    public static class EncryptHelper
+    {    
+        /// <summary>
         /// 加密字符串
         /// </summary>
         /// <param name="input"></param>

@@ -7,8 +7,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Treasure.Model.General;
-using Treasure.Web.Extend;
-using Treasure.Web.Helper;
+using Treasure.Model.SmallTool.DataSynchron;
+using Treasure.Utility.Extend;
+using Treasure.Utility.Helpers;
+using Treasure.Utility.Utilitys;
 
 namespace Treasure.Web.AboutDataBase.DataSynchron
 {
@@ -25,27 +27,27 @@ namespace Treasure.Web.AboutDataBase.DataSynchron
                 DataTable dtDatabase = new DataTable();
                 dtDatabase.Columns.Add(GeneralVO.id, Type.GetType("System.Int32"));
                 dtDatabase.Columns.Add(GeneralVO.no, Type.GetType("System.String"));
-                dtDatabase.Columns.Add(DataSynchronInfo.Ip, Type.GetType("System.String"));
-                dtDatabase.Columns.Add(DataSynchronInfo.LoginName, Type.GetType("System.String"));
-                dtDatabase.Columns.Add(DataSynchronInfo.Pwd, Type.GetType("System.String"));
-                dtDatabase.Columns.Add(DataSynchronInfo.DbName, Type.GetType("System.String"));
+                dtDatabase.Columns.Add(DataSynchronVO.Ip, Type.GetType("System.String"));
+                dtDatabase.Columns.Add(DataSynchronVO.LoginName, Type.GetType("System.String"));
+                dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
+                dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
 
                 DataRow row1 = dtDatabase.NewRow();
                 row1[GeneralVO.id] = 1;
                 row1[GeneralVO.no] = "NERP";
-                row1[DataSynchronInfo.Ip] = "172.16.96.56";
-                row1[DataSynchronInfo.LoginName] = "sa";
-                row1[DataSynchronInfo.Pwd] = "sa.123";
-                row1[DataSynchronInfo.DbName] = "NERP";
+                row1[DataSynchronVO.Ip] = "172.16.96.56";
+                row1[DataSynchronVO.LoginName] = "sa";
+                row1[DataSynchronVO.Pwd] = "sa.123";
+                row1[DataSynchronVO.DbName] = "NERP";
                 dtDatabase.Rows.Add(row1);
 
                 DataRow row2 = dtDatabase.NewRow();
                 row2[GeneralVO.id] = 2;
                 row2[GeneralVO.no] = "NERP_STD";
-                row2[DataSynchronInfo.Ip] = "172.16.96.56";
-                row2[DataSynchronInfo.LoginName] = "NERP";
-                row2[DataSynchronInfo.Pwd] = "nerp@123";
-                row2[DataSynchronInfo.DbName] = "NERP_STD";
+                row2[DataSynchronVO.Ip] = "172.16.96.56";
+                row2[DataSynchronVO.LoginName] = "NERP";
+                row2[DataSynchronVO.Pwd] = "nerp@123";
+                row2[DataSynchronVO.DbName] = "NERP_STD";
                 dtDatabase.Rows.Add(row2);
 
                 DropDownListExtend.BindToShowNo(ddlSourceDb, dtDatabase, false);
@@ -76,10 +78,10 @@ namespace Treasure.Web.AboutDataBase.DataSynchron
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
-                txtSourceIp.Text = row[DataSynchronInfo.Ip].ToString();
-                txtSourceLoginName.Text = row[DataSynchronInfo.LoginName].ToString();
-                txtSourcePwd.Text = row[DataSynchronInfo.Pwd].ToString();
-                txtSourceDbName.Text = row[DataSynchronInfo.DbName].ToString();
+                txtSourceIp.Text = row[DataSynchronVO.Ip].ToString();
+                txtSourceLoginName.Text = row[DataSynchronVO.LoginName].ToString();
+                txtSourcePwd.Text = row[DataSynchronVO.Pwd].ToString();
+                txtSourceDbName.Text = row[DataSynchronVO.DbName].ToString();
             }
             else
             {
@@ -105,10 +107,10 @@ namespace Treasure.Web.AboutDataBase.DataSynchron
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
-                txtTargetIp.Text = row[DataSynchronInfo.Ip].ToString();
-                txtTargetLoginName.Text = row[DataSynchronInfo.LoginName].ToString();
-                txtTargetPwd.Text = row[DataSynchronInfo.Pwd].ToString();
-                txtTargetDbName.Text = row[DataSynchronInfo.DbName].ToString();
+                txtTargetIp.Text = row[DataSynchronVO.Ip].ToString();
+                txtTargetLoginName.Text = row[DataSynchronVO.LoginName].ToString();
+                txtTargetPwd.Text = row[DataSynchronVO.Pwd].ToString();
+                txtTargetDbName.Text = row[DataSynchronVO.DbName].ToString();
             }
             else
             {

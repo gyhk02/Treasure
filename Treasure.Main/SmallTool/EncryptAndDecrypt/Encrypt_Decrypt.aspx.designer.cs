@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Treasure.Web.Treasure.Encrypt_Decrypt {
+namespace Treasure.Main.SmallTool.EncryptAndDecrypt {
     
     
     public partial class Encrypt_Decrypt {

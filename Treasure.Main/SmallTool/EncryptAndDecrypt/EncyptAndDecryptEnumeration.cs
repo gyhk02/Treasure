@@ -7,8 +7,9 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI.WebControls;
 
-namespace Treasure.Web.Extend
+namespace Treasure.Main.SmallTool.EncryptAndDecrypt
 {
+
     #region 把枚举写到这里
 
     public enum Encrypt_Decrypt_Type
@@ -34,7 +35,7 @@ namespace Treasure.Web.Extend
 
     #endregion
 
-    public static class EnumHelper
+    public static class EncyptAndDecryptEnumeration
     {
         /// <summary>
         /// 取得枚举的描述信息
@@ -111,44 +112,5 @@ namespace Treasure.Web.Extend
             pDropDownList.DataValueField = "Value";
             pDropDownList.DataBind();
         }
-
-
-
-        /// <summary>
-        /// 绑定使用枚举的DataGridViewComboBoxColumn
-        /// </summary>
-        /// <typeparam name="T"> 枚举类型</typeparam>
-        /// <param name="pComboBox"></param>
-        //public static void BindToIntEnum<T>(this DataGridViewComboBoxColumn pComboBox)
-        //{
-        //    pComboBox.DataSource = null;
-        //    var typeInfo = typeof(T);
-        //    FieldInfo[] enumFields = typeInfo.GetFields();
-        //    DataTable table = new DataTable();
-        //    table.Columns.Add("Name", Type.GetType("System.String"));
-        //    table.Columns.Add("Value", Type.GetType("System.Int32"));
-
-        //    DataRow row0 = table.NewRow();
-        //    row0[0] = "请选择";
-        //    row0[1] = "-1";
-        //    table.Rows.Add(row0);
-
-        //    foreach (var entity in enumFields)
-        //    {
-        //        if (!entity.IsSpecialName)
-        //        {
-        //            DataRow row = table.NewRow();
-        //            object[] attrs = entity.GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), false);
-        //            var str = ((DescriptionAttribute)attrs[0]).Description;
-        //            var value = entity.GetRawConstantValue().ToString();
-        //            row[0] = str;
-        //            row[1] = value;
-        //            table.Rows.Add(row);
-        //        }
-        //    }
-        //    pComboBox.DataSource = table;
-        //    pComboBox.DisplayMember = "Name";
-        //    pComboBox.ValueMember = "Value";
-        //}
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Encrypt_Decrypt.aspx.cs" Inherits="Treasure.Web.Treasure.Encrypt_Decrypt.Encrypt_Decrypt" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Encrypt_Decrypt.aspx.cs" Inherits="Treasure.Main.SmallTool.EncryptAndDecrypt.Encrypt_Decrypt" %>
 
 <!DOCTYPE html>
 

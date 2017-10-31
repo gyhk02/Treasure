@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 
-namespace Treasure.Web.Treasure.Encrypt_Decrypt
+namespace Treasure.Main.SmallTool.EncryptAndDecrypt
 {
     public class MainAndAXDESCrypt
     {
-
         private static string KEY = "?_MainProject$168";
 
         public static string Encrypt(string str)
@@ -71,6 +73,5 @@ namespace Treasure.Web.Treasure.Encrypt_Decrypt
                 return null;
             }
         }
-
     }
 }

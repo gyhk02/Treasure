@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 
-namespace Treasure.Web.Treasure.Encrypt_Decrypt
+namespace Treasure.Main.SmallTool.EncryptAndDecrypt
 {
     public class ChildProjDEncrypt
     {
-
-                /// <summary>
+        /// <summary>
         /// 构造方法
         /// </summary>
         public ChildProjDEncrypt()
