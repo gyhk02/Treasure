@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
-using Treasure.Web.Model;
+using Treasure.Model.General;
 
 namespace Treasure.Web.Extend
 {
@@ -25,8 +25,8 @@ namespace Treasure.Web.Extend
         public static void BindToShowNo(this DropDownList ddl, DataTable dt, bool hasPleaseSelect)
         {
             ddl.DataSource = dt;
-            ddl.DataValueField = FILED_GENERAL.id; 
-            ddl.DataTextField = FILED_GENERAL.no;
+            ddl.DataValueField = GeneralVO.id;
+            ddl.DataTextField = GeneralVO.no;
             ddl.DataBind();
 
             if (hasPleaseSelect)

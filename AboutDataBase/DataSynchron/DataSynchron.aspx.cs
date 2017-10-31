@@ -6,9 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Treasure.Model.General;
 using Treasure.Web.Extend;
 using Treasure.Web.Helper;
-using Treasure.Web.Model;
 
 namespace Treasure.Web.AboutDataBase.DataSynchron
 {
@@ -23,16 +23,16 @@ namespace Treasure.Web.AboutDataBase.DataSynchron
             {
                 //绑定数据库
                 DataTable dtDatabase = new DataTable();
-                dtDatabase.Columns.Add(FILED_GENERAL.id, Type.GetType("System.Int32"));
-                dtDatabase.Columns.Add(FILED_GENERAL.no, Type.GetType("System.String"));
+                dtDatabase.Columns.Add(GeneralVO.id, Type.GetType("System.Int32"));
+                dtDatabase.Columns.Add(GeneralVO.no, Type.GetType("System.String"));
                 dtDatabase.Columns.Add(DataSynchronInfo.Ip, Type.GetType("System.String"));
                 dtDatabase.Columns.Add(DataSynchronInfo.LoginName, Type.GetType("System.String"));
                 dtDatabase.Columns.Add(DataSynchronInfo.Pwd, Type.GetType("System.String"));
                 dtDatabase.Columns.Add(DataSynchronInfo.DbName, Type.GetType("System.String"));
 
                 DataRow row1 = dtDatabase.NewRow();
-                row1[FILED_GENERAL.id] = 1;
-                row1[FILED_GENERAL.no] = "NERP";
+                row1[GeneralVO.id] = 1;
+                row1[GeneralVO.no] = "NERP";
                 row1[DataSynchronInfo.Ip] = "172.16.96.56";
                 row1[DataSynchronInfo.LoginName] = "sa";
                 row1[DataSynchronInfo.Pwd] = "sa.123";
@@ -40,8 +40,8 @@ namespace Treasure.Web.AboutDataBase.DataSynchron
                 dtDatabase.Rows.Add(row1);
 
                 DataRow row2 = dtDatabase.NewRow();
-                row2[FILED_GENERAL.id] = 2;
-                row2[FILED_GENERAL.no] = "NERP_STD";
+                row2[GeneralVO.id] = 2;
+                row2[GeneralVO.no] = "NERP_STD";
                 row2[DataSynchronInfo.Ip] = "172.16.96.56";
                 row2[DataSynchronInfo.LoginName] = "NERP";
                 row2[DataSynchronInfo.Pwd] = "nerp@123";
@@ -72,7 +72,7 @@ namespace Treasure.Web.AboutDataBase.DataSynchron
             int id = TypeConversion.ToInt(ddlSourceDb.SelectedValue);
 
             DataTable dtDatabase = Session["DataDb"] as DataTable;
-            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(FILED_GENERAL.id) == id).ToList();
+            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.id) == id).ToList();
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
@@ -101,7 +101,7 @@ namespace Treasure.Web.AboutDataBase.DataSynchron
         {
             int id = TypeConversion.ToInt(ddlTargetDb.SelectedValue);
             DataTable dtDatabase = Session["DataDb"] as DataTable;
-            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(FILED_GENERAL.id) == id).ToList();
+            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.id) == id).ToList();
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
