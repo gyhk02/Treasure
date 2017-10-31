@@ -9,6 +9,6 @@ namespace Treasure.Web.Model
     {
         public static string id = "ID";
         public static string no = "NO";
-        public static string name = "NAME";
+        public static string name = "NAME"; 
     }
 }

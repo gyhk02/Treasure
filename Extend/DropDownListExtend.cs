@@ -25,7 +25,7 @@ namespace Treasure.Web.Extend
         public static void BindToShowNo(this DropDownList ddl, DataTable dt, bool hasPleaseSelect)
         {
             ddl.DataSource = dt;
-            ddl.DataValueField = FILED_GENERAL.id;
+            ddl.DataValueField = FILED_GENERAL.id; 
             ddl.DataTextField = FILED_GENERAL.no;
             ddl.DataBind();
 
