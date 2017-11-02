@@ -18,5 +18,43 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string TableName = "TableName";
         public static string Description = "Description";
 
+        //用表字段
+        public static string FiledName = "FiledName";
+        public static string FiledType = "FiledType";
+        public static string FiledLen = "FiledLen";
+        public static string FiledDescription = "FiledDescription";
+        public static string DecimalPrecision = "DecimalPrecision";
+        public static string DecimalDigits = "DecimalDigits";
+        public static string IsNullable = "IsNullable";
+        public static string IsIdentity = "IsIdentity";
+        public static string DefaultValue = "DefaultValue";
+
+        #region 约束
+
+        /// <summary>
+        /// 约束名称
+        /// </summary>
+        public static string ConstraintName = "ConstraintName";
+        /// <summary>
+        /// 约束类型
+        /// </summary>
+        public static string ConstraintType = "ConstraintType";
+        /// <summary>
+        /// 外键表名
+        /// </summary>
+        public static string ForeignTableName = "ForeignTableName";
+        /// <summary>
+        /// 外键字段名
+        /// </summary>
+        public static string ForeignFiledName = "ForeignFiledName";
+        /// <summary>
+        /// 索引描述
+        /// </summary>
+        public static string IndexDescripton = "IndexDescripton";
+
+        #endregion
+
+        //字段描述
+        public static string DescriptionName = "DescriptionName";
     }
 }

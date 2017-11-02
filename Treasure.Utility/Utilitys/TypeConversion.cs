@@ -138,5 +138,26 @@ namespace Treasure.Utility.Utilitys
         }
         #endregion
 
+        #region 对象转成String
+        /// <summary>
+        /// 对象转成String
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string ToString(Object obj)
+        {
+            string result = "";
+
+            if (obj == null)
+            {
+                return result;
+            }
+            else
+            {
+                return obj.ToString();
+            }
+        }
+        #endregion
+
     }
 }
