@@ -1,0 +1,6 @@
+﻿
+
+LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+
+LogHelper.Info(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+
