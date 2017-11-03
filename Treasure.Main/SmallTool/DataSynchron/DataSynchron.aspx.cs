@@ -39,8 +39,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
                 Session["dtDataDb"] = dtDatabase;
 
-                ddlSourceDb.SelectedIndex = 0;
-                ddlTargetDb.SelectedIndex = 1;
+                ddlSourceDb.SelectedIndex = 1;
+                ddlTargetDb.SelectedIndex = 0;
                 ddlSourceDb_SelectedIndexChanged(sender, e);
                 ddlTargetDb_SelectedIndexChanged(sender, e);
 
@@ -283,10 +283,12 @@ namespace Treasure.Main.SmallTool.DataSynchron
             {
                 if (lstTargetTable.Contains(str) == false)
                 {
-                    new CreateTableSub().CreateTable(pSourceConnection, str, pTargetConnection);
-                    if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
+                    if (new CreateTableSub().CreateTable(pSourceConnection, str, pTargetConnection) == true)
                     {
-                        clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
+                        if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
+                        {
+                            clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
+                        }
                     }
                 }
             }

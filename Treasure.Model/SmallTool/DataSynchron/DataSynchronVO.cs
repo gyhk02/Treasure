@@ -19,6 +19,7 @@ namespace Treasure.Model.SmallTool.DataSynchron
         //用于表结构
         public static string TableName = "TableName";
         public static string Description = "Description";
+        public static string TableDescription = "TableDescription";
 
         //用于表字段
         public static string FiledName = "FiledName";

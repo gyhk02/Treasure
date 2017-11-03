@@ -25,23 +25,37 @@ namespace Treasure.BLL.SmallTool.DataSynchron
         public bool InsertData(string pSourceConnection, string pTargetConnection, string pTableName)
         {
             bool result = false;
-
+            string strTmp = "";
+            
             DataTable dt = GetTableAllInfo(pSourceConnection, pTableName);
             if (dt.Rows.Count > 0)
             {
-                string strsql = "TRUNCATE TABLE " + pTableName + " SET IDENTITY_INSERT " + pTableName + " ON INSERT INTO " + pTableName
-                    + ConstantVO.ENTER_STRING;
+                string strsql = "DELETE FROM [" + pTableName +"]" + ConstantVO.ENTER_STRING;
+                strsql = strsql + " SET IDENTITY_INSERT [" + pTableName + "] ON " + ConstantVO.ENTER_STRING;
+
+                strTmp = "";
+                foreach (DataColumn col in dt.Columns)
+                {
+                    strTmp = strTmp + ",[" + col.ToString() + "]";
+                }
+                strsql = strsql + " INSERT INTO [" + pTableName + "](" + strTmp.Substring(1) + ")" + ConstantVO.ENTER_STRING;
 
                 int cels = dt.Columns.Count;
                 for (int idx = 0; idx < dt.Rows.Count; idx++)
                 {
-
                     DataRow row = dt.Rows[idx];
 
-                    string strTmp = "";
+                    strTmp = "";
                     for (int idy = 0; idy < cels; idy++)
                     {
-                        strTmp = strTmp + ",'" + row[idy].ToString() + "'";
+                        if (row[idy] == DBNull.Value)
+                        {
+                            strTmp = strTmp + ",NULL";
+                        }
+                        else
+                        {
+                            strTmp = strTmp + ",'" + row[idy].ToString() + "'";
+                        }
                     }
                     strsql = strsql + " SELECT " + strTmp.Substring(1);
                     if (idx != dt.Rows.Count - 1)
@@ -50,7 +64,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                     }
                 }
 
-                strsql = strsql + ConstantVO.ENTER_STRING + " SET IDENTITY_INSERT " + pTableName + " OFF ";
+                strsql = strsql + ConstantVO.ENTER_STRING + " SET IDENTITY_INSERT [" + pTableName + "] OFF ";
 
                 try
                 {
@@ -177,7 +191,7 @@ order by c.name
                     break;
                 case 4: //表说明列表
                     strsql = @"
-select o.name TableName, ep.name DescriptionName, ep.value FiledDescription
+select o.name TableName, ep.name DescriptionName, ep.value TableDescription
 from sys.objects o
 join sys.extended_properties ep on o.object_id = ep.major_id
 where o.name = @TableName
@@ -252,11 +266,11 @@ where o.name = @TableName
             {
                 if (pTableName.Contains(",") == true)
                 {
-                    condition = " and tbs.name in(" + pTableName.Replace(",", "','") + ")";
+                    condition = " where o.name in('" + pTableName.Replace(",", "','") + "')";
                 }
                 else
                 {
-                    condition = " and tbs.name like '%" + pTableName + "%'";
+                    condition = " where o.name like '%" + pTableName + "%'";
                 }
             }
 
@@ -266,15 +280,14 @@ where o.name = @TableName
                 {
                     string str = string.Join("','", pTableList.ToArray());
                     condition = "'" + str + "'";
-                    condition = " and tbs.name in(" + condition + ")";
+                    condition = " where o.name in(" + condition + ")";
                 }
             }
 
             string sql = @"
-SELECT tbs.name " + DataSynchronVO.TableName + @",ds.value " + DataSynchronVO.Description + @"
-FROM sys.extended_properties ds  
-LEFT JOIN sysobjects tbs ON ds.major_id=tbs.id 
-WHERE  ds.minor_id=0 AND ds.name = 'MS_Description' " + condition;
+select o.name " + DataSynchronVO.TableName + @", ep.name " + DataSynchronVO.DescriptionName + @", ep.value " + DataSynchronVO.TableDescription + @"
+from sys.objects o
+left join sys.extended_properties ep on o.object_id = ep.major_id" + condition;
 
             result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
 

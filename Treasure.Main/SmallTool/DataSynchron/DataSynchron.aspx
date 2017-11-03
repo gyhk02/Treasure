@@ -120,7 +120,7 @@
                                         <Columns>
                                             <dx:GridViewDataTextColumn Caption="表名" FieldName="TableName" ReadOnly="True" VisibleIndex="1">
                                             </dx:GridViewDataTextColumn>
-                                            <dx:GridViewDataTextColumn Caption="描述" FieldName="Description" VisibleIndex="2">
+                                            <dx:GridViewDataTextColumn Caption="描述" FieldName="TableDescription" VisibleIndex="2">
                                             </dx:GridViewDataTextColumn>
                                             <dx:GridViewDataCheckColumn Caption="选择" FieldName="Selected" Name="colSelected" Visible="False" VisibleIndex="3">
                                             </dx:GridViewDataCheckColumn>

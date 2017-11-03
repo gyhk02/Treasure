@@ -62,7 +62,7 @@ namespace Treasure.Utility.Helpers
         /// <returns>DataRow</returns>
         public static DataRow ExecuteDataTable(string pTableName, string pCN_ID)
         {
-            string strsql = @"SELECT * FROM " + pTableName + " WHERE CN_ID = @CN_ID";
+            string strsql = @"SELECT * FROM [" + pTableName + "] WHERE CN_ID = @CN_ID";
 
             SqlParameter[] parms = new SqlParameter[]
             {
@@ -98,7 +98,7 @@ namespace Treasure.Utility.Helpers
         {
             DataTable dt = new DataTable();
 
-            string strsql = @"SELECT * FROM " + pTableName;
+            string strsql = @"SELECT * FROM " + "[" + pTableName + "]";
 
             if (string.IsNullOrEmpty(pConnString) == true)
             {
