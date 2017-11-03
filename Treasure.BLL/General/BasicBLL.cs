@@ -46,14 +46,14 @@ namespace Treasure.BLL.General
             dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
 
-            DataRow row1 = dtDatabase.NewRow();
-            row1[GeneralVO.id] = 1;
-            row1[GeneralVO.no] = "GSP_Test_95";
-            row1[DataSynchronVO.Ip] = "172.16.96.95";
-            row1[DataSynchronVO.LoginName] = "csharp";
-            row1[DataSynchronVO.Pwd] = "csharp.123";
-            row1[DataSynchronVO.DbName] = "GSP_Test";
-            dtDatabase.Rows.Add(row1);
+            DataRow row3 = dtDatabase.NewRow();
+            row3[GeneralVO.id] = 3;
+            row3[GeneralVO.no] = "LoadGSP02";
+            row3[DataSynchronVO.Ip] = ".";
+            row3[DataSynchronVO.LoginName] = "sa";
+            row3[DataSynchronVO.Pwd] = "1";
+            row3[DataSynchronVO.DbName] = "GSP02";
+            dtDatabase.Rows.Add(row3);
 
             DataRow row2 = dtDatabase.NewRow();
             row2[GeneralVO.id] = 2;
@@ -63,6 +63,15 @@ namespace Treasure.BLL.General
             row2[DataSynchronVO.Pwd] = "1";
             row2[DataSynchronVO.DbName] = "GSP01";
             dtDatabase.Rows.Add(row2);
+
+            DataRow row1 = dtDatabase.NewRow();
+            row1[GeneralVO.id] = 1;
+            row1[GeneralVO.no] = "GSP_Test_95";
+            row1[DataSynchronVO.Ip] = "172.16.96.95";
+            row1[DataSynchronVO.LoginName] = "csharp";
+            row1[DataSynchronVO.Pwd] = "csharp.123";
+            row1[DataSynchronVO.DbName] = "GSP_Test";
+            dtDatabase.Rows.Add(row1);
 
             return dtDatabase;
         }

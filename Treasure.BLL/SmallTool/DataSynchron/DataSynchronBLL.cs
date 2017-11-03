@@ -44,7 +44,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                         strTmp = strTmp + ",'" + row[idy].ToString() + "'";
                     }
                     strsql = strsql + " SELECT " + strTmp.Substring(1);
-                    if (idx != 0)
+                    if (idx != dt.Rows.Count - 1)
                     {
                         strsql = strsql + " UNION ALL " + ConstantVO.ENTER_STRING;
                     }
@@ -59,6 +59,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                 catch (Exception ex)
                 {
                     LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+                    return result;
                 }
             }
 

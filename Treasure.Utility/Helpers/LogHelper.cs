@@ -73,19 +73,19 @@ namespace Treasure.Utility.Helpers
             string path = "";
             DateTime today = DateTime.Now;
 
-            path = AppDomain.CurrentDomain.BaseDirectory + "/Log";
+            path = AppDomain.CurrentDomain.BaseDirectory + "Log";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
-            path = path + "/" + today.ToString("yyyyMM");
+            path = path + "\\" + today.ToString("yyyyMM");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
-            result = path + "/" + today.ToString("yyyyMMdd") + ".txt";
+            result = path + "\\" + today.ToString("yyyyMMdd") + ".txt";
 
             return result;
         }

@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <style type="text/css">
         .auto-style1 {
@@ -14,11 +14,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-    
-        <table class="auto-style1">
-            <tr>
-                <td>
+        <div>
+
+            <table class="auto-style1">
+                <tr>
+                    <td style="vertical-align: top;">
                         <table style="width: 100%;">
                             <tr>
                                 <td><span style="font-weight: bold;">数据库</span></td>
@@ -59,32 +59,32 @@
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                             </tr>
-                            
+
                         </table>
                     </td>
-                <td style="vertical-align: top;">
-                    <table class="auto-style1">
-                        <tr>
-                            <td>
-                                <asp:TextBox ID="txtCode" runat="server" Height="100px" Width="610px"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <asp:Button ID="btnQuery" runat="server" OnClick="btnQuery_Click" Text="查看用到哪些表" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <asp:TextBox ID="txtTables" runat="server" Width="604px"></asp:TextBox>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    
-    </div>
+                    <td style="vertical-align: top;">
+                        <table class="auto-style1">
+                            <tr>
+                                <td>
+                                    <asp:TextBox ID="txtCode" runat="server" Height="214px" Width="837px" TextMode="MultiLine"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:Button ID="btnQuery" runat="server" OnClick="btnQuery_Click" Text="查看用到哪些表" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:TextBox ID="txtTables" runat="server" Width="604px"></asp:TextBox>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
     </form>
 </body>
 </html>

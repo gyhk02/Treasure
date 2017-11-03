@@ -268,6 +268,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <param name="lstSourceTable"></param>
         private void SynchronTableStructure(List<string> lstSourceTable)
         {
+            ClientScriptManager clientScript = Page.ClientScript;
+
             //获取目标表集合
             string targetConnection = hdnTargetConnection.Value;
             DataTable dtTargetTableList = bll.GetTableList(targetConnection, lstSourceTable);
@@ -282,6 +284,10 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 if (lstTargetTable.Contains(str) == false)
                 {
                     new CreateTableSub().CreateTable(pSourceConnection, str, pTargetConnection);
+                    if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
+                    {
+                        clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
+                    }
                 }
             }
 
