@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Treasure.Utility.Helpers
 {
+    /// <summary>
+    /// 数据库操作帮忙类
+    /// </summary>
     public class SQLHelper
     {
         public static string ConnString = "Data Source=172.16.96.77;Initial Catalog=EVNJITDB;User ID=evnjit;Password=Myjit.2012.963;";
@@ -80,13 +83,31 @@ namespace Treasure.Utility.Helpers
         /// </summary>
         /// <param name="pTableName">表名</param>
         /// <returns>DataTable</returns>
-        public static DataTable ExecuteDataTable(string pTableName)
+        public static DataTable ExecuteDataTableByName(string pTableName)
+        {
+            return ExecuteDataTableByName(null, pTableName);
+        }
+
+        /// <summary>
+        /// 根据表名获取对应的DataTable
+        /// </summary>
+        /// <param name="pConnString">数据库链接</param>
+        /// <param name="pTableName">表名</param>
+        /// <returns></returns>
+        public static DataTable ExecuteDataTableByName(string pConnString, string pTableName)
         {
             DataTable dt = new DataTable();
 
             string strsql = @"SELECT * FROM " + pTableName;
 
-            dt = ExecuteDataTable(CommandType.Text, strsql, null);
+            if (string.IsNullOrEmpty(pConnString) == true)
+            {
+                dt = ExecuteDataTable(CommandType.Text, strsql, null);
+            }
+            else
+            {
+                dt = ExecuteDataTable(pConnString, CommandType.Text, strsql, null);
+            }
 
             return dt;
         }
@@ -475,7 +496,8 @@ namespace Treasure.Utility.Helpers
         /// <param name="cmdType">Cmd type e.g. stored procedure or text</param>
         /// <param name="cmdText">Command text, e.g. Select * from Products</param>
         /// <param name="cmdParms">SqlParameters to use in the command</param>
-        private static void PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, CommandType cmdType, string cmdText, SqlParameter[] cmdParms)
+        private static void PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, CommandType cmdType, string cmdText
+            , SqlParameter[] cmdParms)
         {
             if (conn.State != ConnectionState.Open)
             {

@@ -14,18 +14,22 @@
                 <tr>
                     <td>小工具：</td>
                     <td></td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><a href="SmallTool/EncryptAndDecrypt/Encrypt_Decrypt.aspx" target="_blank">加密解密</a></td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><a href="SmallTool/DataSynchron/DataSynchron.aspx" target="_blank">数据同步</a></td>
+                    <td><a href="SmallTool/DataSynchron/DataSynchron.aspx" target="_blank">查询语句中用到哪些表</a></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><a href="Treasure/SecondToDatetime.aspx" target="_blank">时间转换</a></td>
+                    <td>&nbsp;</td>
                 </tr>
             </table>
         </div>

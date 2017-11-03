@@ -8,6 +8,8 @@ namespace Treasure.Model.SmallTool.DataSynchron
 {
     public static class DataSynchronVO
     {
+        public static string ISIGN = "ISIGN";
+
         //用于数据库链接
         public static string Ip = "IP";
         public static string LoginName = "LOGIN_NAME";
@@ -18,7 +20,7 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string TableName = "TableName";
         public static string Description = "Description";
 
-        //用表字段
+        //用于表字段
         public static string FiledName = "FiledName";
         public static string FiledType = "FiledType";
         public static string FiledLen = "FiledLen";
@@ -28,6 +30,18 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string IsNullable = "IsNullable";
         public static string IsIdentity = "IsIdentity";
         public static string DefaultValue = "DefaultValue";
+
+        //用于目标表字段
+        public static string TargetTableName = "TargetTableName";
+        public static string TargetFiledName = "TargetFiledName";
+        public static string TargetFiledType = "TargetFiledType";
+        public static string TargetFiledLen = "TargetFiledLen";
+        public static string TargetFiledDescription = "TargetFiledDescription";
+        public static string TargetDecimalPrecision = "TargetDecimalPrecision";
+        public static string TargetDecimalDigits = "TargetDecimalDigits";
+        public static string TargetIsNullable = "TargetIsNullable";
+        public static string TargetIsIdentity = "TargetIsIdentity";
+        public static string TargetDefaultValue = "TargetDefaultValue";
 
         #region 约束
 
