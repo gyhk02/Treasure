@@ -31,7 +31,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
             if (dt.Rows.Count > 0)
             {
                 string strsql = "DELETE FROM [" + pTableName +"]" + ConstantVO.ENTER_STRING;
-                strsql = strsql + " SET IDENTITY_INSERT [" + pTableName + "] ON " + ConstantVO.ENTER_STRING;
+                strsql = strsql + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 SET IDENTITY_INSERT [" + pTableName + "] ON " + ConstantVO.ENTER_STRING;
 
                 strTmp = "";
                 foreach (DataColumn col in dt.Columns)
@@ -64,7 +64,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                     }
                 }
 
-                strsql = strsql + ConstantVO.ENTER_STRING + " SET IDENTITY_INSERT [" + pTableName + "] OFF ";
+                strsql = strsql + ConstantVO.ENTER_STRING + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 SET IDENTITY_INSERT [" + pTableName + "] OFF ";
 
                 try
                 {
@@ -266,11 +266,11 @@ where o.name = @TableName
             {
                 if (pTableName.Contains(",") == true)
                 {
-                    condition = " where o.name in('" + pTableName.Replace(",", "','") + "')";
+                    condition = " and o.name in('" + pTableName.Replace(",", "','") + "')";
                 }
                 else
                 {
-                    condition = " where o.name like '%" + pTableName + "%'";
+                    condition = " and o.name like '%" + pTableName + "%'";
                 }
             }
 
@@ -280,14 +280,15 @@ where o.name = @TableName
                 {
                     string str = string.Join("','", pTableList.ToArray());
                     condition = "'" + str + "'";
-                    condition = " where o.name in(" + condition + ")";
+                    condition = " and o.name in(" + condition + ")";
                 }
             }
 
             string sql = @"
 select o.name " + DataSynchronVO.TableName + @", ep.name " + DataSynchronVO.DescriptionName + @", ep.value " + DataSynchronVO.TableDescription + @"
 from sys.objects o
-left join sys.extended_properties ep on o.object_id = ep.major_id" + condition;
+left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
+where o.type = 'U' " + condition;
 
             result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
 

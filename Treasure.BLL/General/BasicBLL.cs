@@ -46,6 +46,24 @@ namespace Treasure.BLL.General
             dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
 
+            DataRow row5 = dtDatabase.NewRow();
+            row5[GeneralVO.id] = 5;
+            row5[GeneralVO.no] = "ePDM_正_56";
+            row5[DataSynchronVO.Ip] = "172.16.96.56";
+            row5[DataSynchronVO.LoginName] = "sa";
+            row5[DataSynchronVO.Pwd] = "sa.123";
+            row5[DataSynchronVO.DbName] = "EVNERP";
+            dtDatabase.Rows.Add(row5);
+
+            DataRow row4 = dtDatabase.NewRow();
+            row4[GeneralVO.id] = 4;
+            row4[GeneralVO.no] = "ePDM_临时正式_56";
+            row4[DataSynchronVO.Ip] = "172.16.96.56";
+            row4[DataSynchronVO.LoginName] = "sa";
+            row4[DataSynchronVO.Pwd] = "sa.123";
+            row4[DataSynchronVO.DbName] = "NERP_STD";
+            dtDatabase.Rows.Add(row4);
+
             DataRow row3 = dtDatabase.NewRow();
             row3[GeneralVO.id] = 3;
             row3[GeneralVO.no] = "LoadGSP02";
