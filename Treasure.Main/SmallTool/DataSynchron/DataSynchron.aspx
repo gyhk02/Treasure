@@ -22,9 +22,15 @@
                                 <td>&nbsp;</td>
                             </tr>
                             <tr>
+                                <td>类型</td>
+                                <td>
+                                    <asp:Label ID="lblSourceVersion" runat="server" Text=""></asp:Label>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>数据库选项</td>
                                 <td>
-                                    <asp:DropDownList ID="ddlSourceDb" runat="server" AutoPostBack="True" Height="16px" OnSelectedIndexChanged="ddlSourceDb_SelectedIndexChanged">
+                                    <asp:DropDownList ID="ddlSourceDb" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlSourceDb_SelectedIndexChanged">
                                     </asp:DropDownList>
                                 </td>
                             </tr>
@@ -59,6 +65,11 @@
                             <tr>
                                 <td><span style="font-weight: bold;">目标数据库</span></td>
                                 <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>类型</td>
+                                <td>
+                                    <asp:Label ID="lblTargetVersion" runat="server" Text=""></asp:Label></td>
                             </tr>
                             <tr>
                                 <td>数据库选项</td>
@@ -102,7 +113,7 @@
                         <asp:Button ID="btnConnection" runat="server" Text="连接数据库" OnClick="btnConnection_Click" />
                         <br />
                         <br />
-                        <asp:Label ID="lblConnectionError" runat="server"></asp:Label>
+                        <asp:Label ID="lblError" runat="server"></asp:Label>
                     </td>
                     <td style="vertical-align: top;">
                         <table style="width: 100%;">

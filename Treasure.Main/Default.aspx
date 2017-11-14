@@ -24,6 +24,11 @@
                 <tr>
                     <td></td>
                     <td><a href="SmallTool/DataSynchron/DataSynchron.aspx" target="_blank">数据同步</a></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>&nbsp;</td>
                     <td><a href="SmallTool/DataSynchron/DataSynchron.aspx" target="_blank">查询语句中用到哪些表</a></td>
                 </tr>
                 <tr>

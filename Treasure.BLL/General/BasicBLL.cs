@@ -40,6 +40,7 @@ namespace Treasure.BLL.General
         {
             DataTable dtDatabase = new DataTable();
             dtDatabase.Columns.Add(GeneralVO.id, Type.GetType("System.Int32"));
+            dtDatabase.Columns.Add(DataSynchronVO.Version, Type.GetType("System.String"));
             dtDatabase.Columns.Add(GeneralVO.no, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.Ip, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.LoginName, Type.GetType("System.String"));
@@ -48,6 +49,7 @@ namespace Treasure.BLL.General
 
             DataRow row5 = dtDatabase.NewRow();
             row5[GeneralVO.id] = 5;
+            row5[DataSynchronVO.Version] = ConstantVO.OFFICIAL_VERSION;
             row5[GeneralVO.no] = "ePDM_正_56";
             row5[DataSynchronVO.Ip] = "172.16.96.56";
             row5[DataSynchronVO.LoginName] = "sa";
@@ -57,6 +59,7 @@ namespace Treasure.BLL.General
 
             DataRow row4 = dtDatabase.NewRow();
             row4[GeneralVO.id] = 4;
+            row4[DataSynchronVO.Version] = ConstantVO.OFFICIAL_VERSION;
             row4[GeneralVO.no] = "ePDM_临时正式_56";
             row4[DataSynchronVO.Ip] = "172.16.96.56";
             row4[DataSynchronVO.LoginName] = "sa";
@@ -66,6 +69,7 @@ namespace Treasure.BLL.General
 
             DataRow row3 = dtDatabase.NewRow();
             row3[GeneralVO.id] = 3;
+            row3[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
             row3[GeneralVO.no] = "LoadGSP02";
             row3[DataSynchronVO.Ip] = ".";
             row3[DataSynchronVO.LoginName] = "sa";
@@ -75,6 +79,7 @@ namespace Treasure.BLL.General
 
             DataRow row2 = dtDatabase.NewRow();
             row2[GeneralVO.id] = 2;
+            row2[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
             row2[GeneralVO.no] = "LoadGSP01";
             row2[DataSynchronVO.Ip] = ".";
             row2[DataSynchronVO.LoginName] = "sa";
@@ -84,6 +89,7 @@ namespace Treasure.BLL.General
 
             DataRow row1 = dtDatabase.NewRow();
             row1[GeneralVO.id] = 1;
+            row1[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
             row1[GeneralVO.no] = "GSP_Test_95";
             row1[DataSynchronVO.Ip] = "172.16.96.95";
             row1[DataSynchronVO.LoginName] = "csharp";

@@ -70,6 +70,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
+                lblSourceVersion.Text = row[DataSynchronVO.Version].ToString();
                 txtSourceIp.Text = row[DataSynchronVO.Ip].ToString();
                 txtSourceLoginName.Text = row[DataSynchronVO.LoginName].ToString();
                 txtSourcePwd.Text = row[DataSynchronVO.Pwd].ToString();
@@ -77,6 +78,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             }
             else
             {
+                lblSourceVersion.Text = "";
                 txtSourceIp.Text = "";
                 txtSourceLoginName.Text = "";
                 txtSourcePwd.Text = "";
@@ -99,6 +101,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
+                lblTargetVersion.Text = row[DataSynchronVO.Version].ToString();
                 txtTargetIp.Text = row[DataSynchronVO.Ip].ToString();
                 txtTargetLoginName.Text = row[DataSynchronVO.LoginName].ToString();
                 txtTargetPwd.Text = row[DataSynchronVO.Pwd].ToString();
@@ -106,6 +109,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             }
             else
             {
+                lblTargetVersion.Text = "";
                 txtTargetIp.Text = "";
                 txtTargetLoginName.Text = "";
                 txtTargetPwd.Text = "";
@@ -141,11 +145,11 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 }
                 conn.Close();
                 hdnSourceConnection.Value = strSouceConnection;
-                lblConnectionError.Text = "源据库连接成功。";
+                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + "源据库连接成功。";
             }
             catch (Exception ex)
             {
-                lblConnectionError.Text = "连接源数据库异常：" + ex.Message;
+                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + "连接源数据库异常：" + ex.Message;
                 conn.Close();
                 return;
             }
@@ -170,11 +174,11 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 }
                 conn.Close();
                 hdnTargetConnection.Value = strTargetConnection;
-                lblConnectionError.Text = lblConnectionError.Text + "\n 目标据库连接成功。";
+                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + lblError.Text + "\n 目标据库连接成功。";
             }
             catch (Exception ex)
             {
-                lblConnectionError.Text = "连接目标据库异常：" + ex.Message;
+                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + "连接目标据库异常：" + ex.Message;
                 conn.Close();
                 return;
             }
@@ -244,9 +248,15 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <summary>
         /// 数据完全同步
         /// </summary>
+        /// <param name="lstSourceTable">需要同步的表列表</param>
         private void SynchronCompleteData(List<string> lstSourceTable)
         {
             ClientScriptManager clientScript = Page.ClientScript;
+
+            //如果表结构不同的情况，将不能同步
+            DataTable dt = GetTableStructureBy2DB();
+            DataTable dtx = dt.AsEnumerable().Where(p => p.Field<string>(DataSynchronVO.ISIGN) == "x").CopyToDataTable();
+
 
             string pSourceConnection = hdnSourceConnection.Value;
             string pTargetConnection = hdnTargetConnection.Value;
@@ -301,14 +311,15 @@ namespace Treasure.Main.SmallTool.DataSynchron
         }
         #endregion
 
-        #region 表结构比较
+        #region 获取选中表对应的两个数据库的表结构
         /// <summary>
-        /// 表结构比较
+        /// 获取选中表对应的两个数据库的表结构
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnCompare_Click(object sender, EventArgs e)
+        /// <returns></returns>
+        private DataTable GetTableStructureBy2DB()
         {
+            DataTable dtResult = new DataTable();
+
             string pSourceConnection = hdnSourceConnection.Value;
             string pTargetConnection = hdnTargetConnection.Value;
             List<string> lstTableList = grvTableList.GetSelectedFieldValues(new string[] { DataSynchronVO.TableName }).ConvertAll<string>(c => string.Format("{0}", c));
@@ -317,8 +328,6 @@ namespace Treasure.Main.SmallTool.DataSynchron
             DataTable dtTargetTableStructure = bll.GetTableInfoByName(1, pTargetConnection, lstTableList);
 
             #region DataTable初始化
-
-            DataTable dtResult = new DataTable();
 
             dtResult.Columns.Add(DataSynchronVO.TableName);
             dtResult.Columns.Add(DataSynchronVO.FiledName);
@@ -403,7 +412,19 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             #endregion
 
-            grvTableStructure.DataSource = dtResult;
+            return dtResult;
+        }
+        #endregion
+
+        #region 表结构比较
+        /// <summary>
+        /// 表结构比较
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnCompare_Click(object sender, EventArgs e)
+        {
+            grvTableStructure.DataSource = GetTableStructureBy2DB();
             grvTableStructure.DataBind();
         }
         #endregion

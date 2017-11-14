@@ -285,7 +285,7 @@ where o.name = @TableName
             }
 
             string sql = @"
-select o.name " + DataSynchronVO.TableName + @", ep.name " + DataSynchronVO.DescriptionName + @", ep.value " + DataSynchronVO.TableDescription + @"
+select distinct o.name " + DataSynchronVO.TableName + @", ep.value " + DataSynchronVO.TableDescription + @"
 from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
 where o.type = 'U' " + condition;

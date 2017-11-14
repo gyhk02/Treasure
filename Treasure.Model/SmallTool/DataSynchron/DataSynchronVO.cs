@@ -11,10 +11,12 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string ISIGN = "ISIGN";
 
         //用于数据库链接
+
         public static string Ip = "IP";
         public static string LoginName = "LOGIN_NAME";
         public static string Pwd = "PASSWORD";
         public static string DbName = "DATABASE_NAME";
+        public static string Version = "VERSION";
 
         //用于表结构
         public static string TableName = "TableName";

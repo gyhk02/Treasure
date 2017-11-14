@@ -22,6 +22,15 @@ namespace Treasure.Main.SmallTool.DataSynchron {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// lblSourceVersion 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSourceVersion;
+        
+        /// <summary>
         /// ddlSourceDb 控件。
         /// </summary>
         /// <remarks>
@@ -65,6 +74,15 @@ namespace Treasure.Main.SmallTool.DataSynchron {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSourceDbName;
+        
+        /// <summary>
+        /// lblTargetVersion 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTargetVersion;
         
         /// <summary>
         /// ddlTargetDb 控件。
@@ -121,13 +139,13 @@ namespace Treasure.Main.SmallTool.DataSynchron {
         protected global::System.Web.UI.WebControls.Button btnConnection;
         
         /// <summary>
-        /// lblConnectionError 控件。
+        /// lblError 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblConnectionError;
+        protected global::System.Web.UI.WebControls.Label lblError;
         
         /// <summary>
         /// txtTableName 控件。
