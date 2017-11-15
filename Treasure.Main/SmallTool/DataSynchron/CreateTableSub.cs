@@ -4,7 +4,9 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using Treasure.BLL.SmallTool.DataSynchron;
+using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
+using Treasure.Utility.Helpers;
 using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.SmallTool.DataSynchron
@@ -32,9 +34,11 @@ namespace Treasure.Main.SmallTool.DataSynchron
             strsql = strsql + GetFiledDescriptionString(pSourceConnection, pSourceTable);
             strsql = strsql + GetTableDescriptionString(pSourceConnection, pSourceTable);
 
-            if (bll.CreateTable(pTargetConnection, strsql) != -1)
+            if (bll.CreateTable(pTargetConnection, strsql) == true)
             {
-                result = true;
+                string filePath = "Document/DataSynchronSql/CreateTableStructure_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
+                string description = "在" + pTargetConnection + "上创建表" + pSourceTable;
+                result = new FileHelper().WriteFile(filePath, description, strsql);
             }
 
             return result;
@@ -57,7 +61,9 @@ namespace Treasure.Main.SmallTool.DataSynchron
             DataTable dt = bll.GetTableInfoByName(4, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
-                sql = sql + "EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString() + "', @value=N'" + row[DataSynchronVO.FiledDescription].ToString() + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'" + pSourceTable + "'";
+                sql = sql + "EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString()
+                    + "', @value=N'" + row[DataSynchronVO.TableDescription].ToString()
+                    + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'" + pSourceTable + "'" + ConstantVO.ENTER_STRING;
             }
 
             result = sql;
@@ -82,7 +88,10 @@ namespace Treasure.Main.SmallTool.DataSynchron
             DataTable dt = bll.GetTableInfoByName(3, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
-                sql = sql + "EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString() + "', @value=N'" + row[DataSynchronVO.FiledDescription].ToString() + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'" + pSourceTable + "', @level2type=N'COLUMN',@level2name=N'" + row[DataSynchronVO.FiledName].ToString() + "'";
+                sql = sql + "EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString()
+                    + "', @value=N'" + row[DataSynchronVO.FiledDescription].ToString()
+                    + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'"
+                    + pSourceTable + "', @level2type=N'COLUMN',@level2name=N'" + row[DataSynchronVO.FiledName].ToString() + "'" + ConstantVO.ENTER_STRING;
             }
 
             result = sql;
@@ -133,6 +142,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
                             + "(" + row[DataSynchronVO.FiledName].ToString() + ")";
                         break;
                 }
+
+                sql = sql + ConstantVO.ENTER_STRING;
             }
 
             result = sql;
@@ -152,9 +163,9 @@ namespace Treasure.Main.SmallTool.DataSynchron
         {
             string result = "";
 
-            string sql = "CREATE TABLE [dbo].[" + pSourceTable + "](";
+            string sql = "CREATE TABLE [dbo].[" + pSourceTable + "](" + ConstantVO.ENTER_STRING;
 
-            DataTable dt = bll.GetTableInfoByName(1, pSourceConnection, pSourceConnection);
+            DataTable dt = bll.GetTableInfoByName(1, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
                 string filedtype = row[DataSynchronVO.FiledType].ToString().Trim().ToLower();
@@ -165,7 +176,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 switch (filedtype)
                 {
                     case "int":
-                        if (TypeConversion.ToInt(row[DataSynchronVO.IsIdentity]) == 1)
+                        if (TypeConversion.ToBool(row[DataSynchronVO.IsIdentity]) == true)
                         {
                             sql = sql + " IDENTITY(1,1)";
                         }
@@ -180,8 +191,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
                         break;
                 }
 
-                //是否为空
-                if (TypeConversion.ToInt(row[DataSynchronVO.IsNullable]) == 1)
+                //可为空
+                if (TypeConversion.ToBool(row[DataSynchronVO.IsNullable]) == true)
                 {
                     sql = sql + " NULL";
                 }
@@ -190,10 +201,10 @@ namespace Treasure.Main.SmallTool.DataSynchron
                     sql = sql + " NOT NULL";
                 }
 
-                sql = sql + " ,";
+                sql = sql + " ," + ConstantVO.ENTER_STRING;
             }
 
-            sql = sql + ")";
+            sql = sql + ")" + ConstantVO.ENTER_STRING;
 
             result = sql;
 

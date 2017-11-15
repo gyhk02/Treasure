@@ -174,13 +174,14 @@ namespace Treasure.BLL.SmallTool.DataSynchron
         /// <param name="pConnection">数据库链接</param>
         /// <param name="pSql">sql语句</param>
         /// <returns></returns>
-        public int CreateTable(string pConnection, string pSql)
+        public bool CreateTable(string pConnection, string pSql)
         {
-            int result = -1;
+            bool result = false;
 
             try
             {
-                result = SQLHelper.ExecuteNonQuery(pConnection, CommandType.Text, pSql, null);
+                SQLHelper.ExecuteNonQuery(pConnection, CommandType.Text, pSql, null);
+                result = true;
             }
             catch (Exception ex)
             {
@@ -270,14 +271,14 @@ from sys.objects o
 join sys.columns c on o.object_id = c.object_id
 join sys.extended_properties ep on c.object_id = ep.major_id and c.column_id = ep.minor_id
 where o.name = @TableName
-order by c.name
+order by c.column_id
 ";
                     break;
                 case 4: //表说明列表
                     strsql = @"
 select o.name TableName, ep.name DescriptionName, ep.value TableDescription
 from sys.objects o
-join sys.extended_properties ep on o.object_id = ep.major_id
+join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
 where o.name = @TableName
 ";
                     break;
@@ -292,7 +293,31 @@ where o.name = @TableName
         }
         #endregion
 
-        private DataTable GetTableNameAnd(string pConnection, List<string> pTableList, string pTableName)
+        #region 获取表名、表描述类型、表描述
+
+        /// <summary>
+        /// 获取表名、表描述类型、表描述
+        /// </summary>
+        /// <param name="pConnection">数据库链接</param>
+        /// <param name="pTableList">表名列表</param>
+        /// <returns></returns>
+        public DataTable Get_TableName_DescriptionType_Description(string pConnection, List<string> pTableList)
+        {
+            return Get_TableName_DescriptionType_Description(pConnection, pTableList, null);
+        }
+
+        /// <summary>
+        /// 获取表名、表描述类型、表描述
+        /// </summary>
+        /// <param name="pConnection">数据库链接</param>
+        /// <param name="pTableList">表名列表</param>
+        /// <param name="pTableName">
+        /// 表名
+        /// 逗号隔开：精确查询
+        /// 没用逗号：模糊查询
+        /// </param>
+        /// <returns></returns>
+        private DataTable Get_TableName_DescriptionType_Description(string pConnection, List<string> pTableList, string pTableName)
         {
             DataTable result = new DataTable();
 
@@ -321,7 +346,7 @@ where o.name = @TableName
             }
 
             string sql = @"
-select distinct o.name " + DataSynchronVO.TableName + @", ep.value " + DataSynchronVO.TableDescription + @"
+select o.name " + DataSynchronVO.TableName + @", ep.name " + DataSynchronVO.DescriptionName + @", ep.value " + DataSynchronVO.TableDescription + @"
 from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
 where o.type = 'U' " + condition;
@@ -330,6 +355,8 @@ where o.type = 'U' " + condition;
 
             return result;
         }
+
+        #endregion
 
         #region 获取表名称及表的描述
 

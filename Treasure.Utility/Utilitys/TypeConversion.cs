@@ -21,6 +21,28 @@ namespace Treasure.Utility.Utilitys
             return d.ToString(formatStr);
         }
 
+
+        #region 对象转换成bool
+        /// <summary>
+        /// 对象转换成bool
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static bool ToBool(Object obj)
+        {
+            bool result = false;
+
+            if (obj == null)
+            {
+                return result;
+            }
+
+            Boolean.TryParse(obj.ToString(), out result);
+
+            return result;
+        }
+        #endregion
+
         #region 转小数，再转成字符串，带格式，比如#.##
         /// <summary>
         /// 转小数，再转成字符串，带格式，比如#.##

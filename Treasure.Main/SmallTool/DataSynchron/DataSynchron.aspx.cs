@@ -394,7 +394,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             //获取目标表集合
             string targetConnection = hdnTargetConnection.Value;
-            DataTable dtTargetTableList = bll.GetTableList(targetConnection, lstSourceTable);
+            DataTable dtTargetTableList = bll.Get_TableName_DescriptionType_Description(targetConnection, lstSourceTable);
             List<string> lstTargetTable = (from d in dtTargetTableList.AsEnumerable() select d.Field<string>(DataSynchronVO.TableName)).ToList();
 
             string pSourceConnection = hdnSourceConnection.Value;
