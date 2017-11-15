@@ -44,6 +44,7 @@
     <Compile Include="Extend\DropDownListExtend.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="Helpers\SQLHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

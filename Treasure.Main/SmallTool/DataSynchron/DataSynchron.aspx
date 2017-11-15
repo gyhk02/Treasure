@@ -147,7 +147,7 @@
                         <asp:RadioButtonList ID="rblSynchronType" runat="server">
                             <asp:ListItem>表结构同步</asp:ListItem>
                             <asp:ListItem>数据完全同步</asp:ListItem>
-                            <asp:ListItem>数据增量同步</asp:ListItem>
+                            <asp:ListItem>数据增量同步(按ID)</asp:ListItem>
                         </asp:RadioButtonList>
                         <br />
                         <br />

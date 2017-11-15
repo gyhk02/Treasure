@@ -14,6 +14,84 @@ namespace Treasure.BLL.SmallTool.DataSynchron
 {
     public class DataSynchronBLL : BasicBLL
     {
+        #region 增量同步时插入数据
+        /// <summary>
+        /// 增量同步时插入数据
+        /// </summary>
+        /// <param name="pSourceConnection">源数据库链接</param>
+        /// <param name="pTargetConnection">目标数据库链接</param>
+        /// <param name="pTableName">表名</param>
+        /// <returns>bool</returns>
+        public bool InsertDataByIncrement(string pSourceConnection, string pTargetConnection, string pTableName, List<DataRow> pLstRow)
+        {
+            bool result = false;
+
+            string strTmp = "";
+
+            DataColumnCollection ColumnCollection = pLstRow[0].Table.Columns;
+
+            if (pLstRow.Count > 0)
+            {
+                string strsql = " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
+                    + " SET IDENTITY_INSERT [" + pTableName + "] ON " + ConstantVO.ENTER_STRING;
+
+                //拼接字段名称
+                strTmp = "";
+                foreach (DataColumn col in ColumnCollection)
+                {
+                    strTmp = strTmp + ",[" + col.ToString() + "]";
+                }
+                strsql = strsql + " INSERT INTO [" + pTableName + "](" + strTmp.Substring(1) + ")" + ConstantVO.ENTER_STRING;
+
+                //拼接数据
+                int cels = ColumnCollection.Count;
+                for (int idx = 0; idx < pLstRow.Count; idx++)
+                {
+                    DataRow row = pLstRow[idx];
+
+                    strTmp = "";
+                    for (int idy = 0; idy < cels; idy++)
+                    {
+                        if (row[idy] == DBNull.Value)
+                        {
+                            strTmp = strTmp + ",NULL";
+                        }
+                        else
+                        {
+                            strTmp = strTmp + ",'" + row[idy].ToString() + "'";
+                        }
+                    }
+                    strsql = strsql + " SELECT " + strTmp.Substring(1);
+                    if (idx != pLstRow.Count - 1)
+                    {
+                        strsql = strsql + " UNION ALL " + ConstantVO.ENTER_STRING;
+                    }
+                }
+
+                strsql = strsql + ConstantVO.ENTER_STRING + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
+                    + " SET IDENTITY_INSERT [" + pTableName + "] OFF ";
+
+                try
+                {
+                    SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
+
+                    string filePath = "Document/DataSynchronSql/DataIncrementSynchron_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
+                    string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
+                    result = new FileHelper().WriteFile(filePath, description, strsql);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+                    return result;
+                }
+            }
+
+            result = true;
+
+            return result;
+        }
+        #endregion
+
         #region 插入数据
         /// <summary>
         /// 插入数据
@@ -26,12 +104,13 @@ namespace Treasure.BLL.SmallTool.DataSynchron
         {
             bool result = false;
             string strTmp = "";
-            
+
             DataTable dt = GetTableAllInfo(pSourceConnection, pTableName);
             if (dt.Rows.Count > 0)
             {
-                string strsql = "DELETE FROM [" + pTableName +"]" + ConstantVO.ENTER_STRING;
-                strsql = strsql + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 SET IDENTITY_INSERT [" + pTableName + "] ON " + ConstantVO.ENTER_STRING;
+                string strsql = "DELETE FROM [" + pTableName + "]" + ConstantVO.ENTER_STRING;
+                strsql = strsql + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
+                    + " SET IDENTITY_INSERT [" + pTableName + "] ON " + ConstantVO.ENTER_STRING;
 
                 strTmp = "";
                 foreach (DataColumn col in dt.Columns)
@@ -64,11 +143,16 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                     }
                 }
 
-                strsql = strsql + ConstantVO.ENTER_STRING + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 SET IDENTITY_INSERT [" + pTableName + "] OFF ";
+                strsql = strsql + ConstantVO.ENTER_STRING + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
+                    + " SET IDENTITY_INSERT [" + pTableName + "] OFF ";
 
                 try
                 {
                     SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
+
+                    string filePath = "Document/DataSynchronSql/DataSynchron_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
+                    string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
+                    result = new FileHelper().WriteFile(filePath, description, strsql);
                 }
                 catch (Exception ex)
                 {
@@ -207,6 +291,45 @@ where o.name = @TableName
             return result;
         }
         #endregion
+
+        private DataTable GetTableNameAnd(string pConnection, List<string> pTableList, string pTableName)
+        {
+            DataTable result = new DataTable();
+
+            string condition = "";
+
+            if (string.IsNullOrEmpty(pTableName) == false)
+            {
+                if (pTableName.Contains(",") == true)
+                {
+                    condition = " and o.name in('" + pTableName.Replace(",", "','") + "')";
+                }
+                else
+                {
+                    condition = " and o.name like '%" + pTableName + "%'";
+                }
+            }
+
+            if (pTableList != null)
+            {
+                if (pTableList.Count > 0)
+                {
+                    string str = string.Join("','", pTableList.ToArray());
+                    condition = "'" + str + "'";
+                    condition = " and o.name in(" + condition + ")";
+                }
+            }
+
+            string sql = @"
+select distinct o.name " + DataSynchronVO.TableName + @", ep.value " + DataSynchronVO.TableDescription + @"
+from sys.objects o
+left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
+where o.type = 'U' " + condition;
+
+            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
+
+            return result;
+        }
 
         #region 获取表名称及表的描述
 

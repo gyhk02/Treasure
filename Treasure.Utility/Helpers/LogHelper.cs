@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Treasure.Model.General;
 
 namespace Treasure.Utility.Helpers
 {
@@ -49,7 +50,7 @@ namespace Treasure.Utility.Helpers
                     sw.BaseStream.Seek(0, SeekOrigin.End);
                     sw.WriteLine("=====================================");
                     sw.Write("日志时间为:" + DateTime.Now.ToString() + "\r\n");
-                    sw.Write("日志内容为(" + pMethod.ReflectedType.FullName + "." + pMethod.Name + "):" + pMessage + "\r\n");
+                    sw.Write("日志内容为(" + pMethod.ReflectedType.FullName + "." + pMethod.Name + "):" + pMessage + ConstantVO.ENTER_STRING);
                     sw.WriteLine("=====================================");
                     sw.WriteLine("");
                     sw.Flush();

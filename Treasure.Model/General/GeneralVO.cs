@@ -8,8 +8,8 @@ namespace Treasure.Model.General
 {
     public static class GeneralVO
     {
-        public static string id = "ID";
-        public static string no = "NO";
-        public static string name = "NAME";
+        public static string Id = "ID";
+        public static string No = "NO";
+        public static string Name = "NAME";
     }
 }

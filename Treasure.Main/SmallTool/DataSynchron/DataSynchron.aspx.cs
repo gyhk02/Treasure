@@ -39,8 +39,12 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
                 Session["dtDataDb"] = dtDatabase;
 
-                ddlSourceDb.SelectedIndex = 1;
-                ddlTargetDb.SelectedIndex = 0;
+                //ddlSourceDb.SelectedIndex = 1;
+                //ddlTargetDb.SelectedIndex = 0;
+
+                ddlSourceDb.SelectedValue = "2";
+                ddlTargetDb.SelectedValue = "3";
+
                 ddlSourceDb_SelectedIndexChanged(sender, e);
                 ddlTargetDb_SelectedIndexChanged(sender, e);
 
@@ -66,7 +70,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             int id = TypeConversion.ToInt(ddlSourceDb.SelectedValue);
 
             DataTable dtDatabase = Session["dtDataDb"] as DataTable;
-            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.id) == id).ToList();
+            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.Id) == id).ToList();
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
@@ -97,7 +101,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
         {
             int id = TypeConversion.ToInt(ddlTargetDb.SelectedValue);
             DataTable dtDatabase = Session["dtDataDb"] as DataTable;
-            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.id) == id).ToList();
+            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.Id) == id).ToList();
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
@@ -145,11 +149,11 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 }
                 conn.Close();
                 hdnSourceConnection.Value = strSouceConnection;
-                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + "源据库连接成功。";
+                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING + "源据库连接成功。";
             }
             catch (Exception ex)
             {
-                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + "连接源数据库异常：" + ex.Message;
+                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING + "连接源数据库异常：" + ex.Message;
                 conn.Close();
                 return;
             }
@@ -174,11 +178,11 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 }
                 conn.Close();
                 hdnTargetConnection.Value = strTargetConnection;
-                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + lblError.Text + "\n 目标据库连接成功。";
+                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING + lblError.Text + ConstantVO.ENTER_STRING + "目标据库连接成功。";
             }
             catch (Exception ex)
             {
-                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + "连接目标据库异常：" + ex.Message;
+                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING + "连接目标据库异常：" + ex.Message;
                 conn.Close();
                 return;
             }
@@ -227,7 +231,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
                     case "数据完全同步":
                         SynchronCompleteData(lstTableList);
                         break;
-                    case "数据增量同步":
+                    case "数据增量同步(按ID)":
+                        SynchronIncrementData(lstTableList);
                         break;
                 }
 
@@ -238,11 +243,116 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
             }
         }
+
         #endregion
 
         #endregion
 
         #region 自定义事件
+
+        #region 数据增量同步(按ID)
+        /// <summary>
+        /// 数据增量同步(按ID)
+        /// </summary>
+        /// <param name="lstTableList"></param>
+        private void SynchronIncrementData(List<string> lstSourceTable)
+        {
+            ClientScriptManager clientScript = Page.ClientScript;
+
+            List<string> lstShow = new List<string>();
+
+            List<string> lstTableName = JudgeSynchronData(lstSourceTable);
+            if (lstTableName == null)
+            {
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据同步，判断时出现异常');</script>");
+                return;
+            }
+
+            string pSourceConnection = hdnSourceConnection.Value;
+            string pTargetConnection = hdnTargetConnection.Value;
+
+            foreach (string str in lstTableName)
+            {
+                //获取要处理的数据
+                DataTable dtSource = bll.GetTableAllInfo(pSourceConnection, str);
+                DataTable dtTarget = bll.GetTableAllInfo(pTargetConnection, str);
+
+                List<DataRow> lstSourceData = new List<DataRow>();
+                switch (dtSource.Columns[0].DataType.Name)
+                {
+                    case "Int32":
+                        List<int> lstInt = (from d in dtTarget.AsEnumerable() select d.Field<int>(GeneralVO.Id)).ToList();
+                        lstSourceData = dtSource.AsEnumerable().Where(p => lstInt.Contains(p.Field<int>(GeneralVO.Id)) == false).ToList();
+                        break;
+                    case "String":
+                        List<string> lstString = (from d in dtTarget.AsEnumerable() select d.Field<string>(GeneralVO.Id)).ToList();
+                        lstSourceData = dtSource.AsEnumerable().Where(p => lstString.Contains(p.Field<string>(GeneralVO.Id)) == false).ToList();
+                        break;
+                    default:
+                        clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('表" + str + "的ID既然不是Int32，也不是String类型');</script>");
+                        return;
+                }
+                if (lstSourceData.Count == 0)
+                {
+                    lstShow.Add(str);   //记录两边数据库数据相同的表
+                }
+                else
+                {
+                    if (bll.InsertDataByIncrement(pSourceConnection, pTargetConnection, str, lstSourceData) == false)
+                    {
+                        clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
+                    }
+                }
+            }
+
+            if (lstShow.Count > 0)
+            {
+                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + ConstantVO.ENTER_STRING + "以下表的数据两边相同" + string.Join(",", lstShow.ToArray());
+            }
+        }
+        #endregion
+
+        #region 数据同步过滤及判断
+        /// <summary>
+        /// 数据同步过滤及判断
+        /// </summary>
+        /// <returns></returns>
+        private List<string> JudgeSynchronData(List<string> lstSourceTable)
+        {
+            List<string> lst = new List<string>();
+
+            try
+            {
+                //如果表结构不同的情况，将不能同步
+                DataTable dt = GetTableStructureBy2DB();
+                List<DataRow> lstRow = dt.AsEnumerable().Where(p => p.Field<string>(DataSynchronVO.ISIGN) == "x").ToList();
+                List<string> lstTableName = (from d in lstRow.AsEnumerable() select d.Field<string>(DataSynchronVO.TableName)).ToList();
+                List<string> lstErrorTableName = new List<string>();
+                foreach (string str in lstSourceTable)
+                {
+                    if (lstTableName.Contains(str) == true)
+                    {
+                        lstErrorTableName.Add(str);
+                        lstSourceTable.Remove(str);
+                    }
+                }
+                if (lstErrorTableName.Count > 0)
+                {
+                    lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING
+                        + "同步异常：以下表结构不同" + ConstantVO.ENTER_STRING + string.Join(",", lstErrorTableName.ToArray());
+                }
+
+                lst = lstSourceTable;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+                return null;
+            }
+
+            return lst;
+        }
+        #endregion
 
         #region 数据完全同步
         /// <summary>
@@ -253,15 +363,17 @@ namespace Treasure.Main.SmallTool.DataSynchron
         {
             ClientScriptManager clientScript = Page.ClientScript;
 
-            //如果表结构不同的情况，将不能同步
-            DataTable dt = GetTableStructureBy2DB();
-            DataTable dtx = dt.AsEnumerable().Where(p => p.Field<string>(DataSynchronVO.ISIGN) == "x").CopyToDataTable();
-
+            List<string> lstCalculation = JudgeSynchronData(lstSourceTable);
+            if (lstCalculation == null)
+            {
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据同步，判断时出现异常');</script>");
+                return;
+            }
 
             string pSourceConnection = hdnSourceConnection.Value;
             string pTargetConnection = hdnTargetConnection.Value;
 
-            foreach (string str in lstSourceTable)
+            foreach (string str in lstCalculation)
             {
                 if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
                 {
