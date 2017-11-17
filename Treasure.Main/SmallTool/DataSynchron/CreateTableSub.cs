@@ -23,23 +23,37 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <param name="pSourceTable"></param>
         /// <param name="pTargetConnection"></param>
         /// <returns></returns>
-        public bool CreateTable(string pSourceConnection, string pSourceTable, string pTargetConnection)
+        public bool CreateTable(string pSourceConnection, string pTargetConnection, List<string> lstSourceTable, List<string> lstTargetTable)
         {
             bool result = false;
 
+            if (lstSourceTable.Count == 0) { return result; }
+
+            List<string> lst = lstSourceTable.Except(lstTargetTable).ToList();
+            if (lst.Count == 0) { return result; }
+
             string strsql = "";
+            foreach (string str in lst)
+            {
+                strsql = strsql + GetFiledString(pSourceConnection, str);
+                strsql = strsql + GetConstraintString(pSourceConnection, str);
+                strsql = strsql + GetFiledDescriptionString(pSourceConnection, str);
+                strsql = strsql + GetTableDescriptionString(pSourceConnection, str) + ConstantVO.ENTER_STRING;
+            }
 
-            strsql = strsql + GetFiledString(pSourceConnection, pSourceTable);
-            strsql = strsql + GetConstraintString(pSourceConnection, pSourceTable);
-            strsql = strsql + GetFiledDescriptionString(pSourceConnection, pSourceTable);
-            strsql = strsql + GetTableDescriptionString(pSourceConnection, pSourceTable);
-
+            //记录sql语句
+            string type = "";
             if (bll.CreateTable(pTargetConnection, strsql) == true)
             {
-                string filePath = "Document/DataSynchronSql/CreateTableStructure_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
-                string description = "在" + pTargetConnection + "上创建表" + pSourceTable;
-                result = new FileHelper().WriteFile(filePath, description, strsql);
+                type = "正常";
             }
+            else
+            {
+                type = "异常";
+            }
+            string filePath = "Document/DataSynchronSql/CreateTableStructure_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
+            string description = "在" + pTargetConnection + "上创建表" + string.Join(",", lst.ToArray());
+            result = new FileHelper().WriteFile(filePath, description, strsql);
 
             return result;
         }
@@ -61,9 +75,18 @@ namespace Treasure.Main.SmallTool.DataSynchron
             DataTable dt = bll.GetTableInfoByName(4, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
-                sql = sql + "EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString()
+                sql = sql + @"
+IF NOT EXISTS (
+	select 1
+	from sys.objects o
+	join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
+	where o.name = '" + pSourceTable + @"'
+)
+EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString()
                     + "', @value=N'" + row[DataSynchronVO.TableDescription].ToString()
-                    + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'" + pSourceTable + "'" + ConstantVO.ENTER_STRING;
+                    + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'" + pSourceTable + "'" + @"
+GO
+";
             }
 
             result = sql;
@@ -88,10 +111,20 @@ namespace Treasure.Main.SmallTool.DataSynchron
             DataTable dt = bll.GetTableInfoByName(3, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
-                sql = sql + "EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString()
+                sql = sql + @"
+IF NOT EXISTS(
+	select 1
+	from sys.objects o
+	join sys.columns c on o.object_id = c.object_id
+	join sys.extended_properties ep on c.object_id = ep.major_id and c.column_id = ep.minor_id
+	where o.name = '" + pSourceTable + @"' and c.name = '" + row[DataSynchronVO.FiledName].ToString() + @"' and ep.name = '" + row[DataSynchronVO.DescriptionName].ToString() + @"'
+)
+EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString()
                     + "', @value=N'" + row[DataSynchronVO.FiledDescription].ToString()
                     + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'"
-                    + pSourceTable + "', @level2type=N'COLUMN',@level2name=N'" + row[DataSynchronVO.FiledName].ToString() + "'" + ConstantVO.ENTER_STRING;
+                    + pSourceTable + "', @level2type=N'COLUMN',@level2name=N'" + row[DataSynchronVO.FiledName].ToString() + "'" + ConstantVO.ENTER_STRING
+                    + @"
+GO";
             }
 
             result = sql;
@@ -143,7 +176,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
                         break;
                 }
 
-                sql = sql + ConstantVO.ENTER_STRING;
+                sql = sql + @"
+GO" + ConstantVO.ENTER_STRING;
             }
 
             result = sql;

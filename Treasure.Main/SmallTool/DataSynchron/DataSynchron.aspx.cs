@@ -401,19 +401,25 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string pTargetConnection = hdnTargetConnection.Value;
 
             //目标没有的表，创建新表
-            foreach (string str in lstSourceTable)
+            if (new CreateTableSub().CreateTable(pSourceConnection, pTargetConnection, lstSourceTable, lstTargetTable) == false)
             {
-                if (lstTargetTable.Contains(str) == false)
-                {
-                    if (new CreateTableSub().CreateTable(pSourceConnection, str, pTargetConnection) == true)
-                    {
-                        if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
-                        {
-                            clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
-                        }
-                    }
-                }
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('创建表异常');</script>");
+                return;
             }
+
+            //foreach (string str in lstSourceTable)
+            //{
+            //    if (lstTargetTable.Contains(str) == false)
+            //    {
+            //        if (new CreateTableSub().CreateTable(pSourceConnection, str, pTargetConnection) == true)
+            //        {
+            //            //if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
+            //            //{
+            //            //    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
+            //            //}
+            //        }
+            //    }
+            //}
 
             //获取源结构
             //获取目标结构
