@@ -122,7 +122,7 @@
                                     <br />
                                     <br />
                                 </td>
-                            </tr>
+                            </tr>                         
                             <tr>
                                 <td>
                                     <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False">
@@ -133,9 +133,9 @@
                                             </dx:GridViewDataTextColumn>
                                             <dx:GridViewDataTextColumn Caption="描述" FieldName="TableDescription" VisibleIndex="2">
                                             </dx:GridViewDataTextColumn>
-                                            <dx:GridViewDataCheckColumn Caption="选择" FieldName="Selected" Name="colSelected" Visible="False" VisibleIndex="3">
+                                            <dx:GridViewDataCheckColumn Caption="选择" FieldName="Selected" Name="colSelected" Visible="false" VisibleIndex="3">
                                             </dx:GridViewDataCheckColumn>
-                                            <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0">
+                                            <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
                                             </dx:GridViewCommandColumn>
                                         </Columns>
                                     </dx:ASPxGridView>

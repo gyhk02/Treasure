@@ -36,9 +36,13 @@ namespace Treasure.Main.SmallTool.DataSynchron
             foreach (string str in lst)
             {
                 strsql = strsql + GetFiledString(pSourceConnection, str);
-                strsql = strsql + GetConstraintString(pSourceConnection, str);
+                strsql = strsql + GetConstraintStringNoF(pSourceConnection, str);
                 strsql = strsql + GetFiledDescriptionString(pSourceConnection, str);
                 strsql = strsql + GetTableDescriptionString(pSourceConnection, str) + ConstantVO.ENTER_STRING;
+            }
+            foreach (string str in lst)
+            {
+                strsql = strsql + GetConstraintStringByF(pSourceConnection, str);
             }
 
             //记录sql语句
@@ -84,9 +88,7 @@ IF NOT EXISTS (
 )
 EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString()
                     + "', @value=N'" + row[DataSynchronVO.TableDescription].ToString()
-                    + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'" + pSourceTable + "'" + @"
-GO
-";
+                    + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'" + pSourceTable + "'";
             }
 
             result = sql;
@@ -122,9 +124,7 @@ IF NOT EXISTS(
 EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].ToString()
                     + "', @value=N'" + row[DataSynchronVO.FiledDescription].ToString()
                     + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'"
-                    + pSourceTable + "', @level2type=N'COLUMN',@level2name=N'" + row[DataSynchronVO.FiledName].ToString() + "'" + ConstantVO.ENTER_STRING
-                    + @"
-GO";
+                    + pSourceTable + "', @level2type=N'COLUMN',@level2name=N'" + row[DataSynchronVO.FiledName].ToString() + "'" + ConstantVO.ENTER_STRING;
             }
 
             result = sql;
@@ -133,14 +133,14 @@ GO";
         }
         #endregion
 
-        #region 获取约束的字符串
+        #region 获取除外键约束以外的字符串
         /// <summary>
-        /// 获取约束的字符串
+        /// 获取除外键约束以外的字符串
         /// </summary>
         /// <param name="pSourceConnection"></param>
         /// <param name="pSourceTable"></param>
         /// <returns></returns>
-        private string GetConstraintString(string pSourceConnection, string pSourceTable)
+        private string GetConstraintStringNoF(string pSourceConnection, string pSourceTable)
         {
             string result = "";
 
@@ -151,33 +151,87 @@ GO";
             {
                 string constraintType = row[DataSynchronVO.ConstraintType].ToString().Trim().ToUpper();
 
-                sql = sql + "ALTER TABLE [dbo].[" + pSourceTable + "] ADD CONSTRAINT";
+                if (constraintType.Equals("F") == true) { continue; }
+
+                string constraintName = row[DataSynchronVO.ConstraintName].ToString();
+                string filedName = row[DataSynchronVO.FiledName].ToString();
+                string foreignTableName = row[DataSynchronVO.ForeignTableName].ToString();
+                string foreignFiledName = row[DataSynchronVO.ForeignFiledName].ToString();
+
+                sql = sql + @"
+IF NOT EXISTS(
+	SELECT 1 FROM sys.objects WHERE name = '" + constraintName + @"'
+)
+ALTER TABLE [dbo].[" + pSourceTable + "] ADD CONSTRAINT";
 
                 switch (constraintType)
                 {
                     case "D":
-                        sql = sql + " " + row[DataSynchronVO.ConstraintName].ToString()
+                        sql = sql + " " + constraintName
                             + " DEFAULT " + row[DataSynchronVO.DefaultValue].ToString()
-                            + " FOR [" + row[DataSynchronVO.FiledName].ToString() + "]";
-                        break;
-                    case "F":
-                        sql = sql + " " + row[DataSynchronVO.ConstraintName].ToString()
-                            + " FOREIGN KEY (" + row[DataSynchronVO.FiledName].ToString() + ") REFERENCES [dbo].["
-                            + row[DataSynchronVO.ForeignTableName].ToString() + "] (["
-                            + row[DataSynchronVO.ForeignFiledName].ToString() + "])";
+                            + " FOR [" + filedName + "]";
+
                         break;
                     case "PK":
-                        sql = sql + " " + row[DataSynchronVO.ConstraintName].ToString() + " PRIMARY KEY " + TypeConversion.ToString(row[DataSynchronVO.IndexDescripton])
-                            + " (" + row[DataSynchronVO.FiledName].ToString() + ")";
+                        sql = sql + " " + constraintName + " PRIMARY KEY " + TypeConversion.ToString(row[DataSynchronVO.IndexDescripton])
+                            + " (" + filedName + ")";
                         break;
                     case "UQ":
-                        sql = sql + " " + row[DataSynchronVO.ConstraintName].ToString() + " UNIQUE " + TypeConversion.ToString(row[DataSynchronVO.IndexDescripton])
-                            + "(" + row[DataSynchronVO.FiledName].ToString() + ")";
+                        sql = sql + " " + constraintName + " UNIQUE " + TypeConversion.ToString(row[DataSynchronVO.IndexDescripton])
+                            + "(" + filedName + ")";
                         break;
                 }
 
+                sql = sql + ConstantVO.ENTER_STRING;
+            }
+
+            result = sql;
+
+            return result;
+        }
+        #endregion
+
+        #region 获取外键约束字符串
+        /// <summary>
+        /// 获取外键约束字符串
+        /// </summary>
+        /// <param name="pSourceConnection"></param>
+        /// <param name="pSourceTable"></param>
+        /// <returns></returns>
+        private string GetConstraintStringByF(string pSourceConnection, string pSourceTable)
+        {
+            string result = "";
+
+            string sql = "";
+
+            DataTable dt = bll.GetTableInfoByName(2, pSourceConnection, pSourceTable);
+            foreach (DataRow row in dt.Rows)
+            {
+                string constraintType = row[DataSynchronVO.ConstraintType].ToString().Trim().ToUpper();
+
+                if (constraintType.Equals("F") == false) { continue; }
+
+                string constraintName = row[DataSynchronVO.ConstraintName].ToString();
+                string filedName = row[DataSynchronVO.FiledName].ToString();
+                string foreignTableName = row[DataSynchronVO.ForeignTableName].ToString();
+                string foreignFiledName = row[DataSynchronVO.ForeignFiledName].ToString();
+
                 sql = sql + @"
-GO" + ConstantVO.ENTER_STRING;
+IF NOT EXISTS(
+	SELECT 1 FROM sys.objects WHERE name = '" + constraintName + @"'
+)
+BEGIN
+    IF EXISTS(
+	    select * from sys.objects o
+	    join sys.columns c on o.object_id = c.object_id
+	    where o.type = 'U' and o.name = '" + foreignTableName + @"' and c.name = '" + foreignFiledName + @"'
+    )
+    ALTER TABLE [dbo].[" + pSourceTable + "] ADD CONSTRAINT " + constraintName
+                                               + " FOREIGN KEY (" + filedName + ") REFERENCES [dbo].["
+                                               + foreignTableName + "] (["
+                                               + foreignFiledName + @"])
+END
+                " + ConstantVO.ENTER_STRING;
             }
 
             result = sql;
@@ -197,7 +251,11 @@ GO" + ConstantVO.ENTER_STRING;
         {
             string result = "";
 
-            string sql = "CREATE TABLE [dbo].[" + pSourceTable + "](" + ConstantVO.ENTER_STRING;
+            string sql = @"
+IF NOT EXISTS(
+	select 1 from sys.objects where type = 'U' and name = '" + pSourceTable + @"'
+)
+CREATE TABLE [dbo].[" + pSourceTable + "](" + ConstantVO.ENTER_STRING;
 
             DataTable dt = bll.GetTableInfoByName(1, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)

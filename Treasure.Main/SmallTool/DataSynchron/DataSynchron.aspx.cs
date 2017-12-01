@@ -248,6 +248,30 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
         #endregion
 
+        #region 查询
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            string pSourceConnection = hdnSourceConnection.Value;
+            string pTableName = txtTableName.Text.Trim();
+
+            if (string.IsNullOrEmpty(pSourceConnection) == true)
+            {
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('源数据库链接为空，请先点击【链接数据库】');</script>");
+                return;
+            }
+
+            DataTable dt = bll.GetTableList(pSourceConnection, pTableName);
+            grvTableList.DataSource = dt;
+            grvTableList.DataBind();
+        }
+        #endregion
+
         #endregion
 
         #region 自定义事件
@@ -444,6 +468,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string pTargetConnection = hdnTargetConnection.Value;
             List<string> lstTableList = grvTableList.GetSelectedFieldValues(new string[] { DataSynchronVO.TableName }).ConvertAll<string>(c => string.Format("{0}", c));
 
+            //grvTableList.Columns[0].value
+
             DataTable dtSourceTableStructure = bll.GetTableInfoByName(1, pSourceConnection, lstTableList);
             DataTable dtTargetTableStructure = bll.GetTableInfoByName(1, pTargetConnection, lstTableList);
 
@@ -546,30 +572,6 @@ namespace Treasure.Main.SmallTool.DataSynchron
         {
             grvTableStructure.DataSource = GetTableStructureBy2DB();
             grvTableStructure.DataBind();
-        }
-        #endregion
-
-        #region 查询
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnSearch_Click(object sender, EventArgs e)
-        {
-            string pSourceConnection = hdnSourceConnection.Value;
-            string pTableName = txtTableName.Text.Trim();
-
-            if (string.IsNullOrEmpty(pSourceConnection) == true)
-            {
-                ClientScriptManager clientScript = Page.ClientScript;
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('源数据库链接为空，请先点击【链接数据库】');</script>");
-                return;
-            }
-
-            DataTable dt = bll.GetTableList(pSourceConnection, pTableName);
-            grvTableList.DataSource = dt;
-            grvTableList.DataBind();
         }
         #endregion
 
