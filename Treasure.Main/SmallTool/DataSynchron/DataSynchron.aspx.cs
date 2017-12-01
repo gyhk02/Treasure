@@ -131,6 +131,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
         protected void btnConnection_Click(object sender, EventArgs e)
         {
 
+            lblMessage.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_BR;
+
             #region 检查源数据库连接是否正确
 
             string strIp = txtSourceIp.Text.Trim();
@@ -149,11 +151,11 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 }
                 conn.Close();
                 hdnSourceConnection.Value = strSouceConnection;
-                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING + "源据库连接成功。";
+                lblMessage.Text = lblMessage.Text + "源据库连接成功。" + ConstantVO.ENTER_BR;
             }
             catch (Exception ex)
             {
-                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING + "连接源数据库异常：" + ex.Message;
+                lblMessage.Text = lblMessage.Text + "连接源数据库异常：" + ex.Message + ConstantVO.ENTER_BR;
                 conn.Close();
                 return;
             }
@@ -178,11 +180,11 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 }
                 conn.Close();
                 hdnTargetConnection.Value = strTargetConnection;
-                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING + lblError.Text + ConstantVO.ENTER_STRING + "目标据库连接成功。";
+                lblMessage.Text = lblMessage.Text + "目标据库连接成功。";
             }
             catch (Exception ex)
             {
-                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING + "连接目标据库异常：" + ex.Message;
+                lblMessage.Text = lblMessage.Text + "连接目标据库异常：" + ex.Message;
                 conn.Close();
                 return;
             }
@@ -307,7 +309,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             if (lstShow.Count > 0)
             {
-                lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + ConstantVO.ENTER_STRING + "以下表的数据两边相同" + string.Join(",", lstShow.ToArray());
+                lblMessage.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + ConstantVO.ENTER_STRING + "以下表的数据两边相同" + string.Join(",", lstShow.ToArray());
             }
         }
         #endregion
@@ -338,7 +340,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 }
                 if (lstErrorTableName.Count > 0)
                 {
-                    lblError.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING
+                    lblMessage.Text = DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ConstantVO.ENTER_STRING
                         + "同步异常：以下表结构不同" + ConstantVO.ENTER_STRING + string.Join(",", lstErrorTableName.ToArray());
                 }
 

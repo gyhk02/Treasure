@@ -76,21 +76,21 @@ namespace Treasure.BLL.General
             DataRow row3 = dtDatabase.NewRow();
             row3[GeneralVO.Id] = 3;
             row3[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
-            row3[GeneralVO.No] = "LoadGSP02";
+            row3[GeneralVO.No] = "LoadGSP01";
             row3[DataSynchronVO.Ip] = ".";
             row3[DataSynchronVO.LoginName] = "sa";
             row3[DataSynchronVO.Pwd] = "1";
-            row3[DataSynchronVO.DbName] = "GSP02";
+            row3[DataSynchronVO.DbName] = "GSP01";
             dtDatabase.Rows.Add(row3);
 
             DataRow row2 = dtDatabase.NewRow();
             row2[GeneralVO.Id] = 2;
             row2[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
-            row2[GeneralVO.No] = "LoadGSP01";
+            row2[GeneralVO.No] = "LoadGSP08";
             row2[DataSynchronVO.Ip] = ".";
             row2[DataSynchronVO.LoginName] = "sa";
             row2[DataSynchronVO.Pwd] = "1";
-            row2[DataSynchronVO.DbName] = "GSP01";
+            row2[DataSynchronVO.DbName] = "GSP08";
             dtDatabase.Rows.Add(row2);
 
             DataRow row1 = dtDatabase.NewRow();

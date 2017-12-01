@@ -9,6 +9,7 @@ namespace Treasure.Model.General
     public static class ConstantVO
     {
         public static string ENTER_STRING = "\r\n";
+        public static string ENTER_BR = "<br />";
 
         /// <summary>
         /// 平时显示的时间

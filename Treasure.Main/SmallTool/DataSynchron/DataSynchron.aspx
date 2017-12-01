@@ -113,7 +113,7 @@
                         <asp:Button ID="btnConnection" runat="server" Text="连接数据库" OnClick="btnConnection_Click" />
                         <br />
                         <br />
-                        <asp:Label ID="lblError" runat="server"></asp:Label>
+                        <asp:Label ID="lblMessage" runat="server"></asp:Label>
                     </td>
                     <td style="vertical-align: top;">
                         <table style="width: 100%;">
