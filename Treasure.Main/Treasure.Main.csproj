@@ -74,6 +74,8 @@
     <Content Include="Default.aspx" />
     <Content Include="Document\常用代码.txt" />
     <Content Include="Document\解决方案包含的内容.txt" />
+    <Content Include="Frame\Login.aspx" />
+    <Content Include="Script\Css\Basic.css" />
     <Content Include="SmallTool\DataSynchron\DataSynchron.aspx" />
     <Content Include="SmallTool\DataSynchron\QueryUsedTables.aspx" />
     <Content Include="SmallTool\EncryptAndDecrypt\Encrypt_Decrypt.aspx" />
@@ -86,6 +88,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Frame\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmallTool\DataSynchron\CreateTableSub.cs" />
@@ -135,6 +144,7 @@
   <ItemGroup>
     <Folder Include="Document\DataSynchronSql\" />
     <Folder Include="Document\DbSql\" />
+    <Folder Include="Script\Js\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
