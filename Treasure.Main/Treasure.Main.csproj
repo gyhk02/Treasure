@@ -63,6 +63,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Document\Treasure.mpp" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -80,6 +81,7 @@
     <Content Include="SmallTool\DataSynchron\QueryUsedTables.aspx" />
     <Content Include="SmallTool\EncryptAndDecrypt\Encrypt_Decrypt.aspx" />
     <Content Include="SmallTool\evq\MianSynchron.aspx" />
+    <Content Include="Test.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +132,13 @@
     </Compile>
     <Compile Include="SmallTool\evq\MianSynchron.aspx.designer.cs">
       <DependentUpon>MianSynchron.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Test.aspx.cs">
+      <DependentUpon>Test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Test.aspx.designer.cs">
+      <DependentUpon>Test.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
