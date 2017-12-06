@@ -343,7 +343,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// 数据同步过滤及判断
         /// </summary>
         /// <returns></returns>
-        private List<string> JudgeSynchronData(List<string> lstSourceTable)
+        public List<string> JudgeSynchronData(List<string> lstSourceTable)
         {
             List<string> lst = new List<string>();
 

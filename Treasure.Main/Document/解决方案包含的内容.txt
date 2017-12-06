@@ -18,3 +18,5 @@
 	e. 数据同步【DataSynchron】
 	f. Quartz实例
 	g. 时间转换
+	h. EVQ实用工具【evq】
+		A. Mian项目菜单同步(正式->测试)【MianSynchron】

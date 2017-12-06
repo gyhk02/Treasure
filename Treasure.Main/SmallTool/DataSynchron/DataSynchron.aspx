@@ -114,6 +114,10 @@
                         <br />
                         <br />
                         <asp:Label ID="lblMessage" runat="server"></asp:Label>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
                     </td>
                     <td style="vertical-align: top;">
                         <table style="width: 100%;">
@@ -122,7 +126,7 @@
                                     <br />
                                     <br />
                                 </td>
-                            </tr>                         
+                            </tr>
                             <tr>
                                 <td>
                                     <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False">

@@ -37,6 +37,16 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
+                    <td>EVQ</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><a href="SmallTool/evq/MianSynchron.aspx" target="_blank">Mian项目菜单同步(正式->测试)</a></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
                     <td>框架：</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
