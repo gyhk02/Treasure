@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Treasure.BLL.General;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
@@ -74,16 +75,28 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                 try
                 {
                     SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
-
-                    string filePath = "Document/DataSynchronSql/DataIncrementSynchron_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
-                    string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
-                    result = new FileHelper().WriteFile(filePath, description, strsql);
+                    result = true;
                 }
                 catch (Exception ex)
                 {
                     LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
-                    return result;
                 }
+
+                //记录sql语句
+                string type = "";
+                if (result == true)
+                {
+                    type = "正常";
+                }
+                else
+                {
+                    type = "异常";
+                }
+                string filePath = "Document/DataSynchronSql/DataIncrementSynchron_" + pTableName + "_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
+                string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
+                new FileHelper().WriteFile(filePath, description, strsql);
+
+                return result;
             }
 
             result = true;
@@ -133,7 +146,17 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                         }
                         else
                         {
-                            strTmp = strTmp + ",'" + row[idy].ToString() + "'";
+                            if (dt.Columns[idy].DataType.Name == "Byte[]")
+                            {
+                                Byte[] arrByte = (Byte[])row[idy];
+                                string strByte = System.Text.Encoding.Default.GetString(arrByte);
+                                strTmp = strTmp + ",'" + strByte + "'";
+                                //string a = System.Text.Encoding.Default.GetString(b);
+                            }
+                            else
+                            {
+                                strTmp = strTmp + ",'" + row[idy].ToString() + "'";
+                            }
                         }
                     }
                     strsql = strsql + " SELECT " + strTmp.Substring(1);
@@ -149,16 +172,28 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                 try
                 {
                     SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
-
-                    string filePath = "Document/DataSynchronSql/DataSynchron_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
-                    string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
-                    result = new FileHelper().WriteFile(filePath, description, strsql);
+                    result = true;
                 }
                 catch (Exception ex)
                 {
                     LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
-                    return result;
                 }
+
+                //记录sql语句
+                string type = "";
+                if (result == true)
+                {
+                    type = "正常";
+                }
+                else
+                {
+                    type = "异常";
+                }
+                string filePath = "Document/DataSynchronSql/DataSynchron_" + pTableName + "_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
+                string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
+                new FileHelper().WriteFile(filePath, description, strsql);
+
+                return result;
             }
 
             result = true;
@@ -233,9 +268,10 @@ namespace Treasure.BLL.SmallTool.DataSynchron
             {
                 case 1: //字段列表
                     strsql = @"
-select o.name TableName, c.name FiledName, t.name FiledType, c.max_length / 2 FiledLen
+select o.name TableName, c.name FiledName, t.name FiledType
+	, IIF(t.name = 'nchar' OR t.name = 'nvarchar',  c.max_length / 2, c.max_length) FiledLen
 	, c.precision DecimalPrecision, c.scale DecimalDigits, ep.value FiledDescription
-	, c.is_nullable IsNullable, c.is_identity IsIdentity, sc.text DefaultValue
+	, c.is_nullable IsNullable, c.is_identity IsIdentity, IIF(c.max_length = -1, 1, 0) IsMax, sc.text DefaultValue
 from sys.objects as o
 join sys.columns as c on o.object_id = c.object_id
 join sys.types as t on c.system_type_id = t.system_type_id and c.user_type_id = t.user_type_id

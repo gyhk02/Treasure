@@ -25,7 +25,7 @@ namespace Treasure.Main.SmallTool.evq
         #endregion
 
         #region 系统事件
-        
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -54,11 +54,23 @@ namespace Treasure.Main.SmallTool.evq
                     List<DataRow> lstSourceData = new List<DataRow>();
 
                     string columnName = dtSource.Columns[0].ColumnName;
-                    switch (dtSource.Columns[0].DataType.Name)
+                    string columnDataType = dtSource.Columns[0].DataType.Name;
+
+                    if (str.Equals("SYS_Menu") == true)
+                    {
+                        columnName = dtSource.Columns[1].ColumnName;
+                        columnDataType = dtSource.Columns[1].DataType.Name;
+                    }
+
+                    switch (columnDataType)
                     {
                         case "Int32":
                             List<int> lstInt = (from d in dtTarget.AsEnumerable() select d.Field<int>(columnName)).ToList();
                             lstSourceData = dtSource.AsEnumerable().Where(p => lstInt.Contains(p.Field<int>(columnName)) == false).ToList();
+                            break;
+                        case "Int64":
+                            List<Int64> lstInt64 = (from d in dtTarget.AsEnumerable() select d.Field<Int64>(columnName)).ToList();
+                            lstSourceData = dtSource.AsEnumerable().Where(p => lstInt64.Contains(p.Field<Int64>(columnName)) == false).ToList();
                             break;
                         case "String":
                             List<string> lstString = (from d in dtTarget.AsEnumerable() select d.Field<string>(columnName)).ToList();
@@ -83,7 +95,7 @@ namespace Treasure.Main.SmallTool.evq
 
                 if (lstShow.Count > 0)
                 {
-                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + "以下表的数据两边相同" + string.Join(",", lstShow.ToArray()) + "');</script>");
+                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + "以下表的数据两边相同" + ConstantVO.ENTER_RN_JS + string.Join(",", lstShow.ToArray()) + "');</script>");
                 }
                 else
                 {
@@ -91,7 +103,7 @@ namespace Treasure.Main.SmallTool.evq
                 }
             }
         }
-        
+
         #endregion
 
         #region 自定义事件
@@ -225,8 +237,8 @@ namespace Treasure.Main.SmallTool.evq
                 }
                 if (lstErrorTableName.Count > 0)
                 {
-                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" 
-                        + "同步异常：以下表结构不同" + ConstantVO.ENTER_STRING + string.Join(",", lstErrorTableName.ToArray()) 
+                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('"
+                        + "同步异常：以下表结构不同" + ConstantVO.ENTER_STRING + string.Join(",", lstErrorTableName.ToArray())
                         + "');</script>");
                 }
 
@@ -244,6 +256,6 @@ namespace Treasure.Main.SmallTool.evq
 
         #endregion
 
-      
+
     }
 }

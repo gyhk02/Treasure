@@ -52,6 +52,36 @@ namespace Treasure.BLL.General
             dtDatabase.Columns.Add(DataSynchronVO.LoginName, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
+            
+            DataRow row8 = dtDatabase.NewRow();
+            row8[GeneralVO.Id] = 8;
+            row8[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
+            row8[GeneralVO.No] = "Treasure";
+            row8[DataSynchronVO.Ip] = ".";
+            row8[DataSynchronVO.LoginName] = "sa";
+            row8[DataSynchronVO.Pwd] = "1";
+            row8[DataSynchronVO.DbName] = "Treasure";
+            dtDatabase.Rows.Add(row8);
+
+            DataRow row7 = dtDatabase.NewRow();
+            row7[GeneralVO.Id] = 7;
+            row7[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
+            row7[GeneralVO.No] = "EVN_Frame_测_55";
+            row7[DataSynchronVO.Ip] = "172.16.96.55";
+            row7[DataSynchronVO.LoginName] = "programmer";
+            row7[DataSynchronVO.Pwd] = "123456";
+            row7[DataSynchronVO.DbName] = "Frame";
+            dtDatabase.Rows.Add(row7);
+
+            DataRow row6 = dtDatabase.NewRow();
+            row6[GeneralVO.Id] = 6;
+            row6[DataSynchronVO.Version] = ConstantVO.OFFICIAL_VERSION;
+            row6[GeneralVO.No] = "EVN_Frame_正_48";
+            row6[DataSynchronVO.Ip] = "172.16.96.48";
+            row6[DataSynchronVO.LoginName] = "csharp";
+            row6[DataSynchronVO.Pwd] = "csharp.123";
+            row6[DataSynchronVO.DbName] = "Frame";
+            dtDatabase.Rows.Add(row6);
 
             DataRow row5 = dtDatabase.NewRow();
             row5[GeneralVO.Id] = 5;

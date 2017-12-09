@@ -32,6 +32,7 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string DecimalDigits = "DecimalDigits";
         public static string IsNullable = "IsNullable";
         public static string IsIdentity = "IsIdentity";
+        public static string IsMax = "IsMax";
         public static string DefaultValue = "DefaultValue";
 
         //用于目标表字段

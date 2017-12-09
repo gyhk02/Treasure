@@ -250,6 +250,7 @@ END
         private string GetFiledString(string pSourceConnection, string pSourceTable)
         {
             string result = "";
+            string filedLen = "";
 
             string sql = @"
 IF NOT EXISTS(
@@ -279,7 +280,16 @@ CREATE TABLE [dbo].[" + pSourceTable + "](" + ConstantVO.ENTER_STRING;
                     case "nvarchar":
                     case "varchar":
                     case "char":
-                        sql = sql + "(" + row[DataSynchronVO.FiledLen].ToString() + ")";
+                    case "varbinary":
+                        if (TypeConversion.ToInt(row[DataSynchronVO.IsMax]) == 1)
+                        {
+                            filedLen = "MAX";
+                        }
+                        else
+                        {
+                            filedLen = row[DataSynchronVO.FiledLen].ToString();
+                        }
+                        sql = sql + "(" + filedLen + ")";
                         break;
                 }
 

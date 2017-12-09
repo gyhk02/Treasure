@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Windows.Forms;
 using Treasure.BLL.SmallTool.DataSynchron;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
@@ -207,6 +208,19 @@ namespace Treasure.Main.SmallTool.DataSynchron
         {
             ClientScriptManager clientScript = Page.ClientScript;
 
+            //如果是目标是正式版，将警示
+            int id = TypeConversion.ToInt(ddlTargetDb.SelectedValue);
+            DataTable dtDatabase = Session["dtDataDb"] as DataTable;
+            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.Id) == id).ToList();
+            if (lstRow.Count == 1)
+            {
+                DataRow row = lstRow[0];
+                if (row[DataSynchronVO.Version].ToString().Equals(ConstantVO.OFFICIAL_VERSION) == true)
+                {
+                    if (MessageBox.Show("要同步数据到正式版?", "系统提示", MessageBoxButtons.YesNo) == DialogResult.No) { return; }
+                }
+            }
+
             //获取同步类型
             string synchronType = rblSynchronType.SelectedValue;
             if (string.IsNullOrEmpty(synchronType) == true)
@@ -310,6 +324,10 @@ namespace Treasure.Main.SmallTool.DataSynchron
                         List<int> lstInt = (from d in dtTarget.AsEnumerable() select d.Field<int>(GeneralVO.Id)).ToList();
                         lstSourceData = dtSource.AsEnumerable().Where(p => lstInt.Contains(p.Field<int>(GeneralVO.Id)) == false).ToList();
                         break;
+                    case "Int64":
+                        List<Int64> lstInt64 = (from d in dtTarget.AsEnumerable() select d.Field<Int64>(GeneralVO.Id)).ToList();
+                        lstSourceData = dtSource.AsEnumerable().Where(p => lstInt64.Contains(p.Field<Int64>(GeneralVO.Id)) == false).ToList();
+                        break;
                     case "String":
                         List<string> lstString = (from d in dtTarget.AsEnumerable() select d.Field<string>(GeneralVO.Id)).ToList();
                         lstSourceData = dtSource.AsEnumerable().Where(p => lstString.Contains(p.Field<string>(GeneralVO.Id)) == false).ToList();
@@ -326,14 +344,14 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 {
                     if (bll.InsertDataByIncrement(pSourceConnection, pTargetConnection, str, lstSourceData) == false)
                     {
-                        clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
+                        MessageBox.Show("插入表" + str + "数据出现异常");
                     }
                 }
             }
 
             if (lstShow.Count > 0)
             {
-                lblMessage.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + ConstantVO.ENTER_STRING + "以下表的数据两边相同" + string.Join(",", lstShow.ToArray());
+                lblMessage.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + ConstantVO.ENTER_STRING + "以下表的数据两边相同" + ConstantVO.ENTER_RN_JS + string.Join(",", lstShow.ToArray());
             }
         }
         #endregion
@@ -387,12 +405,10 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <param name="lstSourceTable">需要同步的表列表</param>
         private void SynchronCompleteData(List<string> lstSourceTable)
         {
-            ClientScriptManager clientScript = Page.ClientScript;
-
             List<string> lstCalculation = JudgeSynchronData(lstSourceTable);
             if (lstCalculation == null)
             {
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据同步，判断时出现异常');</script>");
+                MessageBox.Show("数据同步，判断时出现异常");
                 return;
             }
 
@@ -403,7 +419,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             {
                 if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
                 {
-                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
+                    MessageBox.Show("插入表" + str + "数据出现异常");
                 }
             }
         }
@@ -432,20 +448,6 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('创建表异常');</script>");
                 return;
             }
-
-            //foreach (string str in lstSourceTable)
-            //{
-            //    if (lstTargetTable.Contains(str) == false)
-            //    {
-            //        if (new CreateTableSub().CreateTable(pSourceConnection, str, pTargetConnection) == true)
-            //        {
-            //            //if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
-            //            //{
-            //            //    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
-            //            //}
-            //        }
-            //    }
-            //}
 
             //获取源结构
             //获取目标结构
