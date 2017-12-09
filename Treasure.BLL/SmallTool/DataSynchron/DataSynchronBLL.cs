@@ -92,7 +92,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                 {
                     type = "异常";
                 }
-                string filePath = "Document/DataSynchronSql/DataIncrementSynchron_" + pTableName + "_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
+                string filePath = "Document/DataSynchronSql/DataIncrementSynchron_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIMEYMDHMSF) + "_" + pTableName + ".txt";
                 string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
                 new FileHelper().WriteFile(filePath, description, strsql);
 
@@ -146,17 +146,17 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                         }
                         else
                         {
-                            if (dt.Columns[idy].DataType.Name == "Byte[]")
-                            {
-                                Byte[] arrByte = (Byte[])row[idy];
-                                string strByte = System.Text.Encoding.Default.GetString(arrByte);
-                                strTmp = strTmp + ",'" + strByte + "'";
-                                //string a = System.Text.Encoding.Default.GetString(b);
-                            }
-                            else
-                            {
-                                strTmp = strTmp + ",'" + row[idy].ToString() + "'";
-                            }
+                            //if (dt.Columns[idy].DataType.Name == "Byte[]")
+                            //{
+                            //    Byte[] arrByte = (Byte[])row[idy];
+                            //    string strByte = System.Text.Encoding.Default.GetString(arrByte);
+                            //    strTmp = strTmp + ",'" + strByte + "'";
+                            //    //string a = System.Text.Encoding.Default.GetString(b);
+                            //}
+                            //else
+                            //{
+                            strTmp = strTmp + ",'" + row[idy].ToString() + "'";
+                            //}
                         }
                     }
                     strsql = strsql + " SELECT " + strTmp.Substring(1);
@@ -189,7 +189,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                 {
                     type = "异常";
                 }
-                string filePath = "Document/DataSynchronSql/DataSynchron_" + pTableName + "_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S_F) + ".txt";
+                string filePath = "Document/DataSynchronSql/DataSynchron_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIMEYMDHMSF) + "_" + pTableName + ".txt";
                 string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
                 new FileHelper().WriteFile(filePath, description, strsql);
 

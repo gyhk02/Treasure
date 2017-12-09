@@ -26,6 +26,7 @@ namespace Treasure.Model.General
         /// 下划线隔开
         /// </summary>
         public static string DATETIME_Y_M_D_H_M_S_F = "yyyy_MM_dd_HH_mm_ss_fff";
+        public static string DATETIMEYMDHMSF = "yyyyMMddHHmmssfff";
 
         public static string OFFICIAL_VERSION = "正式版本";
         public static string TEST_VERSION = "测式版本";
