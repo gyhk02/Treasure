@@ -118,7 +118,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
             bool result = false;
             string strTmp = "";
 
-            DataTable dt = GetTableAllInfo(pSourceConnection, pTableName);
+            DataTable dt = base.GetTableAllInfo(pSourceConnection, pTableName);
             if (dt.Rows.Count > 0)
             {
                 string strsql = "DELETE FROM [" + pTableName + "]" + ConstantVO.ENTER_STRING;
@@ -199,6 +199,74 @@ namespace Treasure.BLL.SmallTool.DataSynchron
             result = true;
 
             return result;
+        }
+        #endregion
+
+        #region 插入数据_带图片或文件
+        /// <summary>
+        /// 插入数据_带图片或文件
+        /// </summary>
+        /// <param name="pSourceConnection">源数据库链接</param>
+        /// <param name="pTargetConnection">目标数据库链接</param>
+        /// <param name="pTableName">表名</param>
+        /// <returns>bool</returns>
+        public bool InsertDataByByte(string pSourceConnection, string pTargetConnection, string pTableName)
+        {
+            DataTable dt = GetTableAllInfo(pSourceConnection, pTableName);
+            if (dt.Rows.Count > 0)
+            {
+                //删除数据
+                if (base.DeleteDataTableByName(pTargetConnection, pTableName) == false)
+                {
+                    MessageBox.Show("删除表" + pTableName + "数据失败");
+                    return false;
+                }
+
+                //插入数据
+                string strParam = "";
+                string strValue = "";
+                foreach (DataColumn col in dt.Columns)
+                {
+                    strParam = strParam + ",[" + col.ToString() + "]";
+                    strValue = strValue + ",@" + col.ToString() + "";
+                }
+                strParam = strParam.Substring(1);
+                strValue = strValue.Substring(1);
+
+                string sql = @"
+IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + @"'),'TableHasIdentity') = 1
+SET IDENTITY_INSERT [" + pTableName + @"] ON
+
+INSERT INTO " + pTableName + "(" + strParam + ") VALUES(" + strValue + @")
+
+IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + @"'),'TableHasIdentity') = 1
+SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
+
+                int cels = dt.Columns.Count;
+                SqlParameter[] paras = new SqlParameter[0];
+                for (int idx = 0; idx < dt.Rows.Count; idx++)
+                {
+                    paras = new SqlParameter[cels];
+                    DataRow row = dt.Rows[idx];
+
+                    for (int idy = 0; idy < cels; idy++)
+                    {
+                        paras[idy] = new SqlParameter("@" + dt.Columns[idy], row[idy]);
+                    }
+
+                    try
+                    {
+                        SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, sql, paras);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+                        MessageBox.Show("插入数据到" + pTableName + "表异常，对应的第一个字段值为" + row[0].ToString());
+                    }
+                }
+            }
+
+            return true;
         }
         #endregion
 

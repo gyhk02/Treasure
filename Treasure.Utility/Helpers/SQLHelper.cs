@@ -14,14 +14,10 @@ namespace Treasure.Utility.Helpers
     /// </summary>
     public class SQLHelper
     {
-        public static string ConnString = "Data Source=172.16.96.77;Initial Catalog=EVNJITDB;User ID=evnjit;Password=Myjit.2012.963;";
-
-        // Hashtable to store cached parameters
+        public static string ConnString = "Data Source=.;Initial Catalog=Treasure;User ID=sa;Password=1;";
         private static Hashtable parmCache = Hashtable.Synchronized(new Hashtable());
 
         #region 后面添加
-
-        //public static 
 
         public static void DataTableToSQLServer(DataTable dt, string connectString)
         {
@@ -52,6 +48,56 @@ namespace Treasure.Utility.Helpers
                 }
             }
         }
+
+        #region 删除
+
+        #region 根据表名删除表的全部数据
+        /// <summary>
+        /// 根据表名删除表的全部数据
+        /// </summary>
+        /// <param name="pTableName">表名</param>
+        /// <returns></returns>
+        public static bool DeleteDataTableByName(string pTableName)
+        {
+            return DeleteDataTableByName(null, pTableName);
+        }
+        #endregion
+
+        #region 根据表名删除表的全部数据
+        /// <summary>
+        /// 根据表名删除表的全部数据
+        /// </summary>
+        /// <param name="pConnString">数据库链接</param>
+        /// <param name="pTableName">表名</param>
+        /// <returns></returns>
+        public static bool DeleteDataTableByName(string pConnString, string pTableName)
+        {
+            bool result = false;
+
+            string strsql = @"DELETE FROM [" + pTableName + "]";
+
+            try
+            {
+                if (string.IsNullOrEmpty(pConnString) == true)
+                {
+                    pConnString = ConnString;
+                }
+
+                ExecuteNonQuery(pConnString, CommandType.Text, strsql, null);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return result;
+        }
+        #endregion
+
+        #endregion
+
+        #region 查询
 
         #region 根据表名和ID获取DataRow
         /// <summary>
@@ -176,30 +222,12 @@ namespace Treasure.Utility.Helpers
             return dt;
         }
         #endregion
-
-        public static int InsertDatabase()
-        {
-            int val = -1;
-
-            //            string strsql = @"
-            //INSERT INTO SYS_USER_TYPE(CN_ID, CN_NO, CN_NAME, CN_CREATE_DATE, CN_UPDATE_DATE)
-            //SELECT @CN_ID, @CN_NO, @CN_NAME, @CN_CREATE_DATE, @CN_UPDATE_DATE
-            //";
-
-            //            SqlParameter[] parms = new SqlParameter[]
-            //            {
-            //                new SqlParameter("@BusinessProcessId",SqlDbType.Int),
-            //                new SqlParameter("@ShoesPartId",SqlDbType.Int),
-            //            };
-            //            parms[0].Value = pBusinessProcessId;
-            //            parms[1].Value = pShoesPartId;
-
-            //            val = ExecuteNonQuery(ConnString, CommandType.Text, strsql, parms);
-
-            return val;
-        }
+        
+        #endregion
 
         #endregion
+
+        #region 原SQLHelper文件代码
 
         /// <summary>
         /// Execute a SqlCommand (that returns no resultset) against the database specified in the connection string 
@@ -521,5 +549,8 @@ namespace Treasure.Utility.Helpers
                     cmd.Parameters.Add(parm);
             }
         }
+
+        #endregion
+
     }
 }

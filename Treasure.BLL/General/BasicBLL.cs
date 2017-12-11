@@ -12,6 +12,20 @@ namespace Treasure.BLL.General
 {
     public class BasicBLL
     {
+
+        #region 根据表名删除全部数据
+        /// <summary>
+        /// 根据表名删除全部数据
+        /// </summary>
+        /// <param name="pConnString">数据库链接</param>
+        /// <param name="pTableName">表名</param>
+        /// <returns></returns>
+        public bool DeleteDataTableByName(string pConnString, string pTableName)
+        {
+            return SQLHelper.DeleteDataTableByName( pConnString, pTableName);
+        }
+        #endregion
+
         #region 根据表名获取表的全部数据
 
         /// <summary>
@@ -52,7 +66,7 @@ namespace Treasure.BLL.General
             dtDatabase.Columns.Add(DataSynchronVO.LoginName, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
-            
+
             DataRow row8 = dtDatabase.NewRow();
             row8[GeneralVO.Id] = 8;
             row8[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;

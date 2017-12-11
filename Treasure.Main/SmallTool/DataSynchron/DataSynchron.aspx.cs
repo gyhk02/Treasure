@@ -417,9 +417,19 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             foreach (string str in lstCalculation)
             {
-                if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
+                //判断表中是否有byte类型
+                DataTable dtStructure = bll.GetTableInfoByName(1, pSourceConnection, str);
+                List<DataRow> lst = dtStructure.AsEnumerable().Where(t => t.Field<string>(DataSynchronVO.FiledType).ToLower() == "varbinary").ToList();
+                if (lst.Count > 0)
                 {
-                    MessageBox.Show("插入表" + str + "数据出现异常");
+                    bll.InsertDataByByte(pSourceConnection, pTargetConnection, str);
+                }
+                else
+                {
+                    if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
+                    {
+                        MessageBox.Show("插入表" + str + "数据出现异常");
+                    }
                 }
             }
         }

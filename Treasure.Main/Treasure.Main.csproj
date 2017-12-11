@@ -64,6 +64,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Document\DbSql\MENU_ITEM_TYPE.sql" />
+    <Content Include="Document\DbSql\SYS_GENERATE_FILE.sql" />
+    <Content Include="Document\DbSql\SYS_ROLE.sql" />
+    <Content Include="Document\DbSql\SYS_USER.sql" />
+    <Content Include="Document\DbSql\SYS_USER_ROLE_LIST.sql" />
     <Content Include="Document\Treasure.mpp" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -161,7 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Document\DataSynchronSql\" />
-    <Folder Include="Document\DbSql\" />
     <Folder Include="Script\Js\" />
   </ItemGroup>
   <PropertyGroup>
