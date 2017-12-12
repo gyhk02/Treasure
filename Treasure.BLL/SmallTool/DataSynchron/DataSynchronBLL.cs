@@ -15,15 +15,15 @@ namespace Treasure.BLL.SmallTool.DataSynchron
 {
     public class DataSynchronBLL : BasicBLL
     {
-        #region 增量同步时插入数据
+        #region 插入数据_增量同步
         /// <summary>
-        /// 增量同步时插入数据
+        /// 插入数据_增量同步
         /// </summary>
         /// <param name="pSourceConnection">源数据库链接</param>
         /// <param name="pTargetConnection">目标数据库链接</param>
         /// <param name="pTableName">表名</param>
         /// <returns>bool</returns>
-        public bool InsertDataByIncrement(string pSourceConnection, string pTargetConnection, string pTableName, List<DataRow> pLstRow)
+        public bool InsertIncrementData(string pSourceConnection, string pTargetConnection, string pTableName, List<DataRow> pLstRow)
         {
             bool result = false;
 
@@ -102,6 +102,89 @@ namespace Treasure.BLL.SmallTool.DataSynchron
             result = true;
 
             return result;
+        }
+        #endregion
+
+        #region 插入数据_增量同步_带文件
+        /// <summary>
+        /// 插入数据_增量同步_带文件_增量同步
+        /// </summary>
+        /// <param name="pSourceConnection">源数据库链接</param>
+        /// <param name="pTargetConnection">目标数据库链接</param>
+        /// <param name="pTableName">表名</param>
+        /// <returns>bool</returns>
+        public void InsertDataIncrementByByte(string pSourceConnection, string pTargetConnection, string pTableName, List<DataRow> pLstRow)
+        {
+            DataColumnCollection ColumnCollection = pLstRow[0].Table.Columns;
+
+            if (pLstRow.Count > 0)
+            {
+                //插入数据
+                string strParam = "";
+                string strValue = "";
+                foreach (DataColumn col in ColumnCollection)
+                {
+                    strParam = strParam + ",[" + col.ToString() + "]";
+                    strValue = strValue + ",@" + col.ToString() + "";
+                }
+                strParam = strParam.Substring(1);
+                strValue = strValue.Substring(1);
+
+                string sql = @"
+IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + @"'),'TableHasIdentity') = 1
+SET IDENTITY_INSERT [" + pTableName + @"] ON
+
+INSERT INTO " + pTableName + "(" + strParam + ") VALUES(" + strValue + @")
+
+IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + @"'),'TableHasIdentity') = 1
+SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
+
+                int cels = ColumnCollection.Count;
+                SqlParameter[] paras = new SqlParameter[0];
+                SqlDbType type = new SqlDbType();
+                for (int idx = 0; idx < pLstRow.Count; idx++)
+                {
+                    paras = new SqlParameter[cels];
+                    DataRow row = pLstRow[idx];
+
+                    for (int idy = 0; idy < cels; idy++)
+                    {
+                        switch (ColumnCollection[idy].DataType.Name)
+                        {
+                            case ConstantVO.SQLDBTYPE_STRING:
+                                type = SqlDbType.NVarChar;
+                                break;
+                            case ConstantVO.SQLDBTYPE_VARBINARY:
+                                type = SqlDbType.VarBinary;
+                                break;
+                            case ConstantVO.SQLDBTYPE_INT32:
+                                type = SqlDbType.Int;
+                                break;
+                            case ConstantVO.SQLDBTYPE_INT64:
+                                type = SqlDbType.BigInt;
+                                break;
+                            case ConstantVO.SQLDBTYPE_BIT:
+                                type = SqlDbType.Bit;
+                                break;
+                            case ConstantVO.SQLDBTYPE_DATETIME:
+                                type = SqlDbType.DateTime;
+                                break;
+                        }
+
+                        paras[idy] = new SqlParameter("@" + ColumnCollection[idy], type) { Value = row[idy] };
+                    }
+
+                    try
+                    {
+                        SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, sql, paras);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+                        MessageBox.Show("插入数据到" + pTableName + "表异常，对应的第一个字段值为" + row[0].ToString());
+                    }
+                }
+            }
         }
         #endregion
 
@@ -202,9 +285,9 @@ namespace Treasure.BLL.SmallTool.DataSynchron
         }
         #endregion
 
-        #region 插入数据_带图片或文件
+        #region 插入数据_带文件
         /// <summary>
-        /// 插入数据_带图片或文件
+        /// 插入数据_带文件
         /// </summary>
         /// <param name="pSourceConnection">源数据库链接</param>
         /// <param name="pTargetConnection">目标数据库链接</param>
@@ -244,6 +327,7 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
                 int cels = dt.Columns.Count;
                 SqlParameter[] paras = new SqlParameter[0];
+                SqlDbType type = new SqlDbType();
                 for (int idx = 0; idx < dt.Rows.Count; idx++)
                 {
                     paras = new SqlParameter[cels];
@@ -251,7 +335,29 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
                     for (int idy = 0; idy < cels; idy++)
                     {
-                        paras[idy] = new SqlParameter("@" + dt.Columns[idy], row[idy]);
+                        switch (dt.Columns[idy].DataType.Name)
+                        {
+                            case ConstantVO.SQLDBTYPE_STRING:
+                                type = SqlDbType.NVarChar;
+                                break;
+                            case ConstantVO.SQLDBTYPE_VARBINARY:
+                                type = SqlDbType.VarBinary;
+                                break;
+                            case ConstantVO.SQLDBTYPE_INT32:
+                                type = SqlDbType.Int;
+                                break;
+                            case ConstantVO.SQLDBTYPE_INT64:
+                                type = SqlDbType.BigInt;
+                                break;
+                            case ConstantVO.SQLDBTYPE_BIT:
+                                type = SqlDbType.Bit;
+                                break;
+                            case ConstantVO.SQLDBTYPE_DATETIME:
+                                type = SqlDbType.DateTime;
+                                break;
+                        }
+
+                        paras[idy] = new SqlParameter("@" + dt.Columns[idy], type) { Value = row[idy] };
                     }
 
                     try

@@ -86,7 +86,7 @@ namespace Treasure.Main.SmallTool.evq
                     }
                     else
                     {
-                        if (priBLL.InsertDataByIncrement(priSourceConnection, priTargetConnection, str, lstSourceData) == false)
+                        if (priBLL.InsertIncrementData(priSourceConnection, priTargetConnection, str, lstSourceData) == false)
                         {
                             clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
                         }

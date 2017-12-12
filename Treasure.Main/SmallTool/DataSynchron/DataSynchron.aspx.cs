@@ -342,7 +342,14 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 }
                 else
                 {
-                    if (bll.InsertDataByIncrement(pSourceConnection, pTargetConnection, str, lstSourceData) == false)
+                    //判断表中是否有byte类型
+                    DataTable dtStructure = bll.GetTableInfoByName(1, pSourceConnection, str);
+                    List<DataRow> lst = dtStructure.AsEnumerable().Where(t => t.Field<string>(DataSynchronVO.FiledType).ToLower() == "varbinary").ToList();
+                    if (lst.Count > 0)
+                    {
+                        bll.InsertDataIncrementByByte(pSourceConnection, pTargetConnection, str, lstSourceData);
+                    }
+                    else if (bll.InsertIncrementData(pSourceConnection, pTargetConnection, str, lstSourceData) == false)
                     {
                         MessageBox.Show("插入表" + str + "数据出现异常");
                     }
@@ -351,7 +358,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             if (lstShow.Count > 0)
             {
-                lblMessage.Text = DateTime.Now.ToString(ConstantVO.DATETIME_YMDHMS) + ConstantVO.ENTER_STRING + "以下表的数据两边相同" + ConstantVO.ENTER_RN_JS + string.Join(",", lstShow.ToArray());
+                MessageBox.Show("以下表的数据两边相同" + ConstantVO.ENTER_STRING + string.Join(",", lstShow.ToArray()));
             }
         }
         #endregion

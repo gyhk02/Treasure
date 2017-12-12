@@ -15,7 +15,7 @@ namespace Treasure.Model.General
         /// <summary>
         /// 平时显示的时间
         /// </summary>
-        public static string DATETIME_Y_M_D_H_M_S = "yyyy-MM-dd HH:mm:ss";
+        public const string DATETIME_Y_M_D_H_M_S = "yyyy-MM-dd HH:mm:ss";
 
         /// <summary>
         /// 时间：中间没有间隔
@@ -31,5 +31,12 @@ namespace Treasure.Model.General
         public static string OFFICIAL_VERSION = "正式版本";
         public static string TEST_VERSION = "测式版本";
         public static string DEVELOPMENT_VERSION = "开发版本";
+
+        public const string SQLDBTYPE_STRING = "String";
+        public const string SQLDBTYPE_DATETIME = "DateTime";
+        public const string SQLDBTYPE_INT32 = "Int32";
+        public const string SQLDBTYPE_INT64 = "Int64";
+        public const string SQLDBTYPE_VARBINARY = "Byte[]";
+        public const string SQLDBTYPE_BIT = "Boolean";
     }
 }
