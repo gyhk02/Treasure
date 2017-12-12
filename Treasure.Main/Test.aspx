@@ -1,18 +1,20 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Test.aspx.cs" Inherits="Treasure.Main.Test" %>
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
+<html> 
+<head> 
+<meta charset="utf-8" /> 
+<title>大div中小div靠下实例 在线演示 DIVCSS5</title> 
+<style> 
+.divcss5{position:relative;width:400px;height:300px;border:1px solid #F00} 
+.diva{position:absolute;width:50px;height:100px;bottom:0;left:120px;background:#00F} 
+.divb{position:absolute;width:50px;height:150px;bottom:0;left:180px;background:#00F} 
+</style> 
+</head> 
+<body> 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
-    <link rel="stylesheet" href="Script/Css/Basic.css" />
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div>
-            <div class="bigDiv" style="background-color:red; width:500px;">abc</div>
-        </div>
-    </form>
-</body>
-</html>
+<div class="diva"></div> 
+<div class="divb"></div> 
+
+</body> 
+</html> 
