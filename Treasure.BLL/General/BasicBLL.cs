@@ -11,6 +11,9 @@ using Treasure.Utility.Helpers;
 
 namespace Treasure.BLL.General
 {
+    /// <summary>
+    /// 逻辑层基类
+    /// </summary>
     public class BasicBLL
     {
 
@@ -88,6 +91,16 @@ namespace Treasure.BLL.General
             dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
 
+            DataRow row9 = dtDatabase.NewRow();
+            row9[GeneralVO.Id] = 9;
+            row9[DataSynchronVO.Version] = ConstantVO.DEVELOPMENT_VERSION;
+            row9[GeneralVO.No] = "小采购开发版_GSPDev_95";
+            row9[DataSynchronVO.Ip] = "172.16.96.95";
+            row9[DataSynchronVO.LoginName] = "csharp";
+            row9[DataSynchronVO.Pwd] = "csharp.123";
+            row9[DataSynchronVO.DbName] = "GSPDev";
+            dtDatabase.Rows.Add(row9);
+
             DataRow row8 = dtDatabase.NewRow();
             row8[GeneralVO.Id] = 8;
             row8[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
@@ -161,7 +174,7 @@ namespace Treasure.BLL.General
             DataRow row1 = dtDatabase.NewRow();
             row1[GeneralVO.Id] = 1;
             row1[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
-            row1[GeneralVO.No] = "GSP_Test_95";
+            row1[GeneralVO.No] = "小采购测试版_GSP_Test_95";
             row1[DataSynchronVO.Ip] = "172.16.96.95";
             row1[DataSynchronVO.LoginName] = "csharp";
             row1[DataSynchronVO.Pwd] = "csharp.123";

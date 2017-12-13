@@ -10,7 +10,7 @@ using Treasure.BLL.General;
 
 namespace Treasure.Main.Frame
 {
-    public partial class Login : BasicWebBLL
+    public partial class Login : System.Web.UI.Page
     {
 
         #region 自定义变量
@@ -47,9 +47,9 @@ namespace Treasure.Main.Frame
                 return;
             }
 
-            base.Session["UserId"] = userId;
+            HttpContext.Current.Session["UserId"] = userId;
 
-            Response.Redirect("");
+            Response.Redirect("Default.aspx");
         }
         #endregion
 

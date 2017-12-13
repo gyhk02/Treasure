@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Treasure.Model.General
 {
+    /// <summary>
+    /// 常量
+    /// </summary>
     public static class ConstantVO
     {
         public static string ENTER_STRING = "\r\n";

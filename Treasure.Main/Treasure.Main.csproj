@@ -81,8 +81,12 @@
     <Content Include="Default.aspx" />
     <Content Include="Document\常用代码.txt" />
     <Content Include="Document\解决方案包含的内容.txt" />
+    <Content Include="Frame\Default.aspx" />
+    <Content Include="Frame\Left.aspx" />
     <Content Include="Frame\Login.aspx" />
+    <Content Include="Frame\Main.aspx" />
     <Content Include="Script\Css\Basic.css" />
+    <Content Include="Script\Js\jquery.min.js" />
     <Content Include="SmallTool\DataSynchron\DataSynchron.aspx" />
     <Content Include="SmallTool\DataSynchron\QueryUsedTables.aspx" />
     <Content Include="SmallTool\EncryptAndDecrypt\Encrypt_Decrypt.aspx" />
@@ -98,12 +102,33 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Frame\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Frame\Left.aspx.cs">
+      <DependentUpon>Left.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\Left.aspx.designer.cs">
+      <DependentUpon>Left.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Frame\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Frame\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Frame\Main.aspx.cs">
+      <DependentUpon>Main.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\Main.aspx.designer.cs">
+      <DependentUpon>Main.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmallTool\DataSynchron\CreateTableSub.cs" />
@@ -166,7 +191,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Document\DataSynchronSql\" />
-    <Folder Include="Script\Js\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
