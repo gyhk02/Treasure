@@ -11,7 +11,10 @@ namespace Treasure.Main.Frame
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                //加载项目列表
+            }
         }
     }
 }
