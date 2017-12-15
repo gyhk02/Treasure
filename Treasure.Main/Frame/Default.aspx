@@ -19,7 +19,7 @@
                     <td colspan="2" style="height: 50px; background-color: gray;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="width: 300px; ">
+                    <td style="width: 300px;">
                         <iframe id="frmLeft" name="frmLeft" src="Left.aspx" frameborder="0" style="border: 0px; width: 100%;"></iframe>
                     </td>
                     <td rowspan="2" style="">
@@ -27,7 +27,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="height:50px;"><dx:ASPxGridLookup ID="lupProject" runat="server"></dx:ASPxGridLookup></td>
+                    <td style="height: 50px;">
+                        <dx:ASPxGridLookup ID="lupProject" runat="server" AutoGenerateColumns="False" KeyFieldName="ID" OnTextChanged="lupProject_TextChanged" AutoPostBack="True" OnValueChanged="lupProject_ValueChanged">
+                            <GridViewProperties>
+                                <SettingsBehavior AllowFocusedRow="True" AllowSelectSingleRowOnly="True"></SettingsBehavior>
+                            </GridViewProperties>
+                            <Columns>
+                                <dx:GridViewDataTextColumn Caption="项目" FieldName="NAME" VisibleIndex="0">
+                                </dx:GridViewDataTextColumn>
+                            </Columns>
+                        </dx:ASPxGridLookup>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -38,7 +48,7 @@
             var windowWidth = $(window).width();
 
             $("#theTable").height(windowHeight);
-            $("#frmLeft").height(windowHeight - 50 -50 - 10);
+            $("#frmLeft").height(windowHeight - 50 - 50 - 10);
             $("#frmMain").height(windowHeight - 50 - 10);
 
             //$("#frmCenter").width($(window).width() - 200 - 5);

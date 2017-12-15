@@ -9,7 +9,7 @@ using Treasure.BLL.Frame;
 
 namespace Treasure.Main.Frame
 {
-    public partial class Left : System.Web.UI.Page
+    public partial class Menu_Add : System.Web.UI.Page
     {
         #region 自定义变量
 
@@ -21,12 +21,6 @@ namespace Treasure.Main.Frame
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) {
-                hdnProjectId.Value = Request.QueryString["ProjectId"];
-                hdnProjectId.Value = Request.Params["ProjectId"];
-                string a = "";
-            }
-
             //加载
             DataTable dtMenu = bllSysMenuItem.GetFunctionsAndPagesMenu("55c64e3590ea45fdbe671e056c497ff9");
             treMenu.DataSource = dtMenu;
@@ -40,5 +34,7 @@ namespace Treasure.Main.Frame
 
         #region 自定义事件
         #endregion
+
+
     }
 }
