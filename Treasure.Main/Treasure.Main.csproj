@@ -64,14 +64,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Document\DbSql\MENU_ITEM.sql" />
-    <Content Include="Document\DbSql\MENU_ITEM_TYPE.sql" />
     <Content Include="Document\DbSql\SYS_GENERATE_FILE.sql" />
+    <Content Include="Document\DbSql\SYS_MENU_ITEM.sql" />
+    <Content Include="Document\DbSql\SYS_MENU_ITEM_TYPE.sql" />
     <Content Include="Document\DbSql\SYS_ROLE.sql" />
     <Content Include="Document\DbSql\SYS_USER.sql" />
     <Content Include="Document\DbSql\SYS_USER_ROLE_LIST.sql" />
     <Content Include="Document\Treasure.mpp" />
-    <Content Include="Document\DbSql\MENU_ITEM_TYPE.XLS" />
+    <Content Include="Document\DbSql\SYS_MENU_ITEM_TYPE.xls" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -17,6 +17,8 @@ namespace Treasure.BLL.Frame
         #region 登录判断
         /// <summary>
         /// 登录判断
+        /// 登录成功：返回用户ID
+        /// 登录失败：返回空字符串
         /// </summary>
         /// <param name="pUserName"></param>
         /// <param name="pPassword"></param>
@@ -47,6 +49,8 @@ namespace Treasure.BLL.Frame
             return result;
         }
         #endregion
+
+
 
     }
 }
