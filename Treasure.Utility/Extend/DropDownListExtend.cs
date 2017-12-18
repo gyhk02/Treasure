@@ -20,7 +20,7 @@ namespace Treasure.Utility.Extend
         /// <summary>
         /// 绑定下拉
         /// </summary>
-        /// <param name="lue">SearchLookUpEdit</param>
+        /// <param name="lue">DropDownList</param>
         /// <param name="dt">DataTable</param>
         /// <param name="hasPleaseSelect">是否有请选择</param>
         public static void BindToShowNo(this DropDownList ddl, DataTable dt, bool hasPleaseSelect)
@@ -36,5 +36,27 @@ namespace Treasure.Utility.Extend
             }
         }
         #endregion
+
+        #region 绑定下拉
+        /// <summary>
+        /// 绑定下拉
+        /// </summary>
+        /// <param name="lue">DropDownList</param>
+        /// <param name="dt">DataTable</param>
+        /// <param name="hasPleaseSelect">是否有请选择</param>
+        public static void BindToShowName(this DropDownList ddl, DataTable dt, bool hasPleaseSelect)
+        {
+            ddl.DataSource = dt;
+            ddl.DataValueField = GeneralVO.Id;
+            ddl.DataTextField = GeneralVO.Name;
+            ddl.DataBind();
+
+            if (hasPleaseSelect)
+            {
+                ddl.SelectedValue = pleaseSelect;
+            }
+        }
+        #endregion
+
     }
 }

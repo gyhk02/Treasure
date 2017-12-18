@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Treasure.BLL.Frame;
+using Treasure.Utility.Extend;
 using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.Frame
@@ -26,8 +27,7 @@ namespace Treasure.Main.Frame
             {
                 //加载项目列表
                 DataTable dtRootMenu = bllSysMenuItem.GetRootMenu();
-                lupProject.DataSource = dtRootMenu;
-                lupProject.DataBind();
+                DropDownListExtend.BindToShowName(ddlMenu, dtRootMenu, true);
             }
 
             string a = "";
@@ -37,24 +37,10 @@ namespace Treasure.Main.Frame
 
         #region 按钮
 
-        #region 选择项目
-        /// <summary>
-        /// 选择项目
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lupProject_TextChanged(object sender, EventArgs e)
+        protected void ddlMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string projectId = TypeConversion.ToString(lupProject.Value);
-            //Response.Write("<script type='text/javascript'>location.href='Left.aspx?ProjectId=" + projectId + "' target='frmLeft';</script>");
-            //string url = "<script>window.parent.document.location='Left.aspx?ProjectId=" + projectId + "');</script>";
-            //Response.Write(url);
-        }
-        #endregion
-
-        protected void lupProject_ValueChanged(object sender, EventArgs e)
-        {
-            string a = "";
+            string proejctId = ddlMenu.SelectedValue;
+            frmLeft.Src = "Left.aspx?ProjectId=" + proejctId;
         }
 
         #endregion

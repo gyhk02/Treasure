@@ -96,7 +96,7 @@
     <Content Include="SmallTool\DataSynchron\QueryUsedTables.aspx" />
     <Content Include="SmallTool\EncryptAndDecrypt\Encrypt_Decrypt.aspx" />
     <Content Include="SmallTool\evq\MianSynchron.aspx" />
-    <Content Include="Test.aspx" />
+    <Content Include="SmallTool\ToTableClass\ToTableClass.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -176,12 +176,12 @@
     <Compile Include="SmallTool\evq\MianSynchron.aspx.designer.cs">
       <DependentUpon>MianSynchron.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Test.aspx.cs">
-      <DependentUpon>Test.aspx</DependentUpon>
+    <Compile Include="SmallTool\ToTableClass\ToTableClass.aspx.cs">
+      <DependentUpon>ToTableClass.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Test.aspx.designer.cs">
-      <DependentUpon>Test.aspx</DependentUpon>
+    <Compile Include="SmallTool\ToTableClass\ToTableClass.aspx.designer.cs">
+      <DependentUpon>ToTableClass.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Document\DataSynchronSql\" />
+    <Folder Include="Test\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

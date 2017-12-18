@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Treasure.BLL.Frame;
+using Treasure.Model.Frame;
 
 namespace Treasure.Main.Frame
 {
@@ -21,17 +22,20 @@ namespace Treasure.Main.Frame
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) {
-                hdnProjectId.Value = Request.QueryString["ProjectId"];
-                hdnProjectId.Value = Request.Params["ProjectId"];
-                string a = "";
+            if (!IsPostBack)
+            {
+                hdnProjectId.Value = Request["ProjectId"];
             }
 
             //加载
-            DataTable dtMenu = bllSysMenuItem.GetFunctionsAndPagesMenu("55c64e3590ea45fdbe671e056c497ff9");
+            DataTable dtMenu = bllSysMenuItem.GetFunctionsAndPagesMenu(hdnProjectId.Value);
             treMenu.DataSource = dtMenu;
             treMenu.DataBind();
             treMenu.ExpandAll();
+
+          //SysMenuItemInfo.Fields.ID
+              
+
         }
         #endregion
 

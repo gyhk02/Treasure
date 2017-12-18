@@ -20,24 +20,15 @@
                 </tr>
                 <tr>
                     <td style="width: 300px;">
-                        <iframe id="frmLeft" name="frmLeft" src="Left.aspx" frameborder="0" style="border: 0px; width: 100%;"></iframe>
+                        <iframe id="frmLeft" name="frmLeft" runat="server" src="Left.aspx" frameborder="0" style="border: 0px; width: 100%;"></iframe>
                     </td>
                     <td rowspan="2" style="">
-                        <iframe id="frmMain" name="frmMain" src="Main.aspx" frameborder="0" style="border: 0px; width: 100%;"></iframe>
+                        <iframe id="frmMain" name="frmMain" runat="server" src="Main.aspx" frameborder="0" style="border: 0px; width: 100%;"></iframe>
                     </td>
                 </tr>
                 <tr>
                     <td style="height: 50px;">
-                        <dx:ASPxGridLookup ID="lupProject" runat="server" AutoGenerateColumns="False" KeyFieldName="ID" OnTextChanged="lupProject_TextChanged" AutoPostBack="True" OnValueChanged="lupProject_ValueChanged">
-                            <GridViewProperties>
-                                <SettingsBehavior AllowFocusedRow="True" AllowSelectSingleRowOnly="True"></SettingsBehavior>
-                            </GridViewProperties>
-                            <Columns>
-                                <dx:GridViewDataTextColumn Caption="项目" FieldName="NAME" VisibleIndex="0">
-                                </dx:GridViewDataTextColumn>
-                            </Columns>
-                        </dx:ASPxGridLookup>
-                    </td>
+                        <asp:DropDownList ID="ddlMenu" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlMenu_SelectedIndexChanged"></asp:DropDownList></td>
                 </tr>
             </table>
         </div>
