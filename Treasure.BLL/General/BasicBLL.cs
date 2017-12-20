@@ -91,6 +91,16 @@ namespace Treasure.BLL.General
             dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
 
+            DataRow row10 = dtDatabase.NewRow();
+            row10[GeneralVO.Id] = 10;
+            row10[DataSynchronVO.Version] = ConstantVO.OFFICIAL_VERSION;
+            row10[GeneralVO.No] = "小采购正式版_GSP_93";
+            row10[DataSynchronVO.Ip] = "172.16.96.93";
+            row10[DataSynchronVO.LoginName] = "gsp";
+            row10[DataSynchronVO.Pwd] = "gsp.123456789";
+            row10[DataSynchronVO.DbName] = "GSP";
+            dtDatabase.Rows.Add(row10);
+
             DataRow row9 = dtDatabase.NewRow();
             row9[GeneralVO.Id] = 9;
             row9[DataSynchronVO.Version] = ConstantVO.DEVELOPMENT_VERSION;
