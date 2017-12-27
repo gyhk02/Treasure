@@ -204,8 +204,9 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
             DataTable dt = base.GetTableAllInfo(pSourceConnection, pTableName);
             if (dt.Rows.Count > 0)
             {
-                string strsql = "DELETE FROM [" + pTableName + "]" + ConstantVO.ENTER_STRING;
-                strsql = strsql + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
+                //string strsql = "DELETE FROM [" + pTableName + "]" + ConstantVO.ENTER_STRING;
+
+                string strsql = " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
                     + " SET IDENTITY_INSERT [" + pTableName + "] ON " + ConstantVO.ENTER_STRING;
 
                 strTmp = "";
@@ -299,11 +300,11 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
             if (dt.Rows.Count > 0)
             {
                 //删除数据
-                if (base.DeleteDataTableByName(pTargetConnection, pTableName) == false)
-                {
-                    MessageBox.Show("删除表" + pTableName + "数据失败");
-                    return false;
-                }
+                //if (base.DeleteDataTableByName(pTargetConnection, pTableName) == false)
+                //{
+                //    MessageBox.Show("删除表" + pTableName + "数据失败");
+                //    return false;
+                //}
 
                 //插入数据
                 string strParam = "";
@@ -657,6 +658,93 @@ where o.type = 'U' " + condition;
 
         #endregion
 
+        #region 获取排序后的表，有考虑表外键
+        /// <summary>
+        /// 获取排序后的表，有考虑表外键
+        /// </summary>
+        /// <param name="pSourceConnection">数据库链接</param>
+        /// <param name="lstCalculation">列名集合</param>
+        /// <returns></returns>
+        public List<string> GetTableListBySort(string pSourceConnection, List<string> lstCalculation)
+        {
+            List<string> lst = new List<string>();
+
+            string sql = @"
+CREATE TABLE #Sort(idx int, TableName NVARCHAR(50))
+
+--DECLARE @Tables NVARCHAR(1000) = 'ReturnNoteTable, ReturnNoteLine, ReturnNoteDetail'
+
+--iSign 1:最初的表	2:关联后的表	3:已经插入排序表
+SELECT position, RTRIM(LTRIM(value)) mainTable, CONVERT(NVARCHAR(200), '') foreignTable , 1 iSign
+INTO #Tables FROM fn_Split(@Tables, ',')
+
+INSERT INTO #Tables
+SELECT T.mainTable, OBJECT_NAME(fk.referenced_object_id), 2
+FROM #Tables T
+LEFT JOIN sys.foreign_keys fk ON fk.parent_object_id = OBJECT_ID(T.mainTable)
+LEFT JOIN sys.foreign_key_columns fkc on fk.object_id = fkc.constraint_object_id
+
+DECLARE @Position INT, @MainTable NVARCHAR(50), @ForeignTable NVARCHAR(50), @CurrentIdx INT
+WHILE EXISTS(SELECT * FROM #Tables WHERE iSign = 2)
+BEGIN
+	SELECT TOP 1 @Position = position, @MainTable = mainTable, @ForeignTable = foreignTable FROM #Tables WHERE iSign = 2
+
+	--如果两张表都存在，将忽略
+	IF (SELECT COUNT(1) FROM #Sort WHERE TableName IN(@MainTable, @ForeignTable)) <> 2
+	BEGIN
+		
+		IF EXISTS(SELECT * FROM #Sort WHERE TableName = @MainTable)		--主表存在，外键表不存在：外键表插上面
+		BEGIN
+			SELECT @CurrentIdx = idx FROM #Sort WHERE TableName = @MainTable
+			UPDATE #Sort SET idx = idx + 1 WHERE idx >= @CurrentIdx
+
+			INSERT INTO #Sort
+			SELECT @CurrentIdx, @ForeignTable
+		END
+		ELSE IF EXISTS(SELECT * FROM #Sort WHERE TableName = @ForeignTable)	--主表不存在，外键表存在：主表插下面
+		BEGIN
+			SELECT @CurrentIdx = idx FROM #Sort WHERE TableName = @ForeignTable
+			UPDATE #Sort SET idx = idx + 1 WHERE idx > @CurrentIdx
+
+			INSERT INTO #Sort
+			SELECT @CurrentIdx + 1, @MainTable
+		END
+		ELSE
+		BEGIN																--主表不存在，外键表不存在：先插外键表，后插主表
+			SELECT @CurrentIdx = 0
+			SELECT TOP 1 @CurrentIdx = idx FROM #Sort ORDER BY idx DESC
+
+			INSERT INTO #Sort
+			SELECT @CurrentIdx + 1, @ForeignTable
+			UNION
+			SELECT @CurrentIdx + 2, @MainTable
+		END
+
+	END
+
+	UPDATE #Tables SET iSign = 3 WHERE position = @Position
+END
+
+SELECT S.TableName
+FROM #Tables T
+JOIN #Sort S ON T.mainTable = S.TableName
+WHERE T.iSign = 1
+ORDER BY S.idx
+
+DROP TABLE #Tables
+DROP TABLE #Sort
+            ";
+
+            List<SqlParameter> paras = new List<SqlParameter>();
+            paras.Add(new SqlParameter("@Tables", string.Join(",", lstCalculation.ToArray())));
+
+            DataTable dt = SQLHelper.ExecuteDataTable(pSourceConnection, CommandType.Text, sql, paras.ToArray());
+
+            lst = (from a in dt.AsEnumerable() select a.Field<string>("TableName")).ToList();
+
+            return lst;
+        }
+        #endregion
 
     }
 }

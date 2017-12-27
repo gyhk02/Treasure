@@ -301,17 +301,20 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             List<string> lstShow = new List<string>();
 
-            List<string> lstTableName = JudgeSynchronData(lstSourceTable);
-            if (lstTableName == null)
+            List<string> lstJudge = JudgeSynchronData(lstSourceTable);
+            if (lstJudge == null)
             {
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据同步，判断时出现异常');</script>");
+                MessageBox.Show("数据同步，判断时出现异常");
                 return;
             }
 
             string pSourceConnection = hdnSourceConnection.Value;
             string pTargetConnection = hdnTargetConnection.Value;
 
-            foreach (string str in lstTableName)
+            //重新排序表的顺序
+            List<string> lstTable = bll.GetTableListBySort(pSourceConnection, lstJudge);
+
+            foreach (string str in lstTable)
             {
                 //获取要处理的数据
                 DataTable dtSource = bll.GetTableAllInfo(pSourceConnection, str);
@@ -412,8 +415,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <param name="lstSourceTable">需要同步的表列表</param>
         private void SynchronCompleteData(List<string> lstSourceTable)
         {
-            List<string> lstCalculation = JudgeSynchronData(lstSourceTable);
-            if (lstCalculation == null)
+            List<string> lstJudge = JudgeSynchronData(lstSourceTable);
+            if (lstJudge == null)
             {
                 MessageBox.Show("数据同步，判断时出现异常");
                 return;
@@ -422,7 +425,23 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string pSourceConnection = hdnSourceConnection.Value;
             string pTargetConnection = hdnTargetConnection.Value;
 
-            foreach (string str in lstCalculation)
+            //重新排序表的顺序
+            List<string> lstTable = bll.GetTableListBySort(pSourceConnection, lstJudge);
+
+            //删除数据
+            for (int idx = lstTable.Count - 1; idx >= 0; idx--)
+            {
+                string tableName = lstTable[idx];
+
+                if (bll.DeleteDataTableByName(pTargetConnection, tableName) == false)
+                {
+                    MessageBox.Show("删除表" + tableName + "数据失败");
+                    return;
+                }
+            }
+
+            //插入数据
+            foreach (string str in lstTable)
             {
                 //判断表中是否有byte类型
                 DataTable dtStructure = bll.GetTableInfoByName(1, pSourceConnection, str);
