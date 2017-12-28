@@ -52,6 +52,7 @@ namespace Treasure.Utility.Helpers
         #region 删除
 
         #region 根据表名删除表的全部数据
+
         /// <summary>
         /// 根据表名删除表的全部数据
         /// </summary>
@@ -61,9 +62,7 @@ namespace Treasure.Utility.Helpers
         {
             return DeleteDataTableByName(null, pTableName);
         }
-        #endregion
 
-        #region 根据表名删除表的全部数据
         /// <summary>
         /// 根据表名删除表的全部数据
         /// </summary>

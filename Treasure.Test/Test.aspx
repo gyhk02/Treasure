@@ -1,29 +1,42 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Test.aspx.cs" Inherits="Treasure.Test.Test" %>
 
-<%@ Register assembly="DevExpress.Web.v16.1, Version=16.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v16.1, Version=16.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-    
-        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />
-        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
-    
-    </div>
-        <dx:ASPxGridView ID="ASPxGridView1" runat="server">
-            <Templates>
-                <Header>
+        <div>
 
-                </Header>
-            </Templates>
-        </dx:ASPxGridView>
+            <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="1">
+                <TabPages>
+                    <dx:TabPage>
+                        <ContentCollection>
+                            <dx:ContentControl runat="server">
+                                <dx:ASPxGridView ID="ASPxGridView1" runat="server">
+                                </dx:ASPxGridView>
+                            </dx:ContentControl>
+                        </ContentCollection>
+                    </dx:TabPage>
+                    <dx:TabPage>
+                        <ContentCollection>
+                            <dx:ContentControl runat="server">
+                            </dx:ContentControl>
+                        </ContentCollection>
+                    </dx:TabPage>
+                </TabPages>
+            </dx:ASPxPageControl>
+
+
+
+
+
+        </div>
     </form>
 </body>
 </html>

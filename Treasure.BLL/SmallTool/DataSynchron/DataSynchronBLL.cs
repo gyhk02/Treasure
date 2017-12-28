@@ -13,8 +13,60 @@ using Treasure.Utility.Helpers;
 
 namespace Treasure.BLL.SmallTool.DataSynchron
 {
+    /// <summary>
+    /// 数据同步类
+    /// </summary>
     public class DataSynchronBLL : BasicBLL
     {
+        #region 存储过程同步
+        /// <summary>
+        /// 存储过程同步
+        /// </summary>
+        /// <param name="pSourceConnection">源数据库链接</param>
+        /// <param name="pTargetConnection">目标数据库链接</param>
+        /// <param name="pProcedureName">存储过程名称</param>
+        /// <returns></returns>
+        public bool SynchronProcedure(string pSourceConnection, string pTargetConnection, string pProcedureName)
+        {
+            bool result = false;
+
+            string strTmp = "";
+
+            string strsql = GetProcedureText(pSourceConnection, pProcedureName);
+
+            if (JudgeExistProcedure(pTargetConnection, pProcedureName) == true)
+            {
+                strsql = strsql.Replace("CREATE PROCEDURE", "ALTER PROCEDURE");
+            }
+
+            try
+            {
+                SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            //记录sql语句
+            string type = "";
+            if (result == true)
+            {
+                type = "正常";
+            }
+            else
+            {
+                type = "异常";
+            }
+            string filePath = "Document/DataSynchronSql/SynchronProcedure_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIMEYMDHMSF) + "_" + pProcedureName + ".txt";
+            string description = "存储过程" + pProcedureName + "：从" + pSourceConnection + "到" + pTargetConnection;
+            new FileHelper().WriteFile(filePath, description, strsql);
+
+            return result;
+        }
+        #endregion
+
         #region 插入数据_增量同步
         /// <summary>
         /// 插入数据_增量同步
@@ -658,9 +710,70 @@ where o.type = 'U' " + condition;
 
         #endregion
 
+        #region 获取存储过程名称及描述
+
+        public DataTable GetProcedureList(string pConnection, string pProcedureName)
+        {
+            return GetProcedureList(pConnection, null, pProcedureName);
+        }
+
+        public DataTable GetProcedureList(string pConnection, List<string> pProcedureList)
+        {
+            return GetProcedureList(pConnection, pProcedureList, null);
+        }
+
+        /// <summary>
+        /// 获取存储过程名称及描述
+        /// </summary>
+        /// <param name="pConnection">数据库链接</param>
+        /// <param name="pProcedureList">存储过程名称列表</param>
+        /// <param name="pProcedureName">存储过程名称</param>
+        /// <returns></returns>
+        private DataTable GetProcedureList(string pConnection, List<string> pProcedureList, string pProcedureName)
+        {
+            DataTable result = new DataTable();
+
+            string condition = "";
+
+            if (string.IsNullOrEmpty(pProcedureName) == false)
+            {
+                if (pProcedureName.Contains(",") == true)
+                {
+                    condition = " and o.name in('" + pProcedureName.Replace(",", "','") + "')";
+                }
+                else
+                {
+                    condition = " and o.name like '%" + pProcedureName + "%'";
+                }
+            }
+
+            if (pProcedureList != null)
+            {
+                if (pProcedureList.Count > 0)
+                {
+                    string str = string.Join("','", pProcedureList.ToArray());
+                    condition = "'" + str + "'";
+                    condition = " and name in(" + condition + ")";
+                }
+            }
+
+            string sql = @"
+select o.name ProcedureName, ep.value ProcedureDescription
+from sys.objects o
+left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0 and ep.name = 'MS_Description'
+where o.type = 'P'" + condition;
+
+            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
+
+            return result;
+        }
+
+        #endregion
+
         #region 获取排序后的表，有考虑表外键
         /// <summary>
         /// 获取排序后的表，有考虑表外键
+        /// 用到的地方：1.数据完全同步 2.数据增量同步
         /// </summary>
         /// <param name="pSourceConnection">数据库链接</param>
         /// <param name="lstCalculation">列名集合</param>
@@ -671,8 +784,6 @@ where o.type = 'U' " + condition;
 
             string sql = @"
 CREATE TABLE #Sort(idx int, TableName NVARCHAR(50))
-
---DECLARE @Tables NVARCHAR(1000) = 'ReturnNoteTable, ReturnNoteLine, ReturnNoteDetail'
 
 --iSign 1:最初的表	2:关联后的表	3:已经插入排序表
 SELECT position, RTRIM(LTRIM(value)) mainTable, CONVERT(NVARCHAR(200), '') foreignTable , 1 iSign
@@ -743,6 +854,67 @@ DROP TABLE #Sort
             lst = (from a in dt.AsEnumerable() select a.Field<string>("TableName")).ToList();
 
             return lst;
+        }
+        #endregion
+
+        #region 获取存储过程内容
+        /// <summary>
+        /// 获取存储过程内容
+        /// </summary>
+        /// <param name="pConnString"></param>
+        /// <param name="pProcedureName"></param>
+        /// <returns></returns>
+        private string GetProcedureText(string pConnString, string pProcedureName)
+        {
+            string result = "";
+
+            string sql = @"
+declare @text nvarchar(max) = ''
+
+select @text = @text + text
+from sys.syscomments s
+join sys.objects o on s.id = o.object_id
+where o.type = 'P' and o.name = @ProcedureName
+order by colid
+
+select @text";
+
+            List<SqlParameter> paras = new List<SqlParameter>();
+            paras.Add(new SqlParameter("@ProcedureName", pProcedureName));
+
+            DataTable dt = SQLHelper.ExecuteDataTable(pConnString, CommandType.Text, sql, paras.ToArray());
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = dt.Rows[0][0].ToString();
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region 判断存在过程是否存在
+        /// <summary>
+        /// 判断存在过程是否存在
+        /// </summary>
+        /// <param name="pConnString"></param>
+        /// <param name="pProcedureName"></param>
+        /// <returns></returns>
+        private bool JudgeExistProcedure(string pConnString, string pProcedureName)
+        {
+            bool result = false;
+
+            string sql = @"select count(1) from sys.objects where name = @ProcedureName and type = 'P'";
+
+            List<SqlParameter> paras = new List<SqlParameter>();
+            paras.Add(new SqlParameter("@ProcedureName", pProcedureName));
+
+            DataTable dt = SQLHelper.ExecuteDataTable(pConnString, CommandType.Text, sql, paras.ToArray());
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = true;
+            }
+
+            return result;
         }
         #endregion
 

@@ -14,9 +14,5 @@ namespace Treasure.Test
 
         }
 
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-            Label1.Text = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss fff");
-        }
     }
 }

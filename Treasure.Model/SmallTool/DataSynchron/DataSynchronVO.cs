@@ -47,6 +47,10 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string TargetIsIdentity = "TargetIsIdentity";
         public static string TargetDefaultValue = "TargetDefaultValue";
 
+        //存储过程
+        public static string ProcedureName = "ProcedureName";
+        public static string ProcedureDescription = "ProcedureDescription";
+
         #region 约束
 
         /// <summary>

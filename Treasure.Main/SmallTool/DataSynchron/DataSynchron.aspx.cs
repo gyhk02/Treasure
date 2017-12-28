@@ -40,9 +40,6 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
                 Session["dtDataDb"] = dtDatabase;
 
-                //ddlSourceDb.SelectedIndex = 1;
-                //ddlTargetDb.SelectedIndex = 0;
-
                 ddlSourceDb.SelectedValue = "2";
                 ddlTargetDb.SelectedValue = "3";
 
@@ -225,15 +222,19 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string synchronType = rblSynchronType.SelectedValue;
             if (string.IsNullOrEmpty(synchronType) == true)
             {
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('请先选择同步类型');</script>");
+                MessageBox.Show("请先选择同步类型");
                 return;
             }
 
             //获取要同步的表
             List<string> lstTableList = grvTableList.GetSelectedFieldValues(new string[] { DataSynchronVO.TableName }).ConvertAll<string>(c => string.Format("{0}", c));
-            if (lstTableList.Count == 0)
+
+            //获取要同步的存储过程
+            List<string> lstProcedureList = grvProcedureList.GetSelectedFieldValues(new string[] { DataSynchronVO.ProcedureName }).ConvertAll<string>(c => string.Format("{0}", c));
+
+            if (lstTableList.Count == 0 && lstProcedureList.Count == 0)
             {
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('请选择要同步的表');</script>");
+                MessageBox.Show("您还没有选择要同步的数据");
                 return;
             }
 
@@ -250,6 +251,9 @@ namespace Treasure.Main.SmallTool.DataSynchron
                     case "数据增量同步(按ID)":
                         SynchronIncrementData(lstTableList);
                         break;
+                    case "存储过程同步":
+                        SynchronProcedure(lstProcedureList);
+                        break;
                 }
 
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('同步成功');</script>");
@@ -262,21 +266,20 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
         #endregion
 
-        #region 查询
+        #region 表查询
         /// <summary>
-        /// 查询
+        /// 表查询
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnSearch_Click(object sender, EventArgs e)
+        protected void btnTableSearch_Click(object sender, EventArgs e)
         {
             string pSourceConnection = hdnSourceConnection.Value;
             string pTableName = txtTableName.Text.Trim();
 
             if (string.IsNullOrEmpty(pSourceConnection) == true)
             {
-                ClientScriptManager clientScript = Page.ClientScript;
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('源数据库链接为空，请先点击【链接数据库】');</script>");
+                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
                 return;
             }
 
@@ -286,9 +289,49 @@ namespace Treasure.Main.SmallTool.DataSynchron
         }
         #endregion
 
+        #region 存储过程查询
+        /// <summary>
+        /// 存储过程查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnProcedureSearch_Click(object sender, EventArgs e)
+        {
+            string pSourceConnection = hdnSourceConnection.Value;
+            string pProcedureName = txtProcedureName.Text.Trim();
+
+            if (string.IsNullOrEmpty(pSourceConnection) == true)
+            {
+                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
+                return;
+            }
+
+            DataTable dt = bll.GetProcedureList(pSourceConnection, pProcedureName);
+            grvProcedureList.DataSource = dt;
+            grvProcedureList.DataBind();
+        }
+        #endregion
+
         #endregion
 
         #region 自定义事件
+
+        #region 存储过程同步
+        /// <summary>
+        /// 存储过程同步
+        /// </summary>
+        /// <param name="lstSourceTable"></param>
+        private void SynchronProcedure(List<string> lstSourceProcedure)
+        {
+            string pSourceConnection = hdnSourceConnection.Value;
+            string pTargetConnection = hdnTargetConnection.Value;
+
+            foreach (string str in lstSourceProcedure)
+            {
+                bll.SynchronProcedure(pSourceConnection, pTargetConnection, str);
+            }
+        }
+        #endregion
 
         #region 数据增量同步(按ID)
         /// <summary>

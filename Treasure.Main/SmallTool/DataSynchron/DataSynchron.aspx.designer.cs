@@ -148,6 +148,15 @@ namespace Treasure.Main.SmallTool.DataSynchron {
         protected global::System.Web.UI.WebControls.Label lblMessage;
         
         /// <summary>
+        /// ASPxPageControl1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxPageControl ASPxPageControl1;
+        
+        /// <summary>
         /// txtTableName 控件。
         /// </summary>
         /// <remarks>
@@ -157,13 +166,13 @@ namespace Treasure.Main.SmallTool.DataSynchron {
         protected global::System.Web.UI.WebControls.TextBox txtTableName;
         
         /// <summary>
-        /// btnSearch 控件。
+        /// btnTableSearch 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.Button btnTableSearch;
         
         /// <summary>
         /// grvTableList 控件。
@@ -173,6 +182,33 @@ namespace Treasure.Main.SmallTool.DataSynchron {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::DevExpress.Web.ASPxGridView grvTableList;
+        
+        /// <summary>
+        /// txtProcedureName 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtProcedureName;
+        
+        /// <summary>
+        /// btnProcedureSearch 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnProcedureSearch;
+        
+        /// <summary>
+        /// grvProcedureList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxGridView grvProcedureList;
         
         /// <summary>
         /// rblSynchronType 控件。

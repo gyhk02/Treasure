@@ -120,38 +120,85 @@
                         <br />
                     </td>
                     <td style="vertical-align: top;">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td>表名：<asp:TextBox ID="txtTableName" runat="server" Width="278px"></asp:TextBox><asp:Button ID="btnSearch" runat="server" Text="查询" OnClick="btnSearch_Click" />
-                                    <br />
-                                    <br />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False">
-                                        <SettingsPager Mode="ShowAllRecords">
-                                        </SettingsPager>
-                                        <Columns>
-                                            <dx:GridViewDataTextColumn Caption="表名" FieldName="TableName" ReadOnly="True" VisibleIndex="1">
-                                            </dx:GridViewDataTextColumn>
-                                            <dx:GridViewDataTextColumn Caption="描述" FieldName="TableDescription" VisibleIndex="2">
-                                            </dx:GridViewDataTextColumn>
-                                            <dx:GridViewDataCheckColumn Caption="选择" FieldName="Selected" Name="colSelected" Visible="false" VisibleIndex="3">
-                                            </dx:GridViewDataCheckColumn>
-                                            <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
-                                            </dx:GridViewCommandColumn>
-                                        </Columns>
-                                    </dx:ASPxGridView>
-                                </td>
-                            </tr>
-                        </table>
+                        <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="1">
+                            <TabPages>
+                                <dx:TabPage Text="表">
+                                    <ContentCollection>
+                                        <dx:ContentControl runat="server">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td>表名：
+                                                        <asp:TextBox ID="txtTableName" runat="server" Width="278px"></asp:TextBox>
+                                                        <asp:Button ID="btnTableSearch" runat="server" Text="查询" OnClick="btnTableSearch_Click" />
+                                                        <br />
+                                                        <br />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False">
+                                                            <SettingsPager Mode="ShowAllRecords">
+                                                            </SettingsPager>
+                                                            <Columns>
+                                                                <dx:GridViewDataTextColumn Caption="表名" FieldName="TableName" ReadOnly="True" VisibleIndex="1">
+                                                                </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewDataTextColumn Caption="描述" FieldName="TableDescription" VisibleIndex="2">
+                                                                </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewDataCheckColumn Caption="选择" FieldName="Selected" Name="colSelected" Visible="false" VisibleIndex="3">
+                                                                </dx:GridViewDataCheckColumn>
+                                                                <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
+                                                                </dx:GridViewCommandColumn>
+                                                            </Columns>
+                                                        </dx:ASPxGridView>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </dx:ContentControl>
+                                    </ContentCollection>
+                                </dx:TabPage>
+                                <dx:TabPage Text="存储过程">
+                                    <ContentCollection>
+                                        <dx:ContentControl runat="server">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td>存储过程：
+                                                        <asp:TextBox ID="txtProcedureName" runat="server" Width="278px"></asp:TextBox>
+                                                        <asp:Button ID="btnProcedureSearch" runat="server" Text="查询" OnClick="btnProcedureSearch_Click" />
+                                                        <br />
+                                                        <br />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <dx:ASPxGridView ID="grvProcedureList" runat="server" AutoGenerateColumns="False">
+                                                            <SettingsPager Mode="ShowAllRecords">
+                                                            </SettingsPager>
+                                                            <Columns>
+                                                                <dx:GridViewDataTextColumn Caption="存储过程名称" FieldName="ProcedureName" ReadOnly="True" VisibleIndex="1">
+                                                                </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewDataCheckColumn Caption="选择" FieldName="Selected" Name="colSelected" Visible="false" VisibleIndex="3">
+                                                                </dx:GridViewDataCheckColumn>
+                                                                <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
+                                                                </dx:GridViewCommandColumn>
+                                                                <dx:GridViewDataTextColumn Caption="描述" FieldName="ProcedureDescription" ReadOnly="True" ShowInCustomizationForm="True" VisibleIndex="2">
+                                                                </dx:GridViewDataTextColumn>
+                                                            </Columns>
+                                                        </dx:ASPxGridView>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </dx:ContentControl>
+                                    </ContentCollection>
+                                </dx:TabPage>
+                            </TabPages>
+                        </dx:ASPxPageControl>
                     </td>
                     <td style="vertical-align: top;">
                         <asp:RadioButtonList ID="rblSynchronType" runat="server">
                             <asp:ListItem>表结构同步</asp:ListItem>
                             <asp:ListItem>数据完全同步</asp:ListItem>
                             <asp:ListItem>数据增量同步(按ID)</asp:ListItem>
+                            <asp:ListItem>存储过程同步</asp:ListItem>
                         </asp:RadioButtonList>
                         <br />
                         <br />
