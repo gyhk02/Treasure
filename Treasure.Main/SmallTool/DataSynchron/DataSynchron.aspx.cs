@@ -189,9 +189,13 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             #endregion
 
-            DataTable dt = bll.GetTableList(strSouceConnection);
-            grvTableList.DataSource = dt;
+            DataTable dtTable = bll.GetTableList(strSouceConnection);
+            grvTableList.DataSource = dtTable;
             grvTableList.DataBind();
+
+            DataTable dtProcedure = bll.GetProcedureOrFunctionList(strSouceConnection, 1);
+            grvProcedureList.DataSource = dtProcedure;
+            grvProcedureList.DataBind();
         }
         #endregion
 
@@ -232,26 +236,40 @@ namespace Treasure.Main.SmallTool.DataSynchron
             //获取要同步的存储过程
             List<string> lstProcedureList = grvProcedureList.GetSelectedFieldValues(new string[] { DataSynchronVO.ProcedureName }).ConvertAll<string>(c => string.Format("{0}", c));
 
-            if (lstTableList.Count == 0 && lstProcedureList.Count == 0)
-            {
-                MessageBox.Show("您还没有选择要同步的数据");
-                return;
-            }
-
             try
             {
                 switch (synchronType)
                 {
                     case "表结构同步":
+                        if (lstTableList.Count == 0)
+                        {
+                            MessageBox.Show("您还没有选择要同步的数据");
+                            return;
+                        }
                         SynchronTableStructure(lstTableList);
                         break;
                     case "数据完全同步":
+                        if (lstTableList.Count == 0)
+                        {
+                            MessageBox.Show("您还没有选择要同步的数据");
+                            return;
+                        }
                         SynchronCompleteData(lstTableList);
                         break;
                     case "数据增量同步(按ID)":
+                        if (lstTableList.Count == 0)
+                        {
+                            MessageBox.Show("您还没有选择要同步的数据");
+                            return;
+                        }
                         SynchronIncrementData(lstTableList);
                         break;
                     case "存储过程同步":
+                        if (lstProcedureList.Count == 0)
+                        {
+                            MessageBox.Show("您还没有选择要同步的数据");
+                            return;
+                        }
                         SynchronProcedure(lstProcedureList);
                         break;
                 }
@@ -306,7 +324,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 return;
             }
 
-            DataTable dt = bll.GetProcedureList(pSourceConnection, pProcedureName);
+            DataTable dt = bll.GetProcedureOrFunctionList(pSourceConnection, 1, pProcedureName);
             grvProcedureList.DataSource = dt;
             grvProcedureList.DataBind();
         }
@@ -328,7 +346,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             foreach (string str in lstSourceProcedure)
             {
-                bll.SynchronProcedure(pSourceConnection, pTargetConnection, str);
+                bll.SynchronProcedure(pSourceConnection, 1, pTargetConnection, str);
             }
         }
         #endregion

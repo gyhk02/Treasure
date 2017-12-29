@@ -24,17 +24,17 @@ namespace Treasure.BLL.SmallTool.DataSynchron
         /// </summary>
         /// <param name="pSourceConnection">源数据库链接</param>
         /// <param name="pTargetConnection">目标数据库链接</param>
-        /// <param name="pProcedureName">存储过程名称</param>
+        /// <param name="pName">存储过程名称</param>
         /// <returns></returns>
-        public bool SynchronProcedure(string pSourceConnection, string pTargetConnection, string pProcedureName)
+        public bool SynchronProcedure(string pSourceConnection, int pType, string pTargetConnection, string pName)
         {
             bool result = false;
 
             string strTmp = "";
 
-            string strsql = GetProcedureText(pSourceConnection, pProcedureName);
+            string strsql = GetProcedureText(pSourceConnection, pType, pName);
 
-            if (JudgeExistProcedure(pTargetConnection, pProcedureName) == true)
+            if (JudgeExistProcedure(pTargetConnection, pType, pName) == true)
             {
                 strsql = strsql.Replace("CREATE PROCEDURE", "ALTER PROCEDURE");
             }
@@ -59,8 +59,8 @@ namespace Treasure.BLL.SmallTool.DataSynchron
             {
                 type = "异常";
             }
-            string filePath = "Document/DataSynchronSql/SynchronProcedure_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIMEYMDHMSF) + "_" + pProcedureName + ".txt";
-            string description = "存储过程" + pProcedureName + "：从" + pSourceConnection + "到" + pTargetConnection;
+            string filePath = "Document/DataSynchronSql/SynchronProcedure_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIMEYMDHMSF) + "_" + pName + ".txt";
+            string description = "存储过程" + pName + "：从" + pSourceConnection + "到" + pTargetConnection;
             new FileHelper().WriteFile(filePath, description, strsql);
 
             return result;
@@ -710,48 +710,56 @@ where o.type = 'U' " + condition;
 
         #endregion
 
-        #region 获取存储过程名称及描述
+        #region 获取存储过程或函数的名称和描述
 
-        public DataTable GetProcedureList(string pConnection, string pProcedureName)
+        public DataTable GetProcedureOrFunctionList(string pConnection, int pType)
         {
-            return GetProcedureList(pConnection, null, pProcedureName);
+            return GetProcedureOrFunctionList(pConnection, pType, null, null);
         }
 
-        public DataTable GetProcedureList(string pConnection, List<string> pProcedureList)
+        public DataTable GetProcedureOrFunctionList(string pConnection, int pType, string pName)
         {
-            return GetProcedureList(pConnection, pProcedureList, null);
+            return GetProcedureOrFunctionList(pConnection, pType, null, pName);
+        }
+
+        public DataTable GetProcedureOrFunctionList(string pConnection, int pType, List<string> pList)
+        {
+            return GetProcedureOrFunctionList(pConnection, pType, pList, null);
         }
 
         /// <summary>
-        /// 获取存储过程名称及描述
+        /// 获取存储过程或函数的名称和描述
         /// </summary>
         /// <param name="pConnection">数据库链接</param>
-        /// <param name="pProcedureList">存储过程名称列表</param>
-        /// <param name="pProcedureName">存储过程名称</param>
+        /// <param name="pType">类型 1:存储过程 2:函数</param>
+        /// <param name="pList">名称列表</param>
+        /// <param name="pName">名称</param>
         /// <returns></returns>
-        private DataTable GetProcedureList(string pConnection, List<string> pProcedureList, string pProcedureName)
+        private DataTable GetProcedureOrFunctionList(string pConnection, int pType, List<string> pList, string pName)
         {
             DataTable result = new DataTable();
 
+            string strType = EnumerationHelper.GetEnumDes<EnumerationHelper.DBStructureType>(pType);
+
             string condition = "";
 
-            if (string.IsNullOrEmpty(pProcedureName) == false)
+            if (string.IsNullOrEmpty(pName) == false)
             {
-                if (pProcedureName.Contains(",") == true)
+                if (pName.Contains(",") == true)
                 {
-                    condition = " and o.name in('" + pProcedureName.Replace(",", "','") + "')";
+                    condition = " and o.name in('" + pName.Replace(",", "','") + "')";
                 }
                 else
                 {
-                    condition = " and o.name like '%" + pProcedureName + "%'";
+                    condition = " and o.name like '%" + pName + "%'";
                 }
             }
 
-            if (pProcedureList != null)
+            if (pList != null)
             {
-                if (pProcedureList.Count > 0)
+                if (pList.Count > 0)
                 {
-                    string str = string.Join("','", pProcedureList.ToArray());
+                    string str = string.Join("','", pList.ToArray());
                     condition = "'" + str + "'";
                     condition = " and name in(" + condition + ")";
                 }
@@ -761,9 +769,12 @@ where o.type = 'U' " + condition;
 select o.name ProcedureName, ep.value ProcedureDescription
 from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0 and ep.name = 'MS_Description'
-where o.type = 'P'" + condition;
+where o.type = @ObjectType" + condition;
 
-            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
+            List<SqlParameter> paras = new List<SqlParameter>();
+            paras.Add(new SqlParameter("@ObjectType", strType));
+
+            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, paras.ToArray());
 
             return result;
         }
@@ -857,16 +868,19 @@ DROP TABLE #Sort
         }
         #endregion
 
-        #region 获取存储过程内容
+        #region 获取存储过程或函数内容
         /// <summary>
-        /// 获取存储过程内容
+        /// 获取存储过程或函数内容
         /// </summary>
-        /// <param name="pConnString"></param>
-        /// <param name="pProcedureName"></param>
+        /// <param name="pConnString">数据库链接</param>
+        /// <param name="pType">类型 1:存储过程 2:函数</param>
+        /// <param name="pName">名称</param>
         /// <returns></returns>
-        private string GetProcedureText(string pConnString, string pProcedureName)
+        private string GetProcedureText(string pConnString, int pType, string pName)
         {
             string result = "";
+
+            string strType = EnumerationHelper.GetEnumDes<EnumerationHelper.DBStructureType>(pType);
 
             string sql = @"
 declare @text nvarchar(max) = ''
@@ -874,13 +888,14 @@ declare @text nvarchar(max) = ''
 select @text = @text + text
 from sys.syscomments s
 join sys.objects o on s.id = o.object_id
-where o.type = 'P' and o.name = @ProcedureName
+where o.type = @ObjectType and o.name = @ProcedureName
 order by colid
 
 select @text";
 
             List<SqlParameter> paras = new List<SqlParameter>();
-            paras.Add(new SqlParameter("@ProcedureName", pProcedureName));
+            paras.Add(new SqlParameter("@ProcedureName", pName));
+            paras.Add(new SqlParameter("@ObjectType", strType));
 
             DataTable dt = SQLHelper.ExecuteDataTable(pConnString, CommandType.Text, sql, paras.ToArray());
             if (dt != null && dt.Rows.Count > 0)
@@ -892,21 +907,25 @@ select @text";
         }
         #endregion
 
-        #region 判断存在过程是否存在
+        #region 判断存在过程或函数是否存在
         /// <summary>
-        /// 判断存在过程是否存在
+        /// 判断存在过程或函数是否存在
         /// </summary>
-        /// <param name="pConnString"></param>
-        /// <param name="pProcedureName"></param>
+        /// <param name="pConnString">数据库链接</param>
+        /// <param name="pType">类型 1:存储过程 2:函数</param>
+        /// <param name="pName">名称</param>
         /// <returns></returns>
-        private bool JudgeExistProcedure(string pConnString, string pProcedureName)
+        private bool JudgeExistProcedure(string pConnString, int pType, string pName)
         {
             bool result = false;
 
-            string sql = @"select count(1) from sys.objects where name = @ProcedureName and type = 'P'";
+            string strType = EnumerationHelper.GetEnumDes<EnumerationHelper.DBStructureType>(pType);
+
+            string sql = @"select count(1) from sys.objects where name = @ProcedureName and type = @ObjectType";
 
             List<SqlParameter> paras = new List<SqlParameter>();
-            paras.Add(new SqlParameter("@ProcedureName", pProcedureName));
+            paras.Add(new SqlParameter("@ProcedureName", pName));
+            paras.Add(new SqlParameter("@ObjectType", strType));
 
             DataTable dt = SQLHelper.ExecuteDataTable(pConnString, CommandType.Text, sql, paras.ToArray());
             if (dt != null && dt.Rows.Count > 0)

@@ -186,9 +186,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Treasure.BLL\Treasure.BLL.csproj">
       <Project>{1eebd6d2-6382-4020-9d69-e7de853232a5}</Project>
       <Name>Treasure.BLL</Name>
@@ -205,6 +202,9 @@
   <ItemGroup>
     <Folder Include="Document\DataSynchronSql\" />
     <Folder Include="Test\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

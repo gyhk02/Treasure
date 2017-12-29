@@ -120,7 +120,7 @@
                         <br />
                     </td>
                     <td style="vertical-align: top;">
-                        <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="1">
+                        <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="0">
                             <TabPages>
                                 <dx:TabPage Text="表">
                                     <ContentCollection>
@@ -176,12 +176,10 @@
                                                             <Columns>
                                                                 <dx:GridViewDataTextColumn Caption="存储过程名称" FieldName="ProcedureName" ReadOnly="True" VisibleIndex="1">
                                                                 </dx:GridViewDataTextColumn>
-                                                                <dx:GridViewDataCheckColumn Caption="选择" FieldName="Selected" Name="colSelected" Visible="false" VisibleIndex="3">
-                                                                </dx:GridViewDataCheckColumn>
-                                                                <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
-                                                                </dx:GridViewCommandColumn>
                                                                 <dx:GridViewDataTextColumn Caption="描述" FieldName="ProcedureDescription" ReadOnly="True" ShowInCustomizationForm="True" VisibleIndex="2">
                                                                 </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
+                                                                </dx:GridViewCommandColumn>
                                                             </Columns>
                                                         </dx:ASPxGridView>
                                                     </td>
