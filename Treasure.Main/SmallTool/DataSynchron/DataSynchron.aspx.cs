@@ -207,8 +207,6 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <param name="e"></param>
         protected void btnSynchron_Click(object sender, EventArgs e)
         {
-            ClientScriptManager clientScript = Page.ClientScript;
-
             //如果是目标是正式版，将警示
             int id = TypeConversion.ToInt(ddlTargetDb.SelectedValue);
             DataTable dtDatabase = Session["dtDataDb"] as DataTable;
@@ -274,7 +272,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                         break;
                 }
 
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('同步成功');</script>");
+                MessageBox.Show("同步成功");
             }
             catch (Exception ex)
             {

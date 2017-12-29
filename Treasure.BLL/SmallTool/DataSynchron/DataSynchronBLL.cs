@@ -766,7 +766,7 @@ where o.type = 'U' " + condition;
             }
 
             string sql = @"
-select o.name ProcedureName, ep.value ProcedureDescription
+select o.name " + DataSynchronVO.ProcedureName + @", ep.value " + DataSynchronVO.ProcedureDescription + @"
 from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0 and ep.name = 'MS_Description'
 where o.type = @ObjectType" + condition;
