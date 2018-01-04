@@ -136,18 +136,18 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False">
-                                                            <SettingsPager Mode="ShowAllRecords">
-                                                            </SettingsPager>
-                                                            <Columns>
-                                                                <dx:GridViewDataTextColumn Caption="表名" FieldName="TableName" ReadOnly="True" VisibleIndex="1">
-                                                                </dx:GridViewDataTextColumn>
-                                                                <dx:GridViewDataTextColumn Caption="描述" FieldName="TableDescription" VisibleIndex="2">
-                                                                </dx:GridViewDataTextColumn>
-                                                                <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
-                                                                </dx:GridViewCommandColumn>
-                                                            </Columns>
-                                                        </dx:ASPxGridView>
+<dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">
+    <SettingsPager Mode="ShowAllRecords">
+    </SettingsPager>
+    <Columns>
+        <dx:GridViewDataTextColumn Caption="表名" FieldName="TableName" ReadOnly="True" VisibleIndex="1">
+        </dx:GridViewDataTextColumn>
+        <dx:GridViewDataTextColumn Caption="描述" FieldName="TableDescription" VisibleIndex="2">
+        </dx:GridViewDataTextColumn>
+        <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
+        </dx:GridViewCommandColumn>
+    </Columns>
+</dx:ASPxGridView>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -168,18 +168,18 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <dx:ASPxGridView ID="grvProcedureList" runat="server" AutoGenerateColumns="False">
-                                                            <SettingsPager Mode="ShowAllRecords">
-                                                            </SettingsPager>
-                                                            <Columns>
-                                                                <dx:GridViewDataTextColumn Caption="存储过程名称" FieldName="ProcedureName" ReadOnly="True" VisibleIndex="1">
-                                                                </dx:GridViewDataTextColumn>
-                                                                <dx:GridViewDataTextColumn Caption="描述" FieldName="ProcedureDescription" ReadOnly="True" ShowInCustomizationForm="True" VisibleIndex="2">
-                                                                </dx:GridViewDataTextColumn>
-                                                                <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
-                                                                </dx:GridViewCommandColumn>
-                                                            </Columns>
-                                                        </dx:ASPxGridView>
+<dx:ASPxGridView ID="grvProcedureList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">
+    <SettingsPager Mode="ShowAllRecords">
+    </SettingsPager>
+    <Columns>
+        <dx:GridViewDataTextColumn Caption="存储过程名称" FieldName="ProcedureName" ReadOnly="True" VisibleIndex="1">
+        </dx:GridViewDataTextColumn>
+        <dx:GridViewDataTextColumn Caption="描述" FieldName="ProcedureDescription" VisibleIndex="2">
+        </dx:GridViewDataTextColumn>
+        <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
+        </dx:GridViewCommandColumn>
+    </Columns>
+</dx:ASPxGridView>
                                                     </td>
                                                 </tr>
                                             </table>
