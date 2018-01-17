@@ -40,7 +40,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
                 Session["dtDataDb"] = dtDatabase;
 
-                ddlSourceDb.SelectedValue = "2";
+                ddlSourceDb.SelectedValue = "1";
                 ddlTargetDb.SelectedValue = "3";
 
                 ddlSourceDb_SelectedIndexChanged(sender, e);
@@ -189,13 +189,20 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             #endregion
 
+            //表
             DataTable dtTable = bll.GetTableList(strSouceConnection);
             grvTableList.DataSource = dtTable;
             grvTableList.DataBind();
 
+            //存储过程
             DataTable dtProcedure = bll.GetProcedureOrFunctionList(strSouceConnection, 1);
             grvProcedureList.DataSource = dtProcedure;
             grvProcedureList.DataBind();
+
+            //函数
+            DataTable dtFunction = bll.GetProcedureOrFunctionList(strSouceConnection, 2);
+            grvFunctionList.DataSource = dtFunction;
+            grvFunctionList.DataBind();
         }
         #endregion
 
@@ -234,6 +241,9 @@ namespace Treasure.Main.SmallTool.DataSynchron
             //获取要同步的存储过程
             List<string> lstProcedureList = grvProcedureList.GetSelectedFieldValues(new string[] { DataSynchronVO.ProcedureName }).ConvertAll<string>(c => string.Format("{0}", c));
 
+            //获取要同步的函数
+            List<string> lstFunctionList = grvFunctionList.GetSelectedFieldValues(new string[] { DataSynchronVO.FunctionName }).ConvertAll<string>(c => string.Format("{0}", c));
+
             try
             {
                 switch (synchronType)
@@ -270,6 +280,14 @@ namespace Treasure.Main.SmallTool.DataSynchron
                         }
                         SynchronProcedure(lstProcedureList);
                         break;
+                    case "函数同步":
+                        if (lstFunctionList.Count == 0)
+                        {
+                            MessageBox.Show("您还没有选择要同步的数据");
+                            return;
+                        }
+                        SynchronFunction(lstFunctionList);
+                        break;
                 }
 
                 MessageBox.Show("同步成功");
@@ -282,55 +300,26 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
         #endregion
 
-        #region 表查询
-        /// <summary>
-        /// 表查询
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnTableSearch_Click(object sender, EventArgs e)
-        {
-            string pSourceConnection = hdnSourceConnection.Value;
-            string pTableName = txtTableName.Text.Trim();
-
-            if (string.IsNullOrEmpty(pSourceConnection) == true)
-            {
-                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
-                return;
-            }
-
-            DataTable dt = bll.GetTableList(pSourceConnection, pTableName);
-            grvTableList.DataSource = dt;
-            grvTableList.DataBind();
-        }
-        #endregion
-
-        #region 存储过程查询
-        /// <summary>
-        /// 存储过程查询
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnProcedureSearch_Click(object sender, EventArgs e)
-        {
-            string pSourceConnection = hdnSourceConnection.Value;
-            string pProcedureName = txtProcedureName.Text.Trim();
-
-            if (string.IsNullOrEmpty(pSourceConnection) == true)
-            {
-                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
-                return;
-            }
-
-            DataTable dt = bll.GetProcedureOrFunctionList(pSourceConnection, 1, pProcedureName);
-            grvProcedureList.DataSource = dt;
-            grvProcedureList.DataBind();
-        }
-        #endregion
-
         #endregion
 
         #region 自定义事件
+
+        #region 函数同步
+        /// <summary>
+        /// 函数同步
+        /// </summary>
+        /// <param name="lstSourceFunction"></param>
+        private void SynchronFunction(List<string> lstSourceFunction)
+        {
+            string pSourceConnection = hdnSourceConnection.Value;
+            string pTargetConnection = hdnTargetConnection.Value;
+
+            foreach (string str in lstSourceFunction)
+            {
+                bll.SynchronFunction(pSourceConnection, pTargetConnection, 2, str);
+            }
+        }
+        #endregion
 
         #region 存储过程同步
         /// <summary>
@@ -344,7 +333,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             foreach (string str in lstSourceProcedure)
             {
-                bll.SynchronProcedure(pSourceConnection, 1, pTargetConnection, str);
+                bll.SynchronProcedure(pSourceConnection, pTargetConnection, 1, str);
             }
         }
         #endregion
@@ -672,7 +661,76 @@ namespace Treasure.Main.SmallTool.DataSynchron
         }
         #endregion
 
+        #region 表查询
+        /// <summary>
+        /// 表查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnTableSearch_Click(object sender, EventArgs e)
+        {
+            string pSourceConnection = hdnSourceConnection.Value;
+            string pTableName = txtTableName.Text.Trim();
+
+            if (string.IsNullOrEmpty(pSourceConnection) == true)
+            {
+                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
+                return;
+            }
+
+            DataTable dt = bll.GetTableList(pSourceConnection, pTableName);
+            grvTableList.DataSource = dt;
+            grvTableList.DataBind();
+        }
         #endregion
 
+        #region 存储过程查询
+        /// <summary>
+        /// 存储过程查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnProcedureSearch_Click(object sender, EventArgs e)
+        {
+            string pSourceConnection = hdnSourceConnection.Value;
+            string pProcedureName = txtProcedureName.Text.Trim();
+
+            if (string.IsNullOrEmpty(pSourceConnection) == true)
+            {
+                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
+                return;
+            }
+
+            DataTable dt = bll.GetProcedureOrFunctionList(pSourceConnection, 1, pProcedureName);
+            grvProcedureList.DataSource = dt;
+            grvProcedureList.DataBind();
+        }
+        #endregion
+
+        #region 查询函数
+        /// <summary>
+        /// 查询函数
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnFunction_Click(object sender, EventArgs e)
+        {
+            string pSourceConnection = hdnSourceConnection.Value;
+            string pFunctionName = txtFunction.Text.Trim();
+
+            if (string.IsNullOrEmpty(pSourceConnection) == true)
+            {
+                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
+                return;
+            }
+
+            DataTable dt = bll.GetProcedureOrFunctionList(pSourceConnection, 2, pFunctionName);
+            grvProcedureList.DataSource = dt;
+            grvProcedureList.DataBind();
+        }
+
+        #endregion
+
+        #endregion
     }
 }

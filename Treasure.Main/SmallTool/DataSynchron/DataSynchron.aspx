@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
 </head>
@@ -120,7 +119,7 @@
                         <br />
                     </td>
                     <td style="vertical-align: top;">
-                        <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="0">
+                        <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="2">
                             <TabPages>
                                 <dx:TabPage Text="表">
                                     <ContentCollection>
@@ -136,18 +135,18 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-<dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">
-    <SettingsPager Mode="ShowAllRecords">
-    </SettingsPager>
-    <Columns>
-        <dx:GridViewDataTextColumn Caption="表名" FieldName="TableName" ReadOnly="True" VisibleIndex="1">
-        </dx:GridViewDataTextColumn>
-        <dx:GridViewDataTextColumn Caption="描述" FieldName="TableDescription" VisibleIndex="2">
-        </dx:GridViewDataTextColumn>
-        <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
-        </dx:GridViewCommandColumn>
-    </Columns>
-</dx:ASPxGridView>
+                                                        <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">
+                                                            <SettingsPager Mode="ShowAllRecords">
+                                                            </SettingsPager>
+                                                            <Columns>
+                                                                <dx:GridViewDataTextColumn Caption="表名" FieldName="TableName" ReadOnly="True" VisibleIndex="1">
+                                                                </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewDataTextColumn Caption="描述" FieldName="TableDescription" VisibleIndex="2">
+                                                                </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
+                                                                </dx:GridViewCommandColumn>
+                                                            </Columns>
+                                                        </dx:ASPxGridView>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -168,18 +167,50 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-<dx:ASPxGridView ID="grvProcedureList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">
-    <SettingsPager Mode="ShowAllRecords">
-    </SettingsPager>
-    <Columns>
-        <dx:GridViewDataTextColumn Caption="存储过程名称" FieldName="ProcedureName" ReadOnly="True" VisibleIndex="1">
-        </dx:GridViewDataTextColumn>
-        <dx:GridViewDataTextColumn Caption="描述" FieldName="ProcedureDescription" VisibleIndex="2">
-        </dx:GridViewDataTextColumn>
-        <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
-        </dx:GridViewCommandColumn>
-    </Columns>
-</dx:ASPxGridView>
+                                                        <dx:ASPxGridView ID="grvProcedureList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">
+                                                            <SettingsPager Mode="ShowAllRecords">
+                                                            </SettingsPager>
+                                                            <Columns>
+                                                                <dx:GridViewDataTextColumn Caption="存储过程名称" FieldName="ProcedureName" ReadOnly="True" VisibleIndex="1">
+                                                                </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewDataTextColumn Caption="描述" FieldName="ProcedureDescription" VisibleIndex="2">
+                                                                </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
+                                                                </dx:GridViewCommandColumn>
+                                                            </Columns>
+                                                        </dx:ASPxGridView>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </dx:ContentControl>
+                                    </ContentCollection>
+                                </dx:TabPage>
+                                <dx:TabPage Text="函数">
+                                    <ContentCollection>
+                                        <dx:ContentControl runat="server">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td>函数：
+                                                        <asp:TextBox ID="txtFunction" runat="server" Width="278px"></asp:TextBox>
+                                                        <asp:Button ID="btnFunction" runat="server" Text="查询" OnClick="btnFunction_Click" />
+                                                        <br />
+                                                        <br />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <dx:ASPxGridView ID="grvFunctionList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">
+                                                            <SettingsPager Mode="ShowAllRecords">
+                                                            </SettingsPager>
+                                                            <Columns>
+                                                                <dx:GridViewDataTextColumn Caption="函数名称" FieldName="FunctionName" ReadOnly="True" VisibleIndex="1">
+                                                                </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewDataTextColumn Caption="描述" FieldName="FunctionDescription" VisibleIndex="2">
+                                                                </dx:GridViewDataTextColumn>
+                                                                <dx:GridViewCommandColumn ShowSelectCheckbox="True" VisibleIndex="0" SelectAllCheckboxMode="Page">
+                                                                </dx:GridViewCommandColumn>
+                                                            </Columns>
+                                                        </dx:ASPxGridView>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -195,6 +226,7 @@
                             <asp:ListItem>数据完全同步</asp:ListItem>
                             <asp:ListItem>数据增量同步(按ID)</asp:ListItem>
                             <asp:ListItem>存储过程同步</asp:ListItem>
+                            <asp:ListItem>函数同步</asp:ListItem>
                         </asp:RadioButtonList>
                         <br />
                         <br />

@@ -184,11 +184,11 @@ namespace Treasure.BLL.General
             DataRow row1 = dtDatabase.NewRow();
             row1[GeneralVO.Id] = 1;
             row1[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
-            row1[GeneralVO.No] = "小采购测试版_GSP_Test_95";
-            row1[DataSynchronVO.Ip] = "172.16.96.95";
+            row1[GeneralVO.No] = "小采购测试版_GSP_TEST_55\\sql2014";
+            row1[DataSynchronVO.Ip] = "172.16.96.55\\sql2014";
             row1[DataSynchronVO.LoginName] = "csharp";
             row1[DataSynchronVO.Pwd] = "csharp.123";
-            row1[DataSynchronVO.DbName] = "GSP_Test";
+            row1[DataSynchronVO.DbName] = "GSP_TEST";
             dtDatabase.Rows.Add(row1);
 
             return dtDatabase;

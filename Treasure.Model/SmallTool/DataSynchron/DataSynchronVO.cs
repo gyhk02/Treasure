@@ -11,7 +11,6 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string ISIGN = "ISIGN";
 
         //用于数据库链接
-
         public static string Ip = "IP";
         public static string LoginName = "LOGIN_NAME";
         public static string Pwd = "PASSWORD";
@@ -50,6 +49,10 @@ namespace Treasure.Model.SmallTool.DataSynchron
         //存储过程
         public static string ProcedureName = "ProcedureName";
         public static string ProcedureDescription = "ProcedureDescription";
+
+        //函数
+        public static string FunctionName = "FunctionName";
+        public static string FunctionDescription = "FunctionDescription";
 
         #region 约束
 

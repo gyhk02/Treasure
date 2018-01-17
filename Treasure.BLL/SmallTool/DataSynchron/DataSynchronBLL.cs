@@ -18,23 +18,74 @@ namespace Treasure.BLL.SmallTool.DataSynchron
     /// </summary>
     public class DataSynchronBLL : BasicBLL
     {
+        #region 函数同步
+        /// <summary>
+        /// 函数同步
+        /// </summary>
+        /// <param name="pSourceConnection">源数据库链接</param>
+        /// <param name="pTargetConnection">目标数据库链接</param>
+        /// <param name="pType">类型 1:存储过程 2:函数</param>
+        /// <param name="pName">函数名称</param>
+        /// <returns></returns>
+        public bool SynchronFunction(string pSourceConnection, string pTargetConnection, int pType, string pName)
+        {
+            bool result = false;
+
+            string strTmp = "";
+
+            string strsql = GetProcedureOrFunctionText(pSourceConnection, pType, pName);
+
+            if (JudgeExistProcedureOrFunction(pTargetConnection, pType, pName) == true)
+            {
+                strsql = strsql.Replace("CREATE FUNCTION", "ALTER FUNCTION");
+            }
+
+            try
+            {
+                SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            //记录sql语句
+            string type = "";
+            if (result == true)
+            {
+                type = "正常";
+            }
+            else
+            {
+                type = "异常";
+            }
+            string filePath = "Document/DataSynchronSql/SynchronFunction_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIMEYMDHMSF) + "_" + pName + ".txt";
+            string description = "函数" + pName + "：从" + pSourceConnection + "到" + pTargetConnection;
+            new FileHelper().WriteFile(filePath, description, strsql);
+
+            return result;
+        }
+        #endregion
+
         #region 存储过程同步
         /// <summary>
         /// 存储过程同步
         /// </summary>
         /// <param name="pSourceConnection">源数据库链接</param>
         /// <param name="pTargetConnection">目标数据库链接</param>
-        /// <param name="pName">存储过程名称</param>
+        /// <param name="pType">类型 1:存储过程 2:函数</param>
+        /// <param name="pName">函数名称</param>
         /// <returns></returns>
-        public bool SynchronProcedure(string pSourceConnection, int pType, string pTargetConnection, string pName)
+        public bool SynchronProcedure(string pSourceConnection, string pTargetConnection, int pType, string pName)
         {
             bool result = false;
 
             string strTmp = "";
 
-            string strsql = GetProcedureText(pSourceConnection, pType, pName);
+            string strsql = GetProcedureOrFunctionText(pSourceConnection, pType, pName);
 
-            if (JudgeExistProcedure(pTargetConnection, pType, pName) == true)
+            if (JudgeExistProcedureOrFunction(pTargetConnection, pType, pName) == true)
             {
                 strsql = strsql.Replace("CREATE PROCEDURE", "ALTER PROCEDURE");
             }
@@ -711,17 +762,40 @@ where o.type = 'U' " + condition;
         #endregion
 
         #region 获取存储过程或函数的名称和描述
-
+        /// <summary>
+        /// 获取存储过程或函数的名称和描述
+        /// </summary>
+        /// <param name="pConnection">数据库链接</param>
+        /// <param name="pType">类型 1:存储过程 2:函数</param>
+        /// <param name="pList">名称列表</param>
+        /// <param name="pName">名称</param>
+        /// <returns></returns>
         public DataTable GetProcedureOrFunctionList(string pConnection, int pType)
         {
             return GetProcedureOrFunctionList(pConnection, pType, null, null);
         }
 
+        /// <summary>
+        /// 获取存储过程或函数的名称和描述
+        /// </summary>
+        /// <param name="pConnection">数据库链接</param>
+        /// <param name="pType">类型 1:存储过程 2:函数</param>
+        /// <param name="pList">名称列表</param>
+        /// <param name="pName">名称</param>
+        /// <returns></returns>
         public DataTable GetProcedureOrFunctionList(string pConnection, int pType, string pName)
         {
             return GetProcedureOrFunctionList(pConnection, pType, null, pName);
         }
 
+        /// <summary>
+        /// 获取存储过程或函数的名称和描述
+        /// </summary>
+        /// <param name="pConnection">数据库链接</param>
+        /// <param name="pType">类型 1:存储过程 2:函数</param>
+        /// <param name="pList">名称列表</param>
+        /// <param name="pName">名称</param>
+        /// <returns></returns>
         public DataTable GetProcedureOrFunctionList(string pConnection, int pType, List<string> pList)
         {
             return GetProcedureOrFunctionList(pConnection, pType, pList, null);
@@ -739,42 +813,63 @@ where o.type = 'U' " + condition;
         {
             DataTable result = new DataTable();
 
-            string strType = EnumerationHelper.GetEnumDes<EnumerationHelper.DBStructureType>(pType);
-
-            string condition = "";
-
-            if (string.IsNullOrEmpty(pName) == false)
+            try
             {
-                if (pName.Contains(",") == true)
-                {
-                    condition = " and o.name in('" + pName.Replace(",", "','") + "')";
-                }
-                else
-                {
-                    condition = " and o.name like '%" + pName + "%'";
-                }
-            }
+                string strType = EnumerationHelper.GetEnumDes<EnumerationHelper.DBStructureType>(pType);
 
-            if (pList != null)
-            {
-                if (pList.Count > 0)
-                {
-                    string str = string.Join("','", pList.ToArray());
-                    condition = "'" + str + "'";
-                    condition = " and name in(" + condition + ")";
-                }
-            }
+                string condition = "";
 
-            string sql = @"
-select o.object_id " + GeneralVO.Id + ", o.name " + DataSynchronVO.ProcedureName + ", ep.value " + DataSynchronVO.ProcedureDescription + @"
+                if (string.IsNullOrEmpty(pName) == false)
+                {
+                    if (pName.Contains(",") == true)
+                    {
+                        condition = " and o.name in('" + pName.Replace(",", "','") + "')";
+                    }
+                    else
+                    {
+                        condition = " and o.name like '%" + pName + "%'";
+                    }
+                }
+
+                if (pList != null)
+                {
+                    if (pList.Count > 0)
+                    {
+                        string str = string.Join("','", pList.ToArray());
+                        condition = "'" + str + "'";
+                        condition = " and name in(" + condition + ")";
+                    }
+                }
+
+                string strName = "";
+                string strDescription = "";
+                switch (pType)
+                {
+                    case 1:
+                        strName = DataSynchronVO.ProcedureName;
+                        strDescription = DataSynchronVO.ProcedureDescription;
+                        break;
+                    case 2:
+                        strName = DataSynchronVO.FunctionName;
+                        strDescription = DataSynchronVO.FunctionDescription;
+                        break;
+                }
+
+                string sql = @"
+select o.object_id " + GeneralVO.Id + ", o.name " + strName + ", ep.value " + strDescription + @"
 from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0 and ep.name = 'MS_Description'
 where o.type = @ObjectType" + condition;
 
-            List<SqlParameter> paras = new List<SqlParameter>();
-            paras.Add(new SqlParameter("@ObjectType", strType));
+                List<SqlParameter> paras = new List<SqlParameter>();
+                paras.Add(new SqlParameter("@ObjectType", strType));
 
-            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, paras.ToArray());
+                result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, paras.ToArray());
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
 
             return result;
         }
@@ -876,7 +971,7 @@ DROP TABLE #Sort
         /// <param name="pType">类型 1:存储过程 2:函数</param>
         /// <param name="pName">名称</param>
         /// <returns></returns>
-        private string GetProcedureText(string pConnString, int pType, string pName)
+        private string GetProcedureOrFunctionText(string pConnString, int pType, string pName)
         {
             string result = "";
 
@@ -915,7 +1010,7 @@ select @text";
         /// <param name="pType">类型 1:存储过程 2:函数</param>
         /// <param name="pName">名称</param>
         /// <returns></returns>
-        private bool JudgeExistProcedure(string pConnString, int pType, string pName)
+        private bool JudgeExistProcedureOrFunction(string pConnString, int pType, string pName)
         {
             bool result = false;
 
