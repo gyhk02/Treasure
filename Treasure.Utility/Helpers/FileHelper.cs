@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms;
 using Treasure.Model.General;
 namespace Treasure.Utility.Helpers
 {
@@ -147,6 +148,47 @@ namespace Treasure.Utility.Helpers
             return 0;
         }
 
+        #endregion
+
+        #region 选择文件
+        /// <summary>
+        /// 选择文件
+        /// </summary>
+        /// <returns></returns>
+        public string SelectFile()
+        {
+            string path = string.Empty;
+            var openFileDialog = new OpenFileDialog()
+            {
+                Filter = "Files (*.*)|*.*"//如果需要筛选txt文件（"Files (*.txt)|*.txt"）
+            };
+            var result = openFileDialog.ShowDialog();
+
+            //临时注释
+            //if (result == true)
+            //{
+            //    path = openFileDialog.FileName;
+            //}
+
+            return path;
+        }
+        #endregion
+
+        #region 选择路径
+        /// <summary>
+        /// 选择路径
+        /// </summary>
+        /// <returns></returns>
+        public string SelectPath()
+        {
+            string path = string.Empty;
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                path = fbd.SelectedPath;
+            }
+            return path;
+        }
         #endregion
 
     }

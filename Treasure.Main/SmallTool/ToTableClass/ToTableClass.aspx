@@ -13,23 +13,25 @@
     <form id="form1" runat="server">
         <div>
             <div>命名空间：<asp:TextBox ID="txtNamespace" runat="server"></asp:TextBox></div>
-            <div>文件路径：<asp:FileUpload ID="fulGetPath" runat="server" /></div>
+            <div>文件路径：<asp:TextBox ID="txtSavePath" runat="server" Width="500px">E:\Win8Expand\c\IISFold\Treasure\Treasure.Model\Frame</asp:TextBox>
+                <asp:Button ID="btnGetPath" runat="server" Text="选择保存路径" OnClick="btnGetPath_Click" /></div>
             <table style="width: 100%;">
                 <tr>
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td>
-                        数据库：<asp:DropDownList ID="ddlDataBase" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlDataBase_SelectedIndexChanged"></asp:DropDownList>
+                    <td>数据库：<asp:DropDownList ID="ddlDataBase" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlDataBase_SelectedIndexChanged"></asp:DropDownList>
                         <asp:Button ID="btnConnection" runat="server" Text="连接" OnClick="btnConnection_Click" />
                         <asp:Label ID="lblShowConnectionResult" runat="server" Text=" "></asp:Label>
                         <br />
                         <br />
                         表名：<asp:TextBox ID="txtTableName" runat="server" Width="278px"></asp:TextBox>
                         <asp:Button ID="btnSearch" runat="server" Text="查询" OnClick="btnSearch_Click" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:Button ID="btnConfirm" runat="server" Text="生成Model类" OnClick="btnConfirm_Click" />
                         <br />
                         <br />
-                        <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False">
+                        <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">
                             <SettingsPager Mode="ShowAllRecords">
                             </SettingsPager>
                             <Columns>
@@ -47,7 +49,6 @@
                 </tr>
             </table>
             <div>
-                <asp:Button ID="btnConfirm" runat="server" Text="生成Model类" OnClick="btnConfirm_Click" />
                 <asp:HiddenField ID="hdnConnection" Value="" runat="server" />
             </div>
         </div>

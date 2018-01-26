@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Treasure.BLL.General;
 using Treasure.BLL.SmallTool.DataSynchron;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
@@ -19,7 +20,8 @@ namespace Treasure.Main.SmallTool.evq
 
         string priSourceConnection = "Data Source=172.16.96.48;Initial Catalog=Frame;User ID=csharp;Password=csharp.123;Persist Security Info=True;";
         string priTargetConnection = "Data Source=172.16.96.55;Initial Catalog=Frame;User ID=programmer;Password=123456;Persist Security Info=True;";
-        DataSynchronBLL priBLL = new DataSynchronBLL();
+        DataSynchronBLL bllSynchron = new DataSynchronBLL();
+        DataBaseBLL bllDataBase = new DataBaseBLL();
         List<string> priSourceTableList = new List<string>();
 
         #endregion
@@ -48,8 +50,8 @@ namespace Treasure.Main.SmallTool.evq
                 foreach (string str in lstTableName)
                 {
                     //获取要处理的数据
-                    DataTable dtSource = priBLL.GetTableAllInfo(priSourceConnection, str);
-                    DataTable dtTarget = priBLL.GetTableAllInfo(priTargetConnection, str);
+                    DataTable dtSource = bllSynchron.GetTableAllInfo(priSourceConnection, str);
+                    DataTable dtTarget = bllSynchron.GetTableAllInfo(priTargetConnection, str);
 
                     List<DataRow> lstSourceData = new List<DataRow>();
 
@@ -86,7 +88,7 @@ namespace Treasure.Main.SmallTool.evq
                     }
                     else
                     {
-                        if (priBLL.InsertIncrementData(priSourceConnection, priTargetConnection, str, lstSourceData) == false)
+                        if (bllSynchron.InsertIncrementData(priSourceConnection, priTargetConnection, str, lstSourceData) == false)
                         {
                             clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
                         }
@@ -117,8 +119,8 @@ namespace Treasure.Main.SmallTool.evq
         {
             DataTable dtResult = new DataTable();
 
-            DataTable dtSourceTableStructure = priBLL.GetTableInfoByName(1, priSourceConnection, priSourceTableList);
-            DataTable dtTargetTableStructure = priBLL.GetTableInfoByName(1, priTargetConnection, priSourceTableList);
+            DataTable dtSourceTableStructure = bllDataBase.GetTableInfoByName(1, priSourceConnection, priSourceTableList);
+            DataTable dtTargetTableStructure = bllDataBase.GetTableInfoByName(1, priTargetConnection, priSourceTableList);
 
             #region DataTable初始化
 

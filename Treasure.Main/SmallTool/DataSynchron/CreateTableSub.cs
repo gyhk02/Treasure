@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using Treasure.BLL.General;
 using Treasure.BLL.SmallTool.DataSynchron;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
@@ -14,6 +15,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
     public class CreateTableSub
     {
         DataSynchronBLL bll = new DataSynchronBLL();
+        DataBaseBLL bllDataBase = new DataBaseBLL();
 
         #region 创建表
         /// <summary>
@@ -76,7 +78,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             string sql = "";
 
-            DataTable dt = bll.GetTableInfoByName(4, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(4, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
                 sql = sql + @"
@@ -110,7 +112,7 @@ EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].
 
             string sql = "";
 
-            DataTable dt = bll.GetTableInfoByName(3, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(3, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
                 sql = sql + @"
@@ -146,7 +148,7 @@ EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].
 
             string sql = "";
 
-            DataTable dt = bll.GetTableInfoByName(2, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(2, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
                 string constraintType = row[DataSynchronVO.ConstraintType].ToString().Trim().ToUpper();
@@ -204,7 +206,7 @@ ALTER TABLE [dbo].[" + pSourceTable + "] ADD CONSTRAINT";
 
             string sql = "";
 
-            DataTable dt = bll.GetTableInfoByName(2, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(2, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
                 string constraintType = row[DataSynchronVO.ConstraintType].ToString().Trim().ToUpper();
@@ -258,7 +260,7 @@ IF NOT EXISTS(
 )
 CREATE TABLE [dbo].[" + pSourceTable + "](" + ConstantVO.ENTER_STRING;
 
-            DataTable dt = bll.GetTableInfoByName(1, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(1, pSourceConnection, pSourceTable);
             foreach (DataRow row in dt.Rows)
             {
                 string filedtype = row[DataSynchronVO.FiledType].ToString().Trim().ToLower();

@@ -31,13 +31,22 @@ namespace Treasure.Main.SmallTool.ToTableClass {
         protected global::System.Web.UI.WebControls.TextBox txtNamespace;
         
         /// <summary>
-        /// fulGetPath 控件。
+        /// txtSavePath 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fulGetPath;
+        protected global::System.Web.UI.WebControls.TextBox txtSavePath;
+        
+        /// <summary>
+        /// btnGetPath 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGetPath;
         
         /// <summary>
         /// ddlDataBase 控件。
@@ -85,15 +94,6 @@ namespace Treasure.Main.SmallTool.ToTableClass {
         protected global::System.Web.UI.WebControls.Button btnSearch;
         
         /// <summary>
-        /// grvTableList 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxGridView grvTableList;
-        
-        /// <summary>
         /// btnConfirm 控件。
         /// </summary>
         /// <remarks>
@@ -101,6 +101,15 @@ namespace Treasure.Main.SmallTool.ToTableClass {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnConfirm;
+        
+        /// <summary>
+        /// grvTableList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxGridView grvTableList;
         
         /// <summary>
         /// hdnConnection 控件。

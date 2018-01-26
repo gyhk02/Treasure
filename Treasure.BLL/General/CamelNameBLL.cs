@@ -15,7 +15,7 @@ namespace Treasure.BLL.General
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private string getSmallCamelName(string input)
+        public string getSmallCamelName(string input)
         {
             string[] arr = input.Split('_');
             string name = "";
@@ -41,7 +41,7 @@ namespace Treasure.BLL.General
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private string getBigCamelName(string input)
+        public string getBigCamelName(string input)
         {
             string[] arr = input.Split('_');
             string name = "";
