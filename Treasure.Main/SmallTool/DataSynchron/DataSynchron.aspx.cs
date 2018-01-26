@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using Treasure.BLL.General;
 using Treasure.BLL.SmallTool.DataSynchron;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
@@ -23,6 +24,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
         #region 自定义变量
 
         DataSynchronBLL bll = new DataSynchronBLL();
+        DataBaseBLL bllDataBase = new DataBaseBLL();
 
         #endregion
 
@@ -33,7 +35,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             if (!IsPostBack)
             {
                 //绑定数据库
-                DataTable dtDatabase = bll.GetDatabaseLinks();
+                DataTable dtDatabase = bllDataBase.GetDatabaseLinks();
 
                 DropDownListExtend.BindToShowNo(ddlSourceDb, dtDatabase, false);
                 DropDownListExtend.BindToShowNo(ddlTargetDb, dtDatabase, false);
@@ -138,23 +140,15 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string strPwd = txtSourcePwd.Text.Trim();
             string strDbName = txtSourceDbName.Text.Trim();
 
-            SqlConnection conn = new SqlConnection();
             string strSouceConnection = "Data Source=" + strIp + ";Initial Catalog=" + strDbName + ";User ID=" + strLoginName + ";Password=" + strPwd + ";Persist Security Info=True;";
-            conn.ConnectionString = strSouceConnection;
-            try
+            if (bllDataBase.JudgeConneStr(strSouceConnection) == true)
             {
-                if (conn.State == ConnectionState.Closed)
-                {
-                    conn.Open();
-                }
-                conn.Close();
                 hdnSourceConnection.Value = strSouceConnection;
                 lblMessage.Text = lblMessage.Text + "源据库连接成功。" + ConstantVO.ENTER_BR;
             }
-            catch (Exception ex)
+            else
             {
-                lblMessage.Text = lblMessage.Text + "连接源数据库异常：" + ex.Message + ConstantVO.ENTER_BR;
-                conn.Close();
+                lblMessage.Text = lblMessage.Text + "源据库连接异常：" + ConstantVO.ENTER_BR;
                 return;
             }
 
@@ -167,30 +161,22 @@ namespace Treasure.Main.SmallTool.DataSynchron
             strPwd = txtTargetPwd.Text.Trim();
             strDbName = txtTargetDbName.Text.Trim();
 
-            conn = new SqlConnection();
             string strTargetConnection = "Data Source=" + strIp + ";Initial Catalog=" + strDbName + ";User ID=" + strLoginName + ";Password=" + strPwd + ";Persist Security Info=True;";
-            conn.ConnectionString = strTargetConnection;
-            try
+            if (bllDataBase.JudgeConneStr(strTargetConnection) == true)
             {
-                if (conn.State == ConnectionState.Closed)
-                {
-                    conn.Open();
-                }
-                conn.Close();
-                hdnTargetConnection.Value = strTargetConnection;
-                lblMessage.Text = lblMessage.Text + "目标据库连接成功。";
+                hdnSourceConnection.Value = strSouceConnection;
+                lblMessage.Text = lblMessage.Text + "目标据库连接成功。" + ConstantVO.ENTER_BR;
             }
-            catch (Exception ex)
+            else
             {
-                lblMessage.Text = lblMessage.Text + "连接目标据库异常：" + ex.Message;
-                conn.Close();
+                lblMessage.Text = lblMessage.Text + "目标据库连接异常：" + ConstantVO.ENTER_BR;
                 return;
             }
-
+            
             #endregion
 
             //表
-            DataTable dtTable = bll.GetTableList(strSouceConnection);
+            DataTable dtTable = bllDataBase.GetTableList(strSouceConnection);
             grvTableList.DataSource = dtTable;
             grvTableList.DataBind();
 
@@ -678,7 +664,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 return;
             }
 
-            DataTable dt = bll.GetTableList(pSourceConnection, pTableName);
+            DataTable dt = bllDataBase.GetTableList(pSourceConnection, pTableName);
             grvTableList.DataSource = dt;
             grvTableList.DataBind();
         }

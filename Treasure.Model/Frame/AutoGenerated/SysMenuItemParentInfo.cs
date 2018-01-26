@@ -10,7 +10,8 @@ namespace Treasure.Model.Frame
     {
         public static class Fields
         {
-            public static string ID = "ID";
+            public static string id = "ID";
+            public static string no = "NO";
         }
     }
 }

@@ -86,6 +86,7 @@
     <Content Include="Document\常用代码.txt" />
     <Content Include="Document\特殊文件定位.txt" />
     <Content Include="Document\解决方案包含的内容.txt" />
+    <Content Include="Entity.aspx" />
     <Content Include="Frame\Default.aspx" />
     <Content Include="Frame\Left.aspx" />
     <Content Include="Frame\Login.aspx" />
@@ -108,6 +109,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Entity.aspx.cs">
+      <DependentUpon>Entity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Entity.aspx.designer.cs">
+      <DependentUpon>Entity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Frame\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

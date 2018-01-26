@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Treasure.BLL.General;
 using Treasure.BLL.SmallTool.DataSynchron;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
@@ -19,6 +20,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
         #region 自定义变量
 
         DataSynchronBLL bll = new DataSynchronBLL();
+        DataBaseBLL bllDataBase = new DataBaseBLL();
 
         #endregion
 
@@ -29,7 +31,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             if (!IsPostBack)
             {
                 //绑定数据库
-                DataTable dtDatabase = bll.GetDatabaseLinks();
+                DataTable dtDatabase = bllDataBase.GetDatabaseLinks();
                 DropDownListExtend.BindToShowNo(ddlSourceDb, dtDatabase, false);
 
                 Session["dtDataDb"] = dtDatabase;
@@ -64,7 +66,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             if (string.IsNullOrEmpty(strCode) == false)
             {
-                DataTable dtTableList = bll.GetTableList(strSouceConnection);
+                DataTable dtTableList = bllDataBase.GetTableList(strSouceConnection);
                 foreach (DataRow row in dtTableList.Rows)
                 {
                     string tableName = row[DataSynchronVO.TableName].ToString();

@@ -1,3 +1,4 @@
 ﻿
 Treasure.Utility.Helpers.SQLHelper		通用方法；包括 增、删、改、查；与数据库打交道
-Treasure.BLL.General.BasicBLL			通用方法中转站
+Treasure.BLL.General.BasicBLL			通用方法中转站：包含 增、删、改、查
+Treasure.BLL.General.DataBaseBLL		数据库相关操作

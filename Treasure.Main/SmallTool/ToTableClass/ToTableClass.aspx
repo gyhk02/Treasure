@@ -16,14 +16,19 @@
             <div>文件路径：<asp:FileUpload ID="fulGetPath" runat="server" /></div>
             <table style="width: 100%;">
                 <tr>
-                    <td>表名：<asp:TextBox ID="txtTableName" runat="server" Width="278px"></asp:TextBox>
-                        <asp:Button ID="btnSearch" runat="server" Text="查询" OnClick="btnSearch_Click" />
-                        <br />
-                        <br />
-                    </td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr>
                     <td>
+                        数据库：<asp:DropDownList ID="ddlDataBase" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlDataBase_SelectedIndexChanged"></asp:DropDownList>
+                        <asp:Button ID="btnConnection" runat="server" Text="连接" OnClick="btnConnection_Click" />
+                        <asp:Label ID="lblShowConnectionResult" runat="server" Text=" "></asp:Label>
+                        <br />
+                        <br />
+                        表名：<asp:TextBox ID="txtTableName" runat="server" Width="278px"></asp:TextBox>
+                        <asp:Button ID="btnSearch" runat="server" Text="查询" OnClick="btnSearch_Click" />
+                        <br />
+                        <br />
                         <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False">
                             <SettingsPager Mode="ShowAllRecords">
                             </SettingsPager>
@@ -42,7 +47,8 @@
                 </tr>
             </table>
             <div>
-                <asp:Button ID="btnConfirm" runat="server" Text="确认" />
+                <asp:Button ID="btnConfirm" runat="server" Text="生成Model类" OnClick="btnConfirm_Click" />
+                <asp:HiddenField ID="hdnConnection" Value="" runat="server" />
             </div>
         </div>
     </form>

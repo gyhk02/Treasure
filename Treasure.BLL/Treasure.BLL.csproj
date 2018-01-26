@@ -47,6 +47,8 @@
     <Compile Include="General\BasicWebBLL.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="General\CamelNameBLL.cs" />
+    <Compile Include="General\DataBaseBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmallTool\DataSynchron\DataSynchronBLL.cs" />
   </ItemGroup>
