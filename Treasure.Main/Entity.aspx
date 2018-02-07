@@ -37,6 +37,11 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
+                    <td>&nbsp;</td>
+                    <td><a href="SmallTool/DataSynchron/QueryUsedTables.aspx" target="_blank">查询表名</a></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
                     <td>EVQ</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>

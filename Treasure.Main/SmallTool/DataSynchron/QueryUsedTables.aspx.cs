@@ -46,6 +46,18 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
         #region 按钮
 
+        #region 清空表名
+        /// <summary>
+        /// 清空表名
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnClear_Click(object sender, EventArgs e)
+        {
+            txtTables.Text = "";
+        }
+        #endregion
+
         #region 查看用到哪些表
         /// <summary>
         /// 查看用到哪些表
@@ -173,6 +185,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string procedureName = obj.SelectedItem.Text;
 
             txtCode.Text = bll.GetProcedureOrFunctionText(connString, 1, procedureName);
+            txtTables.Text = "";
         }
         #endregion
 
@@ -198,6 +211,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
             return result;
         }
         #endregion
+
+   
 
         #endregion
 

@@ -90,6 +90,8 @@
                             <tr>
                                 <td>
                                     <asp:Button ID="btnQuery" runat="server" OnClick="btnQuery_Click" Text="查看用到哪些表" />
+                                    &nbsp;&nbsp;&nbsp;
+                                    <asp:Button ID="btnClear" runat="server" Text="清空表名" OnClick="btnClear_Click" />
                                 </td>
                             </tr>
                             <tr>
