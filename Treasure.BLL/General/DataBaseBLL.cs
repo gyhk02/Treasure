@@ -92,11 +92,11 @@ namespace Treasure.BLL.General
             DataRow row4 = dtDatabase.NewRow();
             row4[GeneralVO.Id] = 4;
             row4[DataSynchronVO.Version] = ConstantVO.OFFICIAL_VERSION;
-            row4[GeneralVO.No] = "ePDM_临时正式_56";
+            row4[GeneralVO.No] = "ePDM_测试库";
             row4[DataSynchronVO.Ip] = "172.16.96.56";
-            row4[DataSynchronVO.LoginName] = "sa";
-            row4[DataSynchronVO.Pwd] = "sa.123";
-            row4[DataSynchronVO.DbName] = "NERP_STD";
+            row4[DataSynchronVO.LoginName] = "erp";
+            row4[DataSynchronVO.Pwd] = "erp.123";
+            row4[DataSynchronVO.DbName] = "NERP_TEST";
             dtDatabase.Rows.Add(row4);
 
             DataRow row3 = dtDatabase.NewRow();
@@ -131,6 +131,68 @@ namespace Treasure.BLL.General
 
             return dtDatabase;
         }
+        #endregion
+
+        #region 通过数据库链接获取全部表的名称
+
+        /// <summary>
+        /// 通过数据库链接获取全部表的名称
+        /// </summary>
+        /// <param name="pConnection">数据库链接</param>
+        /// <returns>DataTable</returns>
+        public DataTable GetTableNameList(string pConnection)
+        {
+            return GetTableNameList(pConnection, null, null);
+        }
+
+        /// <summary>
+        /// 通过数据库链接获取全部表的名称
+        /// </summary>
+        /// <param name="pConnection">数据库链接</param>
+        /// <param name="pTableList">表名列表</param>
+        /// <param name="pTableName">
+        /// 表名
+        /// 逗号隔开：精确查询
+        /// 没用逗号：模糊查询</param>
+        /// <returns></returns>
+        private DataTable GetTableNameList(string pConnection, List<string> pTableList, string pTableName)
+        {
+            DataTable result = new DataTable();
+
+            string condition = "";
+
+            if (string.IsNullOrEmpty(pTableName) == false)
+            {
+                if (pTableName.Contains(",") == true)
+                {
+                    condition = " and o.name in('" + pTableName.Replace(",", "','") + "')";
+                }
+                else
+                {
+                    condition = " and o.name like '%" + pTableName + "%'";
+                }
+            }
+
+            if (pTableList != null)
+            {
+                if (pTableList.Count > 0)
+                {
+                    string str = string.Join("','", pTableList.ToArray());
+                    condition = "'" + str + "'";
+                    condition = " and o.name in(" + condition + ")";
+                }
+            }
+
+            string sql = @"
+select distinct o.object_id " + GeneralVO.Id + ", o.name " + DataSynchronVO.TableName + @"
+from sys.objects o
+where o.type = 'U' " + condition;
+
+            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
+
+            return result;
+        }
+
         #endregion
 
         #region 通过数据库链接获取全部表的名称及描述
@@ -254,7 +316,6 @@ where o.type = 'U' " + condition;
         #endregion
 
         #region 根据表名获取表结构的一些相关信息
-
         /// <summary>
         /// 根据表名获取表结构的一些相关信息
         /// </summary>

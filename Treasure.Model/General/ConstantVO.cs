@@ -11,6 +11,11 @@ namespace Treasure.Model.General
     /// </summary>
     public static class ConstantVO
     {
+        public static string pleaseSelect = "请选择";
+
+        /// <summary>
+        /// 回车、换行
+        /// </summary>
         public static string ENTER_STRING = "\r\n";
         public static string ENTER_RN_JS = "\\r\\n";
         public static string ENTER_BR = "<br />";

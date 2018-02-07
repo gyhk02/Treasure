@@ -67,6 +67,42 @@ namespace Treasure.Main.SmallTool.DataSynchron {
         protected global::System.Web.UI.WebControls.TextBox txtSourceDbName;
         
         /// <summary>
+        /// btnConn 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnConn;
+        
+        /// <summary>
+        /// lblShowConnectionStatus 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblShowConnectionStatus;
+        
+        /// <summary>
+        /// btnGetProcedure 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGetProcedure;
+        
+        /// <summary>
+        /// ddlProcedure 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlProcedure;
+        
+        /// <summary>
         /// txtCode 控件。
         /// </summary>
         /// <remarks>

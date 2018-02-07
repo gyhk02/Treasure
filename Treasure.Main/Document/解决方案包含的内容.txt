@@ -21,4 +21,5 @@
 	g. 时间转换
 	h√. EVQ实用工具【evq】
 		A. Mian项目菜单同步(正式->测试)【MianSynchron】
+	i. 查询存储过程或代码中用到哪些表【QueryUsedTables】
 5. 实现BLL.ADD(MODEL), BLL.UPDATE(ID,MODEL), BLL.DELETE(ID)

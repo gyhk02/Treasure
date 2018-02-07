@@ -11,10 +11,6 @@ namespace Treasure.Utility.Extend
 {
     public static class DropDownListExtend
     {
-        static string pleaseSelect = "请选择";
-        static string strId = "ID";
-        static string strNo = "NO";
-        static string strName = "NAME";
 
         #region 绑定下拉
         /// <summary>
@@ -32,7 +28,7 @@ namespace Treasure.Utility.Extend
 
             if (hasPleaseSelect)
             {
-                ddl.SelectedValue = pleaseSelect;
+                ddl.SelectedValue = ConstantVO.pleaseSelect;
             }
         }
         #endregion
@@ -46,15 +42,18 @@ namespace Treasure.Utility.Extend
         /// <param name="hasPleaseSelect">是否有请选择</param>
         public static void BindToShowName(this DropDownList ddl, DataTable dt, bool hasPleaseSelect)
         {
+            if (hasPleaseSelect)
+            {
+                DataRow row = dt.NewRow();
+                row[GeneralVO.Id] = "-1";
+                row[GeneralVO.Name] = ConstantVO.pleaseSelect; 
+                dt.Rows.InsertAt(row, 0);
+            }
+
             ddl.DataSource = dt;
             ddl.DataValueField = GeneralVO.Id;
             ddl.DataTextField = GeneralVO.Name;
-            ddl.DataBind();
-
-            if (hasPleaseSelect)
-            {
-                ddl.SelectedValue = pleaseSelect;
-            }
+            ddl.DataBind();           
         }
         #endregion
 

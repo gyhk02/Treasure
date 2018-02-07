@@ -27,7 +27,7 @@
                             <tr>
                                 <td>数据库选项</td>
                                 <td>
-                                    <asp:DropDownList ID="ddlSourceDb" runat="server" AutoPostBack="True" Height="16px" OnSelectedIndexChanged="ddlSourceDb_SelectedIndexChanged">
+                                    <asp:DropDownList ID="ddlSourceDb" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlSourceDb_SelectedIndexChanged">
                                     </asp:DropDownList>
                                 </td>
                             </tr>
@@ -59,11 +59,29 @@
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                             </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <asp:Button ID="btnConn" runat="server" Text="测试数据库连接" OnClick="btnConn_Click" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <asp:Label ID="lblShowConnectionStatus" runat="server" Text="显示数据库链接情况"></asp:Label>
+                                </td>
+                            </tr>
 
                         </table>
                     </td>
                     <td style="vertical-align: top;">
                         <table class="auto-style1">
+                            <tr>
+                                <td>
+                                    <asp:Button ID="btnGetProcedure" runat="server" Text="获取存储过程列表" OnClick="btnGetProcedure_Click" />
+                                    &nbsp;&nbsp;&nbsp;
+                                    <asp:DropDownList ID="ddlProcedure" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProcedure_SelectedIndexChanged">
+                                    </asp:DropDownList>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
                                     <asp:TextBox ID="txtCode" runat="server" Height="214px" Width="837px" TextMode="MultiLine"></asp:TextBox>

@@ -31,8 +31,6 @@ namespace Treasure.BLL.SmallTool.DataSynchron
         {
             bool result = false;
 
-            string strTmp = "";
-
             string strsql = GetProcedureOrFunctionText(pSourceConnection, pType, pName);
 
             if (JudgeExistProcedureOrFunction(pTargetConnection, pType, pName) == true)
@@ -649,22 +647,19 @@ where o.type = 'U' " + condition;
                     }
                 }
 
-                string strName = "";
                 string strDescription = "";
                 switch (pType)
                 {
                     case 1:
-                        strName = DataSynchronVO.ProcedureName;
                         strDescription = DataSynchronVO.ProcedureDescription;
                         break;
                     case 2:
-                        strName = DataSynchronVO.FunctionName;
                         strDescription = DataSynchronVO.FunctionDescription;
                         break;
                 }
 
                 string sql = @"
-select o.object_id " + GeneralVO.Id + ", o.name " + strName + ", ep.value " + strDescription + @"
+select o.object_id " + GeneralVO.Id + ", o.name " + GeneralVO.Name + ", ep.value " + strDescription + @"
 from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0 and ep.name = 'MS_Description'
 where o.type = @ObjectType" + condition;
@@ -779,7 +774,7 @@ DROP TABLE #Sort
         /// <param name="pType">类型 1:存储过程 2:函数</param>
         /// <param name="pName">名称</param>
         /// <returns></returns>
-        private string GetProcedureOrFunctionText(string pConnString, int pType, string pName)
+        public string GetProcedureOrFunctionText(string pConnString, int pType, string pName)
         {
             string result = "";
 

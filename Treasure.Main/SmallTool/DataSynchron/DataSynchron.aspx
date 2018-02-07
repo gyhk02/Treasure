@@ -119,7 +119,7 @@
                         <br />
                     </td>
                     <td style="vertical-align: top;">
-                        <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="2">
+                        <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="1">
                             <TabPages>
                                 <dx:TabPage Text="表">
                                     <ContentCollection>
@@ -171,7 +171,7 @@
                                                             <SettingsPager Mode="ShowAllRecords">
                                                             </SettingsPager>
                                                             <Columns>
-                                                                <dx:GridViewDataTextColumn Caption="存储过程名称" FieldName="ProcedureName" ReadOnly="True" VisibleIndex="1">
+                                                                <dx:GridViewDataTextColumn Caption="存储过程名称" FieldName="NAME" ReadOnly="True" VisibleIndex="1">
                                                                 </dx:GridViewDataTextColumn>
                                                                 <dx:GridViewDataTextColumn Caption="描述" FieldName="ProcedureDescription" VisibleIndex="2">
                                                                 </dx:GridViewDataTextColumn>
@@ -203,7 +203,7 @@
                                                             <SettingsPager Mode="ShowAllRecords">
                                                             </SettingsPager>
                                                             <Columns>
-                                                                <dx:GridViewDataTextColumn Caption="函数名称" FieldName="FunctionName" ReadOnly="True" VisibleIndex="1">
+                                                                <dx:GridViewDataTextColumn Caption="函数名称" FieldName="NAME" ReadOnly="True" VisibleIndex="1">
                                                                 </dx:GridViewDataTextColumn>
                                                                 <dx:GridViewDataTextColumn Caption="描述" FieldName="FunctionDescription" VisibleIndex="2">
                                                                 </dx:GridViewDataTextColumn>

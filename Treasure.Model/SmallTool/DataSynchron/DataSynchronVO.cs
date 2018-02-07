@@ -47,11 +47,11 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string TargetDefaultValue = "TargetDefaultValue";
 
         //存储过程
-        public static string ProcedureName = "ProcedureName";
+        //public static string ProcedureName = "ProcedureName";
         public static string ProcedureDescription = "ProcedureDescription";
 
         //函数
-        public static string FunctionName = "FunctionName";
+        //public static string FunctionName = "FunctionName";
         public static string FunctionDescription = "FunctionDescription";
 
         #region 约束

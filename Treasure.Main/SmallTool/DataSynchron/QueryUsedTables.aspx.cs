@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Windows.Forms;
 using Treasure.BLL.General;
 using Treasure.BLL.SmallTool.DataSynchron;
 using Treasure.Model.General;
@@ -36,7 +37,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
                 Session["dtDataDb"] = dtDatabase;
 
-                ddlSourceDb.SelectedIndex = 0;
+                ddlSourceDb.SelectedIndex = 6;
                 ddlSourceDb_SelectedIndexChanged(sender, e);
             }
         }
@@ -53,12 +54,12 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <param name="e"></param>
         protected void btnQuery_Click(object sender, EventArgs e)
         {
-            //获取数据库链接字符串
-            string strIp = txtSourceIp.Text.Trim();
-            string strLoginName = txtSourceLoginName.Text.Trim();
-            string strPwd = txtSourcePwd.Text.Trim();
-            string strDbName = txtSourceDbName.Text.Trim();
-            string strSouceConnection = "Data Source=" + strIp + ";Initial Catalog=" + strDbName + ";User ID=" + strLoginName + ";Password=" + strPwd + ";Persist Security Info=True;";
+            string connString = GetConnString();
+            if (bllDataBase.JudgeConneStr(connString) == false)
+            {
+                MessageBox.Show("源据库连接异常");
+                return;
+            }
 
             //获取全部表
             List<string> lstTable = new List<string>();
@@ -66,7 +67,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             if (string.IsNullOrEmpty(strCode) == false)
             {
-                DataTable dtTableList = bllDataBase.GetTableList(strSouceConnection);
+                DataTable dtTableList = bllDataBase.GetTableNameList(connString);
                 foreach (DataRow row in dtTableList.Rows)
                 {
                     string tableName = row[DataSynchronVO.TableName].ToString();
@@ -111,10 +112,94 @@ namespace Treasure.Main.SmallTool.DataSynchron
         }
         #endregion
 
+        #region 测试数据库链接
+        /// <summary>
+        /// 测试数据库链接
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnConn_Click(object sender, EventArgs e)
+        {
+            string connString = GetConnString();
+
+            if (bllDataBase.JudgeConneStr(connString) == true)
+            {
+                lblShowConnectionStatus.Text = "源据库连接成功。" + ConstantVO.ENTER_BR;
+            }
+            else
+            {
+                lblShowConnectionStatus.Text = "源据库连接异常。" + ConstantVO.ENTER_BR;
+            }
+        }
         #endregion
 
+        #region 获取存储过程列表
+        /// <summary>
+        /// 获取存储过程列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnGetProcedure_Click(object sender, EventArgs e)
+        {
+            string connString = GetConnString();
+            if (bllDataBase.JudgeConneStr(connString) == false)
+            {
+                MessageBox.Show("源据库连接异常");
+                return;
+            }
 
+            DataTable dtProcedure = bll.GetProcedureOrFunctionList(connString, 1);
 
+            DropDownListExtend.BindToShowName(ddlProcedure, dtProcedure, true);
+        }
+        #endregion
+
+        #region 选择存储过程
+        /// <summary>
+        /// 选择存储过程
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlProcedure_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string connString = GetConnString();
+            if (bllDataBase.JudgeConneStr(connString) == false)
+            {
+                MessageBox.Show("源据库连接异常");
+                return;
+            }
+
+            DropDownList obj = sender as DropDownList;
+            string procedureName = obj.SelectedItem.Text;
+
+            txtCode.Text = bll.GetProcedureOrFunctionText(connString, 1, procedureName);
+        }
+        #endregion
+
+        #endregion
+
+        #region 自定义事件
+
+        #region 获取数据库连接字符串
+        /// <summary>
+        /// 获取数据库连接字符串
+        /// </summary>
+        /// <returns></returns>
+        private string GetConnString()
+        {
+            string result = "";
+
+            string strIp = txtSourceIp.Text.Trim();
+            string strLoginName = txtSourceLoginName.Text.Trim();
+            string strPwd = txtSourcePwd.Text.Trim();
+            string strDbName = txtSourceDbName.Text.Trim();
+            result = "Data Source=" + strIp + ";Initial Catalog=" + strDbName + ";User ID=" + strLoginName + ";Password=" + strPwd + ";Persist Security Info=True;";
+
+            return result;
+        }
+        #endregion
+
+        #endregion
 
     }
 }

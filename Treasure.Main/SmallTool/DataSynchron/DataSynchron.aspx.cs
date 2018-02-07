@@ -140,7 +140,9 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string strPwd = txtSourcePwd.Text.Trim();
             string strDbName = txtSourceDbName.Text.Trim();
 
-            string strSouceConnection = "Data Source=" + strIp + ";Initial Catalog=" + strDbName + ";User ID=" + strLoginName + ";Password=" + strPwd + ";Persist Security Info=True;";
+            string strSouceConnection = "Data Source=" + strIp + ";Initial Catalog=" + strDbName 
+                + ";User ID=" + strLoginName + ";Password=" + strPwd + ";Persist Security Info=True;";
+
             if (bllDataBase.JudgeConneStr(strSouceConnection) == true)
             {
                 hdnSourceConnection.Value = strSouceConnection;
@@ -156,15 +158,17 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             #region 检查目标数据库连接是否正确
 
-            strIp = txtTargetIp.Text.Trim();
-            strLoginName = txtTargetLoginName.Text.Trim();
-            strPwd = txtTargetPwd.Text.Trim();
-            strDbName = txtTargetDbName.Text.Trim();
+            string targetIp = txtTargetIp.Text.Trim();
+            string targetLoginName = txtTargetLoginName.Text.Trim();
+            string targetPwd = txtTargetPwd.Text.Trim();
+            string targetDbName = txtTargetDbName.Text.Trim();
 
-            string strTargetConnection = "Data Source=" + strIp + ";Initial Catalog=" + strDbName + ";User ID=" + strLoginName + ";Password=" + strPwd + ";Persist Security Info=True;";
+            string strTargetConnection = "Data Source=" + targetIp + ";Initial Catalog=" + targetDbName
+                + ";User ID=" + targetLoginName + ";Password=" + targetPwd + ";Persist Security Info=True;";
+
             if (bllDataBase.JudgeConneStr(strTargetConnection) == true)
             {
-                hdnSourceConnection.Value = strSouceConnection;
+                hdnTargetConnection.Value = strTargetConnection;
                 lblMessage.Text = lblMessage.Text + "目标据库连接成功。" + ConstantVO.ENTER_BR;
             }
             else
@@ -172,7 +176,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 lblMessage.Text = lblMessage.Text + "目标据库连接异常：" + ConstantVO.ENTER_BR;
                 return;
             }
-            
+
             #endregion
 
             //表
@@ -225,10 +229,10 @@ namespace Treasure.Main.SmallTool.DataSynchron
             List<string> lstTableList = grvTableList.GetSelectedFieldValues(new string[] { DataSynchronVO.TableName }).ConvertAll<string>(c => string.Format("{0}", c));
 
             //获取要同步的存储过程
-            List<string> lstProcedureList = grvProcedureList.GetSelectedFieldValues(new string[] { DataSynchronVO.ProcedureName }).ConvertAll<string>(c => string.Format("{0}", c));
+            List<string> lstProcedureList = grvProcedureList.GetSelectedFieldValues(new string[] { GeneralVO.Name }).ConvertAll<string>(c => string.Format("{0}", c));
 
             //获取要同步的函数
-            List<string> lstFunctionList = grvFunctionList.GetSelectedFieldValues(new string[] { DataSynchronVO.FunctionName }).ConvertAll<string>(c => string.Format("{0}", c));
+            List<string> lstFunctionList = grvFunctionList.GetSelectedFieldValues(new string[] { GeneralVO.Name }).ConvertAll<string>(c => string.Format("{0}", c));
 
             try
             {
@@ -285,7 +289,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
         }
 
         #endregion
-        
+
         #region 表查询
         /// <summary>
         /// 表查询
