@@ -5,8 +5,27 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
+    <script src="../../Script/Js/jquery.min.js"></script>
+    <script type="text/javascript">
+        function PromptMsg() {
+            if ($("#lblTargetVersion").text() == "正式版本") {
+                if (confirm('小心操作：要将数据同步到正式版本？') == true) {
+                    $("#hdnIsSubmit").val(1);
+                } else {
+                    $("#hdnIsSubmit").val(0);
+                }
+            } else {
+                if (confirm('开始同步？') == true) {
+                    $("#hdnIsSubmit").val(1);
+                } else {
+                    $("#hdnIsSubmit").val(0);
+                }
+            }
+        }
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -230,7 +249,7 @@
                         </asp:RadioButtonList>
                         <br />
                         <br />
-                        <asp:Button ID="btnSynchron" runat="server" Text="开始同步" OnClick="btnSynchron_Click" OnClientClick="return confirm('开始同步？');" />
+                        <asp:Button ID="btnSynchron" runat="server" Text="开始同步" OnClick="btnSynchron_Click" OnClientClick="return PromptMsg(); " />
                         <br />
                         <br />
                         <asp:Button ID="btnCompare" runat="server" Text="表结构对比" OnClick="btnCompare_Click" />
@@ -246,6 +265,7 @@
         </div>
         <asp:HiddenField ID="hdnSourceConnection" Value="" runat="server" />
         <asp:HiddenField ID="hdnTargetConnection" Value="" runat="server" />
+        <asp:HiddenField ID="hdnIsSubmit" Value="0" runat="server" />
     </form>
 </body>
 </html>

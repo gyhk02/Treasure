@@ -6,7 +6,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-//using System.Web.UI.WebControls;
 using Treasure.BLL.General;
 using Treasure.BLL.SmallTool.DataSynchron;
 using Treasure.Model.General;
@@ -205,6 +204,10 @@ namespace Treasure.Main.SmallTool.DataSynchron
         {
             ClientScriptManager clientScript = Page.ClientScript;
 
+            if (TypeConversion.ToInt(hdnIsSubmit.Value) == 0)
+            {
+                return;
+            }
 
             //如果是目标是正式版，将警示
             int id = TypeConversion.ToInt(ddlTargetDb.SelectedValue);
@@ -534,7 +537,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             List<string> lstJudge = JudgeSynchronData(lstSourceTable);
             if (lstJudge == null)
-            {               
+            {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据同步，判断时出现异常');</script>");
                 return;
             }
