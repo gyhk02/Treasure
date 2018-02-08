@@ -7,7 +7,6 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Windows.Forms;
 using Treasure.BLL.General;
 using Treasure.Model.Frame;
 using Treasure.Model.General;
@@ -63,7 +62,8 @@ namespace Treasure.Main.SmallTool.ToTableClass
 
             if (string.IsNullOrEmpty(pConnStr) == true)
             {
-                MessageBox.Show("数据库没有链接");
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据库没有链接');</script>");
                 return;
             }
 
@@ -84,7 +84,8 @@ namespace Treasure.Main.SmallTool.ToTableClass
             string connStr = hdnConnection.Value;
             if (string.IsNullOrEmpty(connStr) == true)
             {
-                MessageBox.Show("数据库不能为空");
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据库不能为空');</script>");
                 return;
             }
             if (bllDataBase.JudgeConneStr(connStr) == true)
@@ -114,6 +115,8 @@ namespace Treasure.Main.SmallTool.ToTableClass
         /// <param name="e"></param>
         protected void btnConfirm_Click(object sender, EventArgs e)
         {
+            ClientScriptManager clientScript = Page.ClientScript;
+
             string connStr = hdnConnection.Value;
             string strNamespace = txtNamespace.Text;
             string strSavePath = txtSavePath.Text;
@@ -123,30 +126,30 @@ namespace Treasure.Main.SmallTool.ToTableClass
 
             if (string.IsNullOrEmpty(connStr) == true)
             {
-                MessageBox.Show("数据库还没有链接");
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据库还没有链接');</script>");
                 btnConnection.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(strNamespace) == true)
             {
-                MessageBox.Show("命名空间不能为空");
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('命名空间不能为空');</script>");
                 txtNamespace.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(strSavePath) == true)
             {
-                MessageBox.Show("请先选择要保存Model文件的目录");
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('请先选择要保存Model文件的目录');</script>");
                 btnGetPath.Focus();
                 return;
             }
             if (Directory.Exists(strSavePath) == false)
             {
-                MessageBox.Show("保存Model文件的目录不存在");
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('保存Model文件的目录不存在');</script>");
                 return;
             }
             if (lstTableList.Count == 0)
             {
-                MessageBox.Show("请先选择要生成Model的表");
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('请先选择要生成Model的表');</script>");
                 return;
             }
 

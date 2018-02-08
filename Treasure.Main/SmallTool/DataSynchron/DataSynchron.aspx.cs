@@ -6,8 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Windows.Forms;
+//using System.Web.UI.WebControls;
 using Treasure.BLL.General;
 using Treasure.BLL.SmallTool.DataSynchron;
 using Treasure.Model.General;
@@ -140,7 +139,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string strPwd = txtSourcePwd.Text.Trim();
             string strDbName = txtSourceDbName.Text.Trim();
 
-            string strSouceConnection = "Data Source=" + strIp + ";Initial Catalog=" + strDbName 
+            string strSouceConnection = "Data Source=" + strIp + ";Initial Catalog=" + strDbName
                 + ";User ID=" + strLoginName + ";Password=" + strPwd + ";Persist Security Info=True;";
 
             if (bllDataBase.JudgeConneStr(strSouceConnection) == true)
@@ -204,6 +203,9 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <param name="e"></param>
         protected void btnSynchron_Click(object sender, EventArgs e)
         {
+            ClientScriptManager clientScript = Page.ClientScript;
+
+
             //如果是目标是正式版，将警示
             int id = TypeConversion.ToInt(ddlTargetDb.SelectedValue);
             DataTable dtDatabase = Session["dtDataDb"] as DataTable;
@@ -213,7 +215,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 DataRow row = lstRow[0];
                 if (row[DataSynchronVO.Version].ToString().Equals(ConstantVO.OFFICIAL_VERSION) == true)
                 {
-                    if (MessageBox.Show("要同步数据到正式版?", "系统提示", MessageBoxButtons.YesNo) == DialogResult.No) { return; }
+                    //这里改用JS实现
+                    //if (MessageBox.Show("要同步数据到正式版?", "系统提示", MessageBoxButtons.YesNo) == DialogResult.No) { return; }
                 }
             }
 
@@ -221,7 +224,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string synchronType = rblSynchronType.SelectedValue;
             if (string.IsNullOrEmpty(synchronType) == true)
             {
-                MessageBox.Show("请先选择同步类型");
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('请先选择同步类型');</script>");
                 return;
             }
 
@@ -241,7 +244,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                     case "表结构同步":
                         if (lstTableList.Count == 0)
                         {
-                            MessageBox.Show("您还没有选择要同步的数据");
+                            clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('您还没有选择要同步的数据');</script>");
                             return;
                         }
                         SynchronTableStructure(lstTableList);
@@ -249,7 +252,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                     case "数据完全同步":
                         if (lstTableList.Count == 0)
                         {
-                            MessageBox.Show("您还没有选择要同步的数据");
+                            clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('您还没有选择要同步的数据');</script>");
                             return;
                         }
                         SynchronCompleteData(lstTableList);
@@ -257,7 +260,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                     case "数据增量同步(按ID)":
                         if (lstTableList.Count == 0)
                         {
-                            MessageBox.Show("您还没有选择要同步的数据");
+                            clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('您还没有选择要同步的数据');</script>");
                             return;
                         }
                         SynchronIncrementData(lstTableList);
@@ -265,7 +268,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                     case "存储过程同步":
                         if (lstProcedureList.Count == 0)
                         {
-                            MessageBox.Show("您还没有选择要同步的数据");
+                            clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('您还没有选择要同步的数据');</script>");
                             return;
                         }
                         SynchronProcedure(lstProcedureList);
@@ -273,14 +276,14 @@ namespace Treasure.Main.SmallTool.DataSynchron
                     case "函数同步":
                         if (lstFunctionList.Count == 0)
                         {
-                            MessageBox.Show("您还没有选择要同步的数据");
+                            clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('您还没有选择要同步的数据');</script>");
                             return;
                         }
                         SynchronFunction(lstFunctionList);
                         break;
                 }
 
-                MessageBox.Show("同步成功");
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('同步成功');</script>");
             }
             catch (Exception ex)
             {
@@ -303,7 +306,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             if (string.IsNullOrEmpty(pSourceConnection) == true)
             {
-                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('源数据库链接为空，请先点击【链接数据库】');</script>");
                 return;
             }
 
@@ -326,7 +330,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             if (string.IsNullOrEmpty(pSourceConnection) == true)
             {
-                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('源数据库链接为空，请先点击【链接数据库】');</script>");
                 return;
             }
 
@@ -349,7 +354,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             if (string.IsNullOrEmpty(pSourceConnection) == true)
             {
-                MessageBox.Show("源数据库链接为空，请先点击【链接数据库】");
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('源数据库链接为空，请先点击【链接数据库】');</script>");
                 return;
             }
 
@@ -412,7 +418,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             List<string> lstJudge = JudgeSynchronData(lstSourceTable);
             if (lstJudge == null)
             {
-                MessageBox.Show("数据同步，判断时出现异常");
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据同步，判断时出现异常');</script>");
                 return;
             }
 
@@ -462,14 +468,15 @@ namespace Treasure.Main.SmallTool.DataSynchron
                     }
                     else if (bll.InsertIncrementData(pSourceConnection, pTargetConnection, str, lstSourceData) == false)
                     {
-                        MessageBox.Show("插入表" + str + "数据出现异常");
+                        clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
                     }
                 }
             }
 
             if (lstShow.Count > 0)
             {
-                MessageBox.Show("以下表的数据两边相同" + ConstantVO.ENTER_STRING + string.Join(",", lstShow.ToArray()));
+                string strMsg = "以下表的数据两边相同" + ConstantVO.ENTER_STRING + string.Join(",", lstShow.ToArray());
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + strMsg + "');</script>");
             }
         }
         #endregion
@@ -523,10 +530,12 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <param name="lstSourceTable">需要同步的表列表</param>
         private void SynchronCompleteData(List<string> lstSourceTable)
         {
+            ClientScriptManager clientScript = Page.ClientScript;
+
             List<string> lstJudge = JudgeSynchronData(lstSourceTable);
             if (lstJudge == null)
-            {
-                MessageBox.Show("数据同步，判断时出现异常");
+            {               
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据同步，判断时出现异常');</script>");
                 return;
             }
 
@@ -543,7 +552,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
                 if (bll.DeleteDataTableByName(pTargetConnection, tableName) == false)
                 {
-                    MessageBox.Show("删除表" + tableName + "数据失败");
+                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('删除表" + tableName + "数据失败');</script>");
                     return;
                 }
             }
@@ -562,7 +571,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 {
                     if (bll.InsertData(pSourceConnection, pTargetConnection, str) == false)
                     {
-                        MessageBox.Show("插入表" + str + "数据出现异常");
+                        clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('插入表" + str + "数据出现异常');</script>");
                     }
                 }
             }

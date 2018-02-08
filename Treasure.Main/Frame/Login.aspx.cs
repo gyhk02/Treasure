@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Windows.Forms;
 using Treasure.BLL.Frame;
 using Treasure.BLL.General;
 
@@ -43,7 +42,8 @@ namespace Treasure.Main.Frame
             string userId = bllSysUser.Login(userName, password);
             if (string.IsNullOrEmpty(userId) == true)
             {
-                MessageBox.Show("用户名或密码不对");
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('用户名或密码不对');</script>");
                 return;
             }
 

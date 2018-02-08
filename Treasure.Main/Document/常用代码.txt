@@ -4,6 +4,14 @@ LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
 
 LogHelper.Info(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
 
+提示：页面文件
+ClientScriptManager clientScript = Page.ClientScript;
+clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('没有数据');</script>");
+
+提示：类
+Page page = (Page)System.Web.HttpContext.Current.Handler;
+page.ClientScript.RegisterStartupScript(page.GetType(), "失败", "<script>alert('异常');</script>");
+
         #region 自定义变量
         #endregion
 

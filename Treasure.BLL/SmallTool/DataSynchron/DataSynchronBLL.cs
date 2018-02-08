@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Web.UI;
 using Treasure.BLL.General;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
@@ -282,7 +282,10 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
                     catch (Exception ex)
                     {
                         LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
-                        MessageBox.Show("插入数据到" + pTableName + "表异常，对应的第一个字段值为" + row[0].ToString());
+
+                        string errorMsg = "插入数据到" + pTableName + "表异常，对应的第一个字段值为" + row[0].ToString();
+                        Page page = (Page)System.Web.HttpContext.Current.Handler;
+                        page.ClientScript.RegisterStartupScript(page.GetType(), "失败", "<script>alert('" + errorMsg + "');</script>");
                     }
                 }
             }
@@ -469,7 +472,11 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
                     catch (Exception ex)
                     {
                         LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
-                        MessageBox.Show("插入数据到" + pTableName + "表异常，对应的第一个字段值为" + row[0].ToString());
+                        //MessageBox.Show("插入数据到" + pTableName + "表异常，对应的第一个字段值为" + row[0].ToString());
+
+                        string errorMsg = "插入数据到" + pTableName + "表异常，对应的第一个字段值为" + row[0].ToString();
+                        Page page = (Page)System.Web.HttpContext.Current.Handler;
+                        page.ClientScript.RegisterStartupScript(page.GetType(), "失败", "<script>alert('" + errorMsg + "');</script>");
                     }
                 }
             }
@@ -662,7 +669,9 @@ where o.type = 'U' " + condition;
 select o.object_id " + GeneralVO.Id + ", o.name " + GeneralVO.Name + ", ep.value " + strDescription + @"
 from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0 and ep.name = 'MS_Description'
-where o.type = @ObjectType" + condition;
+where o.type = @ObjectType" + condition + @"
+order by o.name
+";
 
                 List<SqlParameter> paras = new List<SqlParameter>();
                 paras.Add(new SqlParameter("@ObjectType", strType));

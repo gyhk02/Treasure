@@ -42,8 +42,8 @@ namespace Treasure.BLL.General
             DataRow row9 = dtDatabase.NewRow();
             row9[GeneralVO.Id] = 9;
             row9[DataSynchronVO.Version] = ConstantVO.DEVELOPMENT_VERSION;
-            row9[GeneralVO.No] = "小采购开发版_GSPDev_95";
-            row9[DataSynchronVO.Ip] = "172.16.96.95";
+            row9[GeneralVO.No] = "小采购开发版_GSPDev_172.16.96.55\\sql2014";
+            row9[DataSynchronVO.Ip] = "172.16.96.55\\sql2014";
             row9[DataSynchronVO.LoginName] = "csharp";
             row9[DataSynchronVO.Pwd] = "csharp.123";
             row9[DataSynchronVO.DbName] = "GSPDev";
@@ -186,7 +186,9 @@ namespace Treasure.BLL.General
             string sql = @"
 select distinct o.object_id " + GeneralVO.Id + ", o.name " + DataSynchronVO.TableName + @"
 from sys.objects o
-where o.type = 'U' " + condition;
+where o.type = 'U' " + condition + @"
+order by o.name
+";
 
             result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
 

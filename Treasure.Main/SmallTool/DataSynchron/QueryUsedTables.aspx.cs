@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Windows.Forms;
 using Treasure.BLL.General;
 using Treasure.BLL.SmallTool.DataSynchron;
 using Treasure.Model.General;
@@ -69,7 +68,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string connString = GetConnString();
             if (bllDataBase.JudgeConneStr(connString) == false)
             {
-                MessageBox.Show("源据库连接异常");
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('源数据库连接异常');</script>");
                 return;
             }
 
@@ -136,11 +136,11 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             if (bllDataBase.JudgeConneStr(connString) == true)
             {
-                lblShowConnectionStatus.Text = "源据库连接成功。" + ConstantVO.ENTER_BR;
+                lblShowConnectionStatus.Text = "源数据库连接成功。" + ConstantVO.ENTER_BR;
             }
             else
             {
-                lblShowConnectionStatus.Text = "源据库连接异常。" + ConstantVO.ENTER_BR;
+                lblShowConnectionStatus.Text = "源数据库连接异常。" + ConstantVO.ENTER_BR;
             }
         }
         #endregion
@@ -156,7 +156,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string connString = GetConnString();
             if (bllDataBase.JudgeConneStr(connString) == false)
             {
-                MessageBox.Show("源据库连接异常");
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('源数据库连接异常');</script>");
                 return;
             }
 
@@ -177,7 +178,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
             string connString = GetConnString();
             if (bllDataBase.JudgeConneStr(connString) == false)
             {
-                MessageBox.Show("源据库连接异常");
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('源数据库连接异常');</script>");
                 return;
             }
 
