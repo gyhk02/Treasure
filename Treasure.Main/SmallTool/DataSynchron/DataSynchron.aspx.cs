@@ -209,20 +209,6 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 return;
             }
 
-            //如果是目标是正式版，将警示
-            int id = TypeConversion.ToInt(ddlTargetDb.SelectedValue);
-            DataTable dtDatabase = Session["dtDataDb"] as DataTable;
-            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.Id) == id).ToList();
-            if (lstRow.Count == 1)
-            {
-                DataRow row = lstRow[0];
-                if (row[DataSynchronVO.Version].ToString().Equals(ConstantVO.OFFICIAL_VERSION) == true)
-                {
-                    //这里改用JS实现
-                    //if (MessageBox.Show("要同步数据到正式版?", "系统提示", MessageBoxButtons.YesNo) == DialogResult.No) { return; }
-                }
-            }
-
             //获取同步类型
             string synchronType = rblSynchronType.SelectedValue;
             if (string.IsNullOrEmpty(synchronType) == true)
@@ -437,7 +423,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 DataTable dtSource = bll.GetTableAllInfo(pSourceConnection, str);
                 DataTable dtTarget = bll.GetTableAllInfo(pTargetConnection, str);
 
-                List<DataRow> lstSourceData = new List<DataRow>();
+                List<DataRow> lstSourceData;
                 switch (dtSource.Columns[0].DataType.Name)
                 {
                     case "Int32":
@@ -491,7 +477,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
         /// <returns></returns>
         public List<string> JudgeSynchronData(List<string> lstSourceTable)
         {
-            List<string> lst = new List<string>();
+            List<string> lst = null;
 
             try
             {
@@ -519,7 +505,6 @@ namespace Treasure.Main.SmallTool.DataSynchron
             catch (Exception ex)
             {
                 LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
-                return null;
             }
 
             return lst;

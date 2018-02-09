@@ -31,17 +31,8 @@ namespace Treasure.Main.Test
 
                 grv1.DataSource = dt;
                 grv1.DataBind();
-
-                //grv2.DataSource = dt;
-                //grv2.DataBind();
             }
         }
-
-        protected void btn_Click(object sender, EventArgs e)
-        {
-            List<string> lst = grv1.GetSelectedFieldValues(new string[] { GeneralVO.No }).ConvertAll<string>(c => string.Format("{0}", c));
-
-            string a = "";
-        }
+        
     }
 }

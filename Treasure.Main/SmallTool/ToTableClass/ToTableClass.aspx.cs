@@ -21,8 +21,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
     {
 
         #region 自定义变量
-
-        BasicBLL bll = new BasicBLL();
+        
         DataBaseBLL bllDataBase = new DataBaseBLL();
         CamelNameBLL bllCamelName = new CamelNameBLL();
 
@@ -162,7 +161,6 @@ namespace Treasure.Main.SmallTool.ToTableClass
             }
 
             string createFileName = "";
-            string createParentFileName = "";
             string strTmp = "";
             string content = "";
             foreach (string str in lstTableList)
@@ -181,12 +179,6 @@ namespace Treasure.Main.SmallTool.ToTableClass
                 FileStream fs = new FileStream("a.txt", FileMode.Open, FileAccess.Write); 
                 StreamWriter sw = new StreamWriter(fs, Encoding.Default);
                 sw.Write("");
-
-                string writeString = "";
-
-
-
-                //File.Create
             }
         }
         #endregion

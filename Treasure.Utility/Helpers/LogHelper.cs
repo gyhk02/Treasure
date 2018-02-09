@@ -54,7 +54,7 @@ namespace Treasure.Utility.Helpers
                     sw.WriteLine("=====================================");
                     sw.WriteLine("");
                     sw.Flush();
-                    sw.Close();
+                    sw.Close();                    
                 }
             }
             catch (Exception ex)

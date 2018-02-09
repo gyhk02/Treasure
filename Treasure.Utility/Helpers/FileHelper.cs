@@ -76,28 +76,28 @@ namespace Treasure.Utility.Helpers
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.UseShellExecute = false;
                 process.Start();
-                System.Diagnostics.Debug.WriteLine(process.StartInfo.FileName + " " + process.StartInfo.Arguments);
+                Debug.WriteLine(process.StartInfo.FileName + " " + process.StartInfo.Arguments);
                 process.WaitForExit();
                 string strTarget = @"\\" + Server + @"\" + SaveFolder + @"\" + SaveFileName;
                 if (!File.Exists(strTarget))
                 {
                     return 0;
                 }
-                System.Diagnostics.Debug.WriteLine("Start Delete File.....");
+                Debug.WriteLine("Start Delete File.....");
                 File.Delete(strTarget);
-                System.Diagnostics.Debug.WriteLine("End Delete File.....");
+                Debug.WriteLine("End Delete File.....");
                 process.StartInfo.Arguments = @"use \\" + Server + @"\" + SaveFolder + " /delete";
                 process.Start();
                 process.Close();
             }
             catch (IOException ex)
             {
-                System.Diagnostics.Debug.WriteLine("in FileCopy IOException:" + ex.Message);
+                Debug.WriteLine("in FileCopy IOException:" + ex.Message);
                 return -1;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("in FileCopy Exception:" + ex.Message);
+                Debug.WriteLine("in FileCopy Exception:" + ex.Message);
                 return -1;
             }
             finally
@@ -117,28 +117,28 @@ namespace Treasure.Utility.Helpers
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.UseShellExecute = false;
                 process.Start();
-                System.Diagnostics.Debug.WriteLine(process.StartInfo.FileName + " " + process.StartInfo.Arguments);
+                Debug.WriteLine(process.StartInfo.FileName + " " + process.StartInfo.Arguments);
                 process.WaitForExit();
-                if (!Directory.Exists(@"\\" + Server + @"\" + SaveFolder))
+                if (!Directory.Exists(@"\\" + Server + @"\\" + SaveFolder))
                 {
-                    Directory.CreateDirectory(@"\\" + Server + @"\" + SaveFolder);
+                    Directory.CreateDirectory(@"\\" + Server + @"\\" + SaveFolder);
                 }
-                System.Diagnostics.Debug.WriteLine("Start Copy File.....");
+                Debug.WriteLine("Start Copy File.....");
                 string strTarget = @"\\" + Server + @"\" + SaveFolder + @"\" + SaveFileName;
                 File.Copy(strSource, strTarget, true);
-                System.Diagnostics.Debug.WriteLine("End Copy File.....");
+                Debug.WriteLine("End Copy File.....");
                 process.StartInfo.Arguments = @"use \\" + Server + @"\" + SaveFolder + " /delete";
                 process.Start();
                 process.Close();
             }
             catch (IOException ex)
             {
-                System.Diagnostics.Debug.WriteLine("in FileCopy IOException:" + ex.Message);
+                Debug.WriteLine("in FileCopy IOException:" + ex.Message);
                 return -1;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("in FileCopy Exception:" + ex.Message);
+                Debug.WriteLine("in FileCopy Exception:" + ex.Message);
                 return -1;
             }
             finally
@@ -150,30 +150,6 @@ namespace Treasure.Utility.Helpers
 
         #endregion
 
-        #region 选择文件
-        /// <summary>
-        /// 选择文件
-        /// </summary>
-        /// <returns></returns>
-        public string SelectFile()
-        {
-            string path = string.Empty;
-            var openFileDialog = new OpenFileDialog()
-            {
-                Filter = "Files (*.*)|*.*"//如果需要筛选txt文件（"Files (*.txt)|*.txt"）
-            };
-            var result = openFileDialog.ShowDialog();
-
-            //临时注释
-            //if (result == true)
-            //{
-            //    path = openFileDialog.FileName;
-            //}
-
-            return path;
-        }
-        #endregion
-
         #region 选择路径
         /// <summary>
         /// 选择路径
@@ -183,7 +159,7 @@ namespace Treasure.Utility.Helpers
         {
             string path = string.Empty;
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
                 path = fbd.SelectedPath;
             }

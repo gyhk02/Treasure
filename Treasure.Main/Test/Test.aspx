@@ -41,7 +41,7 @@
             <br />
             <asp:Label ID="lbl" runat="server" Text="Label"></asp:Label>
             <br />
-            <asp:Button ID="btn" runat="server" Text="Button" OnClick="btn_Click" />
+            <asp:Button ID="btn" runat="server" Text="Button" />
         </div>
     </form>
 </body>

@@ -79,8 +79,6 @@ namespace Treasure.BLL.SmallTool.DataSynchron
         {
             bool result = false;
 
-            string strTmp = "";
-
             string strsql = GetProcedureOrFunctionText(pSourceConnection, pType, pName);
 
             if (JudgeExistProcedureOrFunction(pTargetConnection, pType, pName) == true)
@@ -128,22 +126,24 @@ namespace Treasure.BLL.SmallTool.DataSynchron
         {
             bool result = false;
 
-            string strTmp = "";
+            StringBuilder strTmp = new StringBuilder();
 
             DataColumnCollection ColumnCollection = pLstRow[0].Table.Columns;
 
             if (pLstRow.Count > 0)
             {
-                string strsql = " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
-                    + " SET IDENTITY_INSERT [" + pTableName + "] ON " + ConstantVO.ENTER_STRING;
+                StringBuilder strsql = new StringBuilder();
+                strsql.Append(" IF OBJECTPROPERTY(OBJECT_ID('").Append(pTableName).Append("'),'TableHasIdentity') = 1 ").Append(ConstantVO.ENTER_STRING)
+                    .Append(" SET IDENTITY_INSERT [").Append(pTableName).Append("] ON ").Append(ConstantVO.ENTER_STRING);
 
                 //拼接字段名称
-                strTmp = "";
+                strTmp.Length = 0;
+
                 foreach (DataColumn col in ColumnCollection)
                 {
-                    strTmp = strTmp + ",[" + col.ToString() + "]";
+                    strTmp.Append(",[").Append(col.ToString()).Append("]");
                 }
-                strsql = strsql + " INSERT INTO [" + pTableName + "](" + strTmp.Substring(1) + ")" + ConstantVO.ENTER_STRING;
+                strsql.Append(" INSERT INTO [").Append(pTableName).Append("](").Append(strTmp.Remove(0, 1)).Append(")").Append(ConstantVO.ENTER_STRING);
 
                 //拼接数据
                 int cels = ColumnCollection.Count;
@@ -151,31 +151,31 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                 {
                     DataRow row = pLstRow[idx];
 
-                    strTmp = "";
+                    strTmp.Length = 0;
                     for (int idy = 0; idy < cels; idy++)
                     {
                         if (row[idy] == DBNull.Value)
                         {
-                            strTmp = strTmp + ",NULL";
+                            strTmp.Append(",NULL");
                         }
                         else
                         {
-                            strTmp = strTmp + ",'" + row[idy].ToString() + "'";
+                            strTmp.Append(",'").Append(row[idy].ToString()).Append("'");
                         }
                     }
-                    strsql = strsql + " SELECT " + strTmp.Substring(1);
+                    strsql.Append(" SELECT ").Append(strTmp.Remove(0, 1));
                     if (idx != pLstRow.Count - 1)
                     {
-                        strsql = strsql + " UNION ALL " + ConstantVO.ENTER_STRING;
+                        strsql.Append(" UNION ALL ").Append(ConstantVO.ENTER_STRING);
                     }
                 }
 
-                strsql = strsql + ConstantVO.ENTER_STRING + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
-                    + " SET IDENTITY_INSERT [" + pTableName + "] OFF ";
+                strsql.Append(ConstantVO.ENTER_STRING).Append(" IF OBJECTPROPERTY(OBJECT_ID('").Append(pTableName).Append("'),'TableHasIdentity') = 1 ").Append(ConstantVO.ENTER_STRING)
+                      .Append(" SET IDENTITY_INSERT [").Append(pTableName).Append("] OFF ");
 
                 try
                 {
-                    SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
+                    SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql.ToString(), null);
                     result = true;
                 }
                 catch (Exception ex)
@@ -195,7 +195,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
                 }
                 string filePath = "Document/DataSynchronSql/DataIncrementSynchron_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIMEYMDHMSF) + "_" + pTableName + ".txt";
                 string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
-                new FileHelper().WriteFile(filePath, description, strsql);
+                new FileHelper().WriteFile(filePath, description, strsql.ToString());
 
                 return result;
             }
@@ -221,15 +221,15 @@ namespace Treasure.BLL.SmallTool.DataSynchron
             if (pLstRow.Count > 0)
             {
                 //插入数据
-                string strParam = "";
-                string strValue = "";
+                StringBuilder strParam = new StringBuilder();
+                StringBuilder strValue = new StringBuilder();
                 foreach (DataColumn col in ColumnCollection)
                 {
-                    strParam = strParam + ",[" + col.ToString() + "]";
-                    strValue = strValue + ",@" + col.ToString() + "";
+                    strParam.Append(",[").Append(col.ToString()).Append("]");
+                    strValue.Append(",@").Append(col.ToString()).Append("");
                 }
-                strParam = strParam.Substring(1);
-                strValue = strValue.Substring(1);
+                strParam.Remove(0, 1);
+                strValue.Remove(0, 1);
 
                 string sql = @"
 IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + @"'),'TableHasIdentity') = 1
@@ -241,7 +241,7 @@ IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + @"'),'TableHasIdentity') = 1
 SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
                 int cels = ColumnCollection.Count;
-                SqlParameter[] paras = new SqlParameter[0];
+                SqlParameter[] paras;
                 SqlDbType type = new SqlDbType();
                 for (int idx = 0; idx < pLstRow.Count; idx++)
                 {
@@ -303,63 +303,52 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
         public bool InsertData(string pSourceConnection, string pTargetConnection, string pTableName)
         {
             bool result = false;
-            string strTmp = "";
+            StringBuilder strTmp = new StringBuilder();
 
             DataTable dt = base.GetTableAllInfo(pSourceConnection, pTableName);
             if (dt.Rows.Count > 0)
             {
-                //string strsql = "DELETE FROM [" + pTableName + "]" + ConstantVO.ENTER_STRING;
+                StringBuilder strsql = new StringBuilder();
+                strsql.Append(" IF OBJECTPROPERTY(OBJECT_ID('").Append(pTableName).Append("'),'TableHasIdentity') = 1 ").Append(ConstantVO.ENTER_STRING)
+                    .Append(" SET IDENTITY_INSERT [").Append(pTableName).Append("] ON ").Append(ConstantVO.ENTER_STRING);
 
-                string strsql = " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
-                    + " SET IDENTITY_INSERT [" + pTableName + "] ON " + ConstantVO.ENTER_STRING;
-
-                strTmp = "";
+                strTmp.Length = 0;
                 foreach (DataColumn col in dt.Columns)
                 {
-                    strTmp = strTmp + ",[" + col.ToString() + "]";
+                    strTmp.Append(",[").Append(col.ToString()).Append("]");
                 }
-                strsql = strsql + " INSERT INTO [" + pTableName + "](" + strTmp.Substring(1) + ")" + ConstantVO.ENTER_STRING;
+                strsql.Append(" INSERT INTO [").Append(pTableName).Append("](").Append(strTmp.Remove(0, 1)).Append(")").Append(ConstantVO.ENTER_STRING);
 
                 int cels = dt.Columns.Count;
                 for (int idx = 0; idx < dt.Rows.Count; idx++)
                 {
                     DataRow row = dt.Rows[idx];
 
-                    strTmp = "";
+                    strTmp.Length = 0;
                     for (int idy = 0; idy < cels; idy++)
                     {
                         if (row[idy] == DBNull.Value)
                         {
-                            strTmp = strTmp + ",NULL";
+                            strTmp.Append(",NULL");
                         }
                         else
                         {
-                            //if (dt.Columns[idy].DataType.Name == "Byte[]")
-                            //{
-                            //    Byte[] arrByte = (Byte[])row[idy];
-                            //    string strByte = System.Text.Encoding.Default.GetString(arrByte);
-                            //    strTmp = strTmp + ",'" + strByte + "'";
-                            //    //string a = System.Text.Encoding.Default.GetString(b);
-                            //}
-                            //else
-                            //{
-                            strTmp = strTmp + ",'" + row[idy].ToString() + "'";
-                            //}
+                            strTmp.Append(",'").Append(row[idy].ToString()).Append("'");
                         }
                     }
-                    strsql = strsql + " SELECT " + strTmp.Substring(1);
+                    strsql.Append(" SELECT ").Append(strTmp.Remove(0, 1));
                     if (idx != dt.Rows.Count - 1)
                     {
-                        strsql = strsql + " UNION ALL " + ConstantVO.ENTER_STRING;
+                        strsql.Append(" UNION ALL ").Append(ConstantVO.ENTER_STRING);
                     }
                 }
 
-                strsql = strsql + ConstantVO.ENTER_STRING + " IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + "'),'TableHasIdentity') = 1 " + ConstantVO.ENTER_STRING
-                    + " SET IDENTITY_INSERT [" + pTableName + "] OFF ";
+                strsql.Append(ConstantVO.ENTER_STRING).Append(" IF OBJECTPROPERTY(OBJECT_ID('").Append(pTableName).Append("'),'TableHasIdentity') = 1 ").Append(ConstantVO.ENTER_STRING)
+                       .Append(" SET IDENTITY_INSERT [").Append(pTableName).Append("] OFF ");
 
                 try
                 {
-                    SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
+                    SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql.ToString(), null);
                     result = true;
                 }
                 catch (Exception ex)
@@ -379,7 +368,7 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
                 }
                 string filePath = "Document/DataSynchronSql/DataSynchron_" + type + "_" + DateTime.Now.ToString(ConstantVO.DATETIMEYMDHMSF) + "_" + pTableName + ".txt";
                 string description = "表" + pTableName + "：从" + pSourceConnection + "到" + pTargetConnection;
-                new FileHelper().WriteFile(filePath, description, strsql);
+                new FileHelper().WriteFile(filePath, description, strsql.ToString());
 
                 return result;
             }
@@ -404,22 +393,17 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
             if (dt.Rows.Count > 0)
             {
                 //删除数据
-                //if (base.DeleteDataTableByName(pTargetConnection, pTableName) == false)
-                //{
-                //    MessageBox.Show("删除表" + pTableName + "数据失败");
-                //    return false;
-                //}
 
                 //插入数据
-                string strParam = "";
-                string strValue = "";
+                StringBuilder strParam = new StringBuilder();
+                StringBuilder strValue = new StringBuilder();
                 foreach (DataColumn col in dt.Columns)
                 {
-                    strParam = strParam + ",[" + col.ToString() + "]";
-                    strValue = strValue + ",@" + col.ToString() + "";
+                    strParam.Append(",[").Append(col.ToString()).Append("]");
+                    strValue.Append(",@").Append(col.ToString()).Append("");
                 }
-                strParam = strParam.Substring(1);
-                strValue = strValue.Substring(1);
+                strParam.Remove(strParam.Length - 1, 1);
+                strValue.Remove(strValue.Length - 1, 1);
 
                 string sql = @"
 IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + @"'),'TableHasIdentity') = 1
@@ -431,7 +415,7 @@ IF OBJECTPROPERTY(OBJECT_ID('" + pTableName + @"'),'TableHasIdentity') = 1
 SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
                 int cels = dt.Columns.Count;
-                SqlParameter[] paras = new SqlParameter[0];
+                SqlParameter[] paras;
                 SqlDbType type = new SqlDbType();
                 for (int idx = 0; idx < dt.Rows.Count; idx++)
                 {
@@ -472,7 +456,6 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
                     catch (Exception ex)
                     {
                         LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
-                        //MessageBox.Show("插入数据到" + pTableName + "表异常，对应的第一个字段值为" + row[0].ToString());
 
                         string errorMsg = "插入数据到" + pTableName + "表异常，对应的第一个字段值为" + row[0].ToString();
                         Page page = (Page)System.Web.HttpContext.Current.Handler;
@@ -535,7 +518,7 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
         /// <returns></returns>
         private DataTable Get_TableName_DescriptionType_Description(string pConnection, List<string> pTableList, string pTableName)
         {
-            DataTable result = new DataTable();
+            DataTable result = null;
 
             string condition = "";
 
@@ -551,14 +534,11 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
                 }
             }
 
-            if (pTableList != null)
+            if (pTableList != null && pTableList.Count > 0)
             {
-                if (pTableList.Count > 0)
-                {
-                    string str = string.Join("','", pTableList.ToArray());
-                    condition = "'" + str + "'";
-                    condition = " and o.name in(" + condition + ")";
-                }
+                string str = string.Join("','", pTableList.ToArray());
+                condition = "'" + str + "'";
+                condition = " and o.name in(" + condition + ")";
             }
 
             string sql = @"
@@ -644,14 +624,11 @@ where o.type = 'U' " + condition;
                     }
                 }
 
-                if (pList != null)
+                if (pList != null && pList.Count > 0)
                 {
-                    if (pList.Count > 0)
-                    {
-                        string str = string.Join("','", pList.ToArray());
-                        condition = "'" + str + "'";
-                        condition = " and name in(" + condition + ")";
-                    }
+                    string str = string.Join("','", pList.ToArray());
+                    condition = "'" + str + "'";
+                    condition = " and name in(" + condition + ")";
                 }
 
                 string strDescription = "";
@@ -698,7 +675,7 @@ order by o.name
         /// <returns></returns>
         public List<string> GetTableListBySort(string pSourceConnection, List<string> lstCalculation)
         {
-            List<string> lst = new List<string>();
+            List<string> lst = null;
 
             string sql = @"
 CREATE TABLE #Sort(idx int, TableName NVARCHAR(50))

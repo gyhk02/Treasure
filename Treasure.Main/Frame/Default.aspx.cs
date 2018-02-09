@@ -29,8 +29,6 @@ namespace Treasure.Main.Frame
                 DataTable dtRootMenu = bllSysMenuItem.GetRootMenu();
                 DropDownListExtend.BindToShowName(ddlMenu, dtRootMenu, true);
             }
-
-            string a = "";
         }
 
         #endregion
