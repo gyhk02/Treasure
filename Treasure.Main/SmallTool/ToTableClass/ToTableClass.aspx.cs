@@ -21,8 +21,8 @@ namespace Treasure.Main.SmallTool.ToTableClass
     {
 
         #region 自定义变量
-        
-        DataBaseBLL bllDataBase = new DataBaseBLL();
+
+        DataBaseBll bllDataBase = new DataBaseBll();
         CamelNameBLL bllCamelName = new CamelNameBLL();
 
         #endregion
@@ -137,8 +137,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
             }
             if (string.IsNullOrEmpty(strSavePath) == true)
             {
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('请先选择要保存Model文件的目录');</script>");
-                btnGetPath.Focus();
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('请录入要保存Model文件的目录');</script>");
                 return;
             }
             if (Directory.Exists(strSavePath) == false)
@@ -160,26 +159,83 @@ namespace Treasure.Main.SmallTool.ToTableClass
                 Directory.CreateDirectory(parentPath);
             }
 
-            string createFileName = "";
-            string strTmp = "";
-            string content = "";
             foreach (string str in lstTableList)
             {
-                createFileName = bllCamelName.getBigCamelName(str) + "Table";
-                strTmp = strSavePath + "\\" + createFileName;
-                content = GetFileContent(strNamespace, createFileName);
+                CreateTableClass(strSavePath, strNamespace, str);
 
-                if (string.IsNullOrEmpty(content) == true) { continue; }
-
-                if (File.Exists(strTmp) == false)
-                {
-                    File.AppendAllText(strTmp, content, Encoding.UTF8);
-                }
-
-                FileStream fs = new FileStream("a.txt", FileMode.Open, FileAccess.Write); 
-                StreamWriter sw = new StreamWriter(fs, Encoding.Default);
-                sw.Write("");
+                CreateParentTableClass(parentPath, strNamespace, str);
             }
+
+            clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('生成Model类成功');</script>");
+        }
+        #endregion
+
+        #region 生成Parent的Model类
+        /// <summary>
+        /// 生成Parent的Model类
+        /// </summary>
+        /// <param name="savePath"></param>
+        /// <param name="tableNamespace"></param>
+        /// <param name="tableName"></param>
+        private void CreateParentTableClass(string savePath, string tableNamespace, string tableName)
+        {
+            string createFileName = bllCamelName.getBigCamelName(tableName) + "ParentTable";
+            string fileName = savePath + "\\" + createFileName + ".cs";
+            string connStr = hdnConnection.Value;
+
+            //获取表的全部字段
+            DataTable dtField = bllDataBase.GetTableInfoByName(1, connStr, tableName);
+
+            StringBuilder content = new StringBuilder();
+
+            content.Append("namespace " + tableNamespace)
+                .Append("    {")
+                .Append("        public partial class " + createFileName)
+                .Append("        {")
+                .Append("public static string tableName = \"" + tableName + "\"; ")
+                .Append("")
+                .Append("            public static class Fields")
+                .Append("            {");
+
+            foreach (DataRow row in dtField.Rows)
+            {
+                string fieldName = TypeConversion.ToString(row[DataSynchronVO.FieldName]);
+                content.Append("            public static string " + bllCamelName.getSmallCamelName(fieldName) + " = \"" + fieldName + "\"; ");
+            }
+
+            content.Append("            }")
+                .Append("        }")
+                .Append("    }");
+
+            File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
+        }
+        #endregion
+
+        #region 创建用户可以自定义表的类文件
+        /// <summary>
+        /// 创建用户可以自定义表的类文件
+        /// </summary>
+        /// <param name="savePath">类文件存储路径</param>
+        /// <param name="tableNamespace">类文件的命名空间</param>
+        /// <param name="tableName">表的名称</param>
+        private void CreateTableClass(string savePath, string tableNamespace, string tableName)
+        {
+            string createFileName = bllCamelName.getBigCamelName(tableName) + "Table";
+            string fileName = savePath + "\\" + createFileName + ".cs";
+
+            if (File.Exists(fileName) == true)
+            {
+                return;
+            }
+
+            string content = @"namespace " + tableNamespace + @"
+{
+    public partial class " + createFileName + @"
+    {
+    }
+}";
+
+            File.AppendAllText(fileName, content, Encoding.UTF8);
         }
         #endregion
 
@@ -192,14 +248,12 @@ namespace Treasure.Main.SmallTool.ToTableClass
         {
             string result = "";
 
-            result = @"
-namespace " + pNamespace + @"
+            result = @"namespace " + pNamespace + @"
 {
     public partial class " + pFileName + @"
     {
     }
-}
-            ";
+}";
 
             return result;
         }
@@ -233,19 +287,6 @@ namespace " + pNamespace + @"
             {
                 hdnConnection.Value = "";
             }
-        }
-        #endregion
-
-        #region 选择保存路径
-        /// <summary>
-        /// 选择保存路径
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnGetPath_Click(object sender, EventArgs e)
-        {
-            FileHelper file = new FileHelper();
-            txtSavePath.Text = file.SelectPath();
         }
         #endregion
 

@@ -18,20 +18,22 @@ namespace Treasure.BLL.General
         public string getSmallCamelName(string input)
         {
             string[] arr = input.Split('_');
-            string name = "";
+
+            StringBuilder name = new StringBuilder();
+
             for (int i = 0; i < arr.Length; i++)
             {
                 if (i == 0)
                 {
-                    name += arr[i].ToLower();
+                    name.Append(arr[i].ToLower());
                 }
                 else
                 {
-                    name += System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(arr[i].ToLower());
+                    name.Append(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(arr[i].ToLower()));
                 }
 
             }
-            return name;
+            return name.ToString();
         }
         #endregion
 
@@ -44,12 +46,15 @@ namespace Treasure.BLL.General
         public string getBigCamelName(string input)
         {
             string[] arr = input.Split('_');
-            string name = "";
+
+            StringBuilder name = new StringBuilder();
+
             for (int i = 0; i < arr.Length; i++)
             {
-                name += System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(arr[i].ToLower());
+                name.Append(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(arr[i].ToLower()));
             }
-            return name;
+
+            return name.ToString();
         }
         #endregion
 

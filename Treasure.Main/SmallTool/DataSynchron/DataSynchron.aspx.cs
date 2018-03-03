@@ -22,7 +22,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
         #region 自定义变量
 
         DataSynchronBLL bll = new DataSynchronBLL();
-        DataBaseBLL bllDataBase = new DataBaseBLL();
+        DataBaseBll bllDataBase = new DataBaseBll();
 
         #endregion
 
@@ -450,7 +450,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 {
                     //判断表中是否有byte类型
                     DataTable dtStructure = bllDataBase.GetTableInfoByName(1, pSourceConnection, str);
-                    List<DataRow> lst = dtStructure.AsEnumerable().Where(t => t.Field<string>(DataSynchronVO.FiledType).ToLower() == "varbinary").ToList();
+                    List<DataRow> lst = dtStructure.AsEnumerable().Where(t => t.Field<string>(DataSynchronVO.FieldType).ToLower() == "varbinary").ToList();
                     if (lst.Count > 0)
                     {
                         bll.InsertDataIncrementByByte(pSourceConnection, pTargetConnection, str, lstSourceData);
@@ -550,7 +550,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             {
                 //判断表中是否有byte类型
                 DataTable dtStructure = bllDataBase.GetTableInfoByName(1, pSourceConnection, str);
-                List<DataRow> lst = dtStructure.AsEnumerable().Where(t => t.Field<string>(DataSynchronVO.FiledType).ToLower() == "varbinary").ToList();
+                List<DataRow> lst = dtStructure.AsEnumerable().Where(t => t.Field<string>(DataSynchronVO.FieldType).ToLower() == "varbinary").ToList();
                 if (lst.Count > 0)
                 {
                     bll.InsertDataByByte(pSourceConnection, pTargetConnection, str);
@@ -619,13 +619,13 @@ namespace Treasure.Main.SmallTool.DataSynchron
             #region DataTable初始化
 
             dtResult.Columns.Add(DataSynchronVO.TableName);
-            dtResult.Columns.Add(DataSynchronVO.FiledName);
+            dtResult.Columns.Add(DataSynchronVO.FieldName);
 
             dtResult.Columns.Add(DataSynchronVO.ISIGN, typeof(string));
 
-            dtResult.Columns.Add(DataSynchronVO.FiledType);
+            dtResult.Columns.Add(DataSynchronVO.FieldType);
             dtResult.Columns.Add(DataSynchronVO.FiledLen);
-            dtResult.Columns.Add(DataSynchronVO.FiledDescription);
+            dtResult.Columns.Add(DataSynchronVO.FieldDescription);
             dtResult.Columns.Add(DataSynchronVO.DecimalPrecision);
             dtResult.Columns.Add(DataSynchronVO.DecimalDigits);
             dtResult.Columns.Add(DataSynchronVO.IsNullable);
@@ -648,7 +648,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             var query =
                (from s in dtSourceTableStructure.AsEnumerable()
                 from t in dtTargetTableStructure.AsEnumerable()
-                where s.Field<string>(DataSynchronVO.TableName) == t.Field<string>(DataSynchronVO.TableName) && s.Field<string>(DataSynchronVO.FiledName) == t.Field<string>(DataSynchronVO.FiledName)
+                where s.Field<string>(DataSynchronVO.TableName) == t.Field<string>(DataSynchronVO.TableName) && s.Field<string>(DataSynchronVO.FieldName) == t.Field<string>(DataSynchronVO.FieldName)
                 select new { s, t });
 
             var lstTmp = query.ToList();
@@ -661,19 +661,19 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 DataRow row = dtResult.NewRow();
 
                 row[DataSynchronVO.TableName] = rowSource[DataSynchronVO.TableName];
-                row[DataSynchronVO.FiledName] = rowSource[DataSynchronVO.FiledName];
-                row[DataSynchronVO.FiledType] = rowSource[DataSynchronVO.FiledType];
+                row[DataSynchronVO.FieldName] = rowSource[DataSynchronVO.FieldName];
+                row[DataSynchronVO.FieldType] = rowSource[DataSynchronVO.FieldType];
                 row[DataSynchronVO.FiledLen] = rowSource[DataSynchronVO.FiledLen];
-                row[DataSynchronVO.FiledDescription] = rowSource[DataSynchronVO.FiledDescription];
+                row[DataSynchronVO.FieldDescription] = rowSource[DataSynchronVO.FieldDescription];
                 row[DataSynchronVO.DecimalPrecision] = rowSource[DataSynchronVO.DecimalPrecision];
                 row[DataSynchronVO.DecimalDigits] = rowSource[DataSynchronVO.DecimalDigits];
                 row[DataSynchronVO.IsNullable] = rowSource[DataSynchronVO.IsNullable];
                 row[DataSynchronVO.IsIdentity] = rowSource[DataSynchronVO.IsIdentity];
                 row[DataSynchronVO.DefaultValue] = rowSource[DataSynchronVO.DefaultValue];
 
-                row[DataSynchronVO.TargetFiledType] = rowTarget[DataSynchronVO.FiledType];
+                row[DataSynchronVO.TargetFiledType] = rowTarget[DataSynchronVO.FieldType];
                 row[DataSynchronVO.TargetFiledLen] = rowTarget[DataSynchronVO.FiledLen];
-                row[DataSynchronVO.TargetFiledDescription] = rowTarget[DataSynchronVO.FiledDescription];
+                row[DataSynchronVO.TargetFiledDescription] = rowTarget[DataSynchronVO.FieldDescription];
                 row[DataSynchronVO.TargetDecimalPrecision] = rowTarget[DataSynchronVO.DecimalPrecision];
                 row[DataSynchronVO.TargetDecimalDigits] = rowTarget[DataSynchronVO.DecimalDigits];
                 row[DataSynchronVO.TargetIsNullable] = rowTarget[DataSynchronVO.IsNullable];
@@ -682,9 +682,9 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
                 if (
                     (
-                    row[DataSynchronVO.FiledType].ToString() == row[DataSynchronVO.TargetFiledType].ToString()
+                    row[DataSynchronVO.FieldType].ToString() == row[DataSynchronVO.TargetFiledType].ToString()
                     && row[DataSynchronVO.FiledLen].ToString() == row[DataSynchronVO.TargetFiledLen].ToString()
-                    && row[DataSynchronVO.FiledDescription].ToString() == row[DataSynchronVO.TargetFiledDescription].ToString()
+                    && row[DataSynchronVO.FieldDescription].ToString() == row[DataSynchronVO.TargetFiledDescription].ToString()
                     && row[DataSynchronVO.DecimalPrecision].ToString() == row[DataSynchronVO.TargetDecimalPrecision].ToString()
                     && row[DataSynchronVO.DecimalDigits].ToString() == row[DataSynchronVO.TargetDecimalDigits].ToString()
                     && row[DataSynchronVO.IsNullable].ToString() == row[DataSynchronVO.TargetIsNullable].ToString()

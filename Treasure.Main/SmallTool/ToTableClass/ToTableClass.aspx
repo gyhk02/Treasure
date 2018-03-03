@@ -12,9 +12,9 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <div>命名空间：<asp:TextBox ID="txtNamespace" runat="server"></asp:TextBox></div>
-            <div>文件路径：<asp:TextBox ID="txtSavePath" runat="server" Width="500px">E:\Win8Expand\c\IISFold\Treasure\Treasure.Model\Frame</asp:TextBox>
-                <asp:Button ID="btnGetPath" runat="server" Text="选择保存路径" OnClick="btnGetPath_Click" /></div>
+            <div>命名空间：<asp:TextBox ID="txtNamespace" runat="server" Width="459px">Treasure.Model.Frame</asp:TextBox></div>
+            <div>保存路径：<asp:TextBox ID="txtSavePath" runat="server" Width="500px">E:\Win8Expand\c\IISFold\Treasure\Treasure.Model\Frame</asp:TextBox>
+                </div>
             <table style="width: 100%;">
                 <tr>
                     <td>&nbsp;</td>
@@ -46,6 +46,14 @@
                             </Columns>
                         </dx:ASPxGridView>
                     </td>
+                </tr> 
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                 <tr>
+                    <td>
+                        
+                        </td>
                 </tr>
             </table>
             <div>

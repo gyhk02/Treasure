@@ -20,7 +20,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
         #region 自定义变量
 
         DataSynchronBLL bll = new DataSynchronBLL();
-        DataBaseBLL bllDataBase = new DataBaseBLL();
+        DataBaseBll bllDataBase = new DataBaseBll();
 
         #endregion
 

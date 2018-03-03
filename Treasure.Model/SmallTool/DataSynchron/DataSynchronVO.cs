@@ -23,10 +23,10 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string TableDescription = "TableDescription";
 
         //用于表字段
-        public static string FiledName = "FiledName";
-        public static string FiledType = "FiledType";
+        public static string FieldName = "FieldName";
+        public static string FieldType = "FieldType";
         public static string FiledLen = "FiledLen";
-        public static string FiledDescription = "FiledDescription";
+        public static string FieldDescription = "FieldDescription";
         public static string DecimalPrecision = "DecimalPrecision";
         public static string DecimalDigits = "DecimalDigits";
         public static string IsNullable = "IsNullable";
@@ -36,7 +36,7 @@ namespace Treasure.Model.SmallTool.DataSynchron
 
         //用于目标表字段
         public static string TargetTableName = "TargetTableName";
-        public static string TargetFiledName = "TargetFiledName";
+        public static string TargetFieldName = "TargetFieldName";
         public static string TargetFiledType = "TargetFiledType";
         public static string TargetFiledLen = "TargetFiledLen";
         public static string TargetFiledDescription = "TargetFiledDescription";
@@ -47,11 +47,9 @@ namespace Treasure.Model.SmallTool.DataSynchron
         public static string TargetDefaultValue = "TargetDefaultValue";
 
         //存储过程
-        //public static string ProcedureName = "ProcedureName";
         public static string ProcedureDescription = "ProcedureDescription";
 
         //函数
-        //public static string FunctionName = "FunctionName";
         public static string FunctionDescription = "FunctionDescription";
 
         #region 约束
@@ -71,7 +69,7 @@ namespace Treasure.Model.SmallTool.DataSynchron
         /// <summary>
         /// 外键字段名
         /// </summary>
-        public static string ForeignFiledName = "ForeignFiledName";
+        public static string ForeignFieldName = "ForeignFieldName";
         /// <summary>
         /// 索引描述
         /// </summary>

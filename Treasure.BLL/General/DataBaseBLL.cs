@@ -11,7 +11,7 @@ using Treasure.Utility.Helpers;
 
 namespace Treasure.BLL.General
 {
-    public class DataBaseBLL
+    public class DataBaseBll
     {
         #region 获取数据库链接
         /// <summary>
@@ -358,10 +358,10 @@ where o.type = 'U' " + condition;
             {
                 case 1: //字段列表
                     strsql = @"
-select o.name TableName, c.name FiledName, t.name FiledType
-	, IIF(t.name = 'nchar' OR t.name = 'nvarchar',  c.max_length / 2, c.max_length) FiledLen
+select o.name " + DataSynchronVO.TableName + ", c.name " + DataSynchronVO.FieldName + ", t.name " + DataSynchronVO.FieldType + @"
+	, IIF(t.name = 'nchar' OR t.name = 'nvarchar', c.max_length / 2, c.max_length) FiledLen
 	, c.precision DecimalPrecision, c.scale DecimalDigits, ep.value FiledDescription
-	, c.is_nullable IsNullable, c.is_identity IsIdentity, IIF(c.max_length = -1, 1, 0) IsMax, sc.text DefaultValue
+    , c.is_nullable IsNullable, c.is_identity IsIdentity, IIF(c.max_length = -1, 1, 0) IsMax, sc.text DefaultValue
 from sys.objects as o
 join sys.columns as c on o.object_id = c.object_id
 join sys.types as t on c.system_type_id = t.system_type_id and c.user_type_id = t.user_type_id
@@ -373,10 +373,10 @@ order by c.column_id
                     break;
                 case 2: //约束列表
                     strsql = @"
-select o.name TableName, oa.name ConstraintName, oa.type ConstraintType
-	, ISNULL(c.name, ISNULL(kc.COLUMN_NAME, COL_NAME(fkc.parent_object_id, fkc.parent_column_id))) FiledName
+select o.name " + DataSynchronVO.TableName + @", oa.name ConstraintName, oa.type ConstraintType
+	, ISNULL(c.name, ISNULL(kc.COLUMN_NAME, COL_NAME(fkc.parent_object_id, fkc.parent_column_id))) " + DataSynchronVO.FieldName + @"
 	, OBJECT_NAME(fk.referenced_object_id) ForeignTableName
-	, COL_NAME(fkc.referenced_object_id, fkc.referenced_column_id) ForeignFiledName
+	, COL_NAME(fkc.referenced_object_id, fkc.referenced_column_id) " + DataSynchronVO.ForeignFieldName + @"
 	, sc.text DefaultValue, i.type_desc IndexDescripton
 from sys.objects o
 join sys.objects oa on o.object_id = oa.parent_object_id
@@ -392,7 +392,7 @@ order by oa.type
                     break;
                 case 3: //字段说明列表
                     strsql = @"
-select o.name TableName, c.name FiledName, ep.name DescriptionName, ep.value FiledDescription
+select o.name " + DataSynchronVO.TableName + @", c.name " + DataSynchronVO.FieldName + @", ep.name DescriptionName, ep.value " + DataSynchronVO.FieldDescription + @"
 from sys.objects o
 join sys.columns c on o.object_id = c.object_id
 join sys.extended_properties ep on c.object_id = ep.major_id and c.column_id = ep.minor_id
@@ -402,7 +402,7 @@ order by c.column_id
                     break;
                 case 4: //表说明列表
                     strsql = @"
-select o.name TableName, ep.name DescriptionName, ep.value TableDescription
+select o.name " + DataSynchronVO.TableName + @", ep.name DescriptionName, ep.value TableDescription
 from sys.objects o
 join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
 where o.name = @TableName
