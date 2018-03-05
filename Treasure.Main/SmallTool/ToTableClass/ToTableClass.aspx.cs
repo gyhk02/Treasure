@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Treasure.BLL.General;
-using Treasure.Model.Frame;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Extend;
@@ -188,24 +187,24 @@ namespace Treasure.Main.SmallTool.ToTableClass
 
             StringBuilder content = new StringBuilder();
 
-            content.Append("namespace " + tableNamespace)
-                .Append("    {")
-                .Append("        public partial class " + createFileName)
-                .Append("        {")
-                .Append("public static string tableName = \"" + tableName + "\"; ")
-                .Append("")
-                .Append("            public static class Fields")
-                .Append("            {");
+            content.Append("namespace " + tableNamespace + ConstantVO.ENTER_R)
+                .Append("{" + ConstantVO.ENTER_R)
+                .Append("    public partial class " + createFileName + ConstantVO.ENTER_R)
+                .Append("    {" + ConstantVO.ENTER_R)
+                .Append("        public static string tableName = \"" + tableName + "\"; " + ConstantVO.ENTER_R)
+                .Append("" + ConstantVO.ENTER_R)
+                .Append("        public static class Fields" + ConstantVO.ENTER_R)
+                .Append("        {" + ConstantVO.ENTER_R);
 
             foreach (DataRow row in dtField.Rows)
             {
                 string fieldName = TypeConversion.ToString(row[DataSynchronVO.FieldName]);
-                content.Append("            public static string " + bllCamelName.getSmallCamelName(fieldName) + " = \"" + fieldName + "\"; ");
+                content.Append("            public static string " + bllCamelName.getSmallCamelName(fieldName) + " = \"" + fieldName + "\"; " + ConstantVO.ENTER_R);
             }
 
-            content.Append("            }")
-                .Append("        }")
-                .Append("    }");
+            content.Append("        }" + ConstantVO.ENTER_R)
+                .Append("    }" + ConstantVO.ENTER_R)
+                .Append("}");
 
             File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
         }

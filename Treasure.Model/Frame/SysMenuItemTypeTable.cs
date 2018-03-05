@@ -1,6 +1,6 @@
 ﻿namespace Treasure.Model.Frame
 {
-    public partial class SysRoleTable
+    public partial class SysMenuItemTypeTable
     {
     }
 }

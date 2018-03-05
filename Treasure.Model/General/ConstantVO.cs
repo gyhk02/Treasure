@@ -18,6 +18,7 @@ namespace Treasure.Model.General
         /// </summary>
         public static string ENTER_STRING = "\r\n";
         public static string ENTER_RN_JS = "\\r\\n";
+        public static char ENTER_R = '\r';
         public static string ENTER_BR = "<br />";
 
         /// <summary>
