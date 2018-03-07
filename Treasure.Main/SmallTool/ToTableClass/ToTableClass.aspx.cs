@@ -30,7 +30,6 @@ namespace Treasure.Main.SmallTool.ToTableClass
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //绑定数据库链接
             if (!IsPostBack)
             {
                 //绑定数据库
@@ -40,6 +39,10 @@ namespace Treasure.Main.SmallTool.ToTableClass
                 Session["dtDataDb"] = dtDatabase;
                 ddlDataBase.SelectedValue = "1";
                 ddlDataBase_SelectedIndexChanged(sender, e);
+            }
+            else
+            {
+                InitData();
             }
         }
 
@@ -55,19 +58,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
         /// <param name="e"></param>
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            string pConnStr = hdnConnection.Value;
-            string pTableName = txtTableName.Text.Trim();
-
-            if (string.IsNullOrEmpty(pConnStr) == true)
-            {
-                ClientScriptManager clientScript = Page.ClientScript;
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据库没有链接');</script>");
-                return;
-            }
-
-            DataTable dt = bllDataBase.GetTableList(pConnStr, pTableName);
-            grvTableList.DataSource = dt;
-            grvTableList.DataBind();
+            InitData();
         }
         #endregion
 
@@ -100,7 +91,6 @@ namespace Treasure.Main.SmallTool.ToTableClass
                 grvTableList.DataBind();
 
                 lblShowConnectionResult.Text = "连接异常(" + DateTime.Now.ToString(ConstantVO.DATETIME_Y_M_D_H_M_S) + ")";
-                return;
             }
         }
         #endregion
@@ -179,6 +169,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
         private void CreateParentTableClass(string savePath, string tableNamespace, string tableName)
         {
             string createFileName = bllCamelName.getBigCamelName(tableName) + "ParentTable";
+            string className = bllCamelName.getBigCamelName(tableName) + "Table";
             string fileName = savePath + "\\" + createFileName + ".cs";
             string connStr = hdnConnection.Value;
 
@@ -189,7 +180,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
 
             content.Append("namespace " + tableNamespace + ConstantVO.ENTER_R)
                 .Append("{" + ConstantVO.ENTER_R)
-                .Append("    public partial class " + createFileName + ConstantVO.ENTER_R)
+                .Append("    public partial class " + className + ConstantVO.ENTER_R)
                 .Append("    {" + ConstantVO.ENTER_R)
                 .Append("        public static string tableName = \"" + tableName + "\"; " + ConstantVO.ENTER_R)
                 .Append("" + ConstantVO.ENTER_R)
@@ -269,7 +260,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
             int id = TypeConversion.ToInt(ddlDataBase.SelectedValue);
 
             DataTable dtDatabase = Session["dtDataDb"] as DataTable;
-            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.Id) == id).ToList();
+            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.id) == id).ToList();
 
             if (lstRow.Count == 1)
             {
@@ -292,6 +283,29 @@ namespace Treasure.Main.SmallTool.ToTableClass
         #endregion
 
         #region 自定义事件
+
+        #region 初始化列表
+        /// <summary>
+        /// 初始化列表
+        /// </summary>
+        private void InitData()
+        {
+            string pConnStr = hdnConnection.Value;
+            string pTableName = txtTableName.Text.Trim();
+
+            if (string.IsNullOrEmpty(pConnStr) == true)
+            {
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据库没有链接');</script>");
+                return;
+            }
+
+            DataTable dt = bllDataBase.GetTableList(pConnStr, pTableName);
+            grvTableList.DataSource = dt;
+            grvTableList.DataBind();
+        }
+        #endregion
+
         #endregion
 
     }

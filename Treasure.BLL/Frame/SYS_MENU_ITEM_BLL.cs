@@ -10,8 +10,59 @@ using Treasure.Utility.Helpers;
 
 namespace Treasure.BLL.Frame
 {
-    public class SYS_MENU_ITEM_BLL : BasicBLL
+    public class SYS_MENU_ITEM_BLL : BasicBll
     {
+        #region 获取树结构的菜单列表
+        /// <summary>
+        /// 获取树结构的菜单列表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetMenuItemByTree()
+        {
+            DataTable dt = null;
+
+            string sql = "SELECT ID, REPLACE(RIGHT('000000000000', (SYS_MENU_ITEM_TYPE_ID - 1) * 2), '0', '..') + NAME NAME FROM SYS_MENU_ITEM ORDER BY NO";
+
+            try
+            {
+                dt = base.GetDataTable(sql, null);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return dt;
+        }
+        #endregion
+
+        #region 获取菜单列表
+        /// <summary>
+        /// 获取菜单列表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetMenuItemList()
+        {
+            DataTable dt = null;
+
+            string sql = @"
+SELECT SMI.ID, SMI.NAME, SMIT.NAME MENU_TYPE_NAME, SMI.PICTURE_URL, SMI.FILE_URL, SMI.BUTTON_NAME, SMI.ENABLE, SMI.IS_SYS, SMI.PARENT_ID
+FROM SYS_MENU_ITEM SMI
+JOIN SYS_MENU_ITEM_TYPE SMIT ON SMI.SYS_MENU_ITEM_TYPE_ID = SMIT.ID
+";
+
+            try
+            {
+                dt = base.GetDataTable(sql, null);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return dt;
+        }
+        #endregion
 
         #region 获取根菜单
         /// <summary>
@@ -36,7 +87,7 @@ namespace Treasure.BLL.Frame
             return dt;
         }
         #endregion
-
+        
         #region 获取菜单列表
         /// <summary>
         /// 获取菜单列表

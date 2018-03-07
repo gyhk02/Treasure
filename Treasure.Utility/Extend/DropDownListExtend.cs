@@ -22,8 +22,8 @@ namespace Treasure.Utility.Extend
         public static void BindToShowNo(this DropDownList ddl, DataTable dt, bool hasPleaseSelect)
         {
             ddl.DataSource = dt;
-            ddl.DataValueField = GeneralVO.Id;
-            ddl.DataTextField = GeneralVO.No;
+            ddl.DataValueField = GeneralVO.id;
+            ddl.DataTextField = GeneralVO.no;
             ddl.DataBind();
 
             if (hasPleaseSelect)
@@ -45,14 +45,14 @@ namespace Treasure.Utility.Extend
             if (hasPleaseSelect)
             {
                 DataRow row = dt.NewRow();
-                row[GeneralVO.Id] = "-1";
-                row[GeneralVO.Name] = ConstantVO.pleaseSelect; 
+                row[GeneralVO.id] = "-1";
+                row[GeneralVO.name] = ConstantVO.pleaseSelect; 
                 dt.Rows.InsertAt(row, 0);
             }
 
             ddl.DataSource = dt;
-            ddl.DataValueField = GeneralVO.Id;
-            ddl.DataTextField = GeneralVO.Name;
+            ddl.DataValueField = GeneralVO.id;
+            ddl.DataTextField = GeneralVO.name;
             ddl.DataBind();           
         }
         #endregion

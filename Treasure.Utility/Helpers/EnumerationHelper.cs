@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 using System.ComponentModel;
-using System.Data;
 
 namespace Treasure.Utility.Helpers
 {
@@ -36,7 +31,7 @@ namespace Treasure.Utility.Helpers
             MemberInfo[] memInfo = type.GetMember(en.ToString());
             if (memInfo != null && memInfo.Length > 0)
             {
-                object[] attrs = memInfo[0].GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), false);
+                object[] attrs = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
                 if (attrs != null && attrs.Length > 0)
                     return ((DescriptionAttribute)attrs[0]).Description;
             }
@@ -59,7 +54,7 @@ namespace Treasure.Utility.Helpers
                 {
                     if (i.ToString() == entity.GetRawConstantValue().ToString())
                     {
-                        object[] attrs = entity.GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), false);
+                        object[] attrs = entity.GetCustomAttributes(typeof(DescriptionAttribute), false);
                         if (attrs != null && attrs.Length > 0)
                             return ((DescriptionAttribute)attrs[0]).Description;
                     }

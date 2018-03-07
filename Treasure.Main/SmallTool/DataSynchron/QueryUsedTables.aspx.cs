@@ -105,7 +105,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             int id = TypeConversion.ToInt(ddlSourceDb.SelectedValue);
 
             DataTable dtDatabase = Session["dtDataDb"] as DataTable;
-            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.Id) == id).ToList();
+            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.id) == id).ToList();
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];

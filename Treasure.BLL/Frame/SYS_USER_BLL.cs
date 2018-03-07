@@ -11,7 +11,7 @@ using Treasure.Utility.Helpers;
 
 namespace Treasure.BLL.Frame
 {
-    public class SYS_USER_BLL : BasicBLL
+    public class SYS_USER_BLL : BasicBll
     {
 
         #region 登录判断
@@ -38,7 +38,7 @@ namespace Treasure.BLL.Frame
                 DataTable dt = base.GetDataTable(sql, paras);
                 if (dt.Rows.Count == 1)
                 {
-                    result = dt.Rows[0][GeneralVO.Id].ToString();
+                    result = dt.Rows[0][GeneralVO.id].ToString();
                 }
             }
             catch (Exception ex)

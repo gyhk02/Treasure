@@ -16,7 +16,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
     /// <summary>
     /// 数据同步类
     /// </summary>
-    public class DataSynchronBLL : BasicBLL
+    public class DataSynchronBLL : BasicBll
     {
         #region 函数同步
         /// <summary>
@@ -643,7 +643,7 @@ where o.type = 'U' " + condition;
                 }
 
                 string sql = @"
-select o.object_id " + GeneralVO.Id + ", o.name " + GeneralVO.Name + ", ep.value " + strDescription + @"
+select o.object_id " + GeneralVO.id + ", o.name " + GeneralVO.name + ", ep.value " + strDescription + @"
 from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0 and ep.name = 'MS_Description'
 where o.type = @ObjectType" + condition + @"

@@ -16,16 +16,16 @@ namespace Treasure.Main.Test
             if (IsPostBack == false)
             {
                 DataTable dt = new DataTable();
-                dt.Columns.Add(GeneralVO.Id);
-                dt.Columns.Add(GeneralVO.No);
-                dt.Columns.Add(GeneralVO.Name);
+                dt.Columns.Add(GeneralVO.id);
+                dt.Columns.Add(GeneralVO.no);
+                dt.Columns.Add(GeneralVO.name);
 
                 for (int idx = 1; idx < 10; idx++)
                 {
                     DataRow row = dt.NewRow();
-                    row[GeneralVO.Id] = idx;
-                    row[GeneralVO.No] = idx + "NO";
-                    row[GeneralVO.Name] = idx + "NAME";
+                    row[GeneralVO.id] = idx;
+                    row[GeneralVO.no] = idx + "NO";
+                    row[GeneralVO.name] = idx + "NAME";
                     dt.Rows.Add(row);
                 }
 

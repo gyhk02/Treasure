@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Treasure.Model.General;
-using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Helpers;
 
 namespace Treasure.BLL.General
@@ -14,7 +7,7 @@ namespace Treasure.BLL.General
     /// <summary>
     /// 逻辑层基类
     /// </summary>
-    public class BasicBLL
+    public class BasicBll
     {
 
         #region 获取

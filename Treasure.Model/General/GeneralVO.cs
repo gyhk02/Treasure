@@ -5,8 +5,8 @@
     /// </summary>
     public static class GeneralVO
     {
-        public static string Id = "ID";
-        public static string No = "NO";
-        public static string Name = "NAME";
+        public static string id = "ID";
+        public static string no = "NO";
+        public static string name = "NAME";
     }
 }

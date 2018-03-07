@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -90,6 +91,7 @@
     <Content Include="Frame\Left.aspx" />
     <Content Include="Frame\Login.aspx" />
     <Content Include="Frame\Main.aspx" />
+    <Content Include="Frame\MenuItemList.aspx" />
     <Content Include="Frame\Menu_Add.aspx" />
     <Content Include="Script\Css\Basic.css" />
     <Content Include="Script\Js\jquery.min.js" />
@@ -143,6 +145,13 @@
     </Compile>
     <Compile Include="Frame\Main.aspx.designer.cs">
       <DependentUpon>Main.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Frame\MenuItemList.aspx.cs">
+      <DependentUpon>MenuItemList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\MenuItemList.aspx.designer.cs">
+      <DependentUpon>MenuItemList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Frame\Menu_Add.aspx.cs">
       <DependentUpon>Menu_Add.aspx</DependentUpon>

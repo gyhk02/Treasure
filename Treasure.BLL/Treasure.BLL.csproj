@@ -42,12 +42,13 @@
   <ItemGroup>
     <Compile Include="Frame\SYS_MENU_ITEM_BLL.cs" />
     <Compile Include="Frame\SYS_USER_BLL.cs" />
-    <Compile Include="General\BasicBLL.cs" />
+    <Compile Include="General\BasicBll.cs" />
     <Compile Include="General\BasicWebBLL.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="General\CamelNameBLL.cs" />
     <Compile Include="General\DataBaseBll.cs" />
+    <Compile Include="General\GeneralBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmallTool\DataSynchron\DataSynchronBLL.cs" />
   </ItemGroup>

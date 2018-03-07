@@ -20,7 +20,7 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td>数据库：<asp:DropDownList ID="ddlDataBase" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlDataBase_SelectedIndexChanged"></asp:DropDownList>
+                    <td>数据库：<asp:DropDownList ID="ddlDataBase" runat="server" OnSelectedIndexChanged="ddlDataBase_SelectedIndexChanged"></asp:DropDownList>
                         <asp:Button ID="btnConnection" runat="server" Text="连接" OnClick="btnConnection_Click" />
                         <asp:Label ID="lblShowConnectionResult" runat="server" Text=" "></asp:Label>
                         <br />

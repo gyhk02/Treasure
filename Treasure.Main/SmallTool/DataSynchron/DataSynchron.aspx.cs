@@ -68,7 +68,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             int id = TypeConversion.ToInt(ddlSourceDb.SelectedValue);
 
             DataTable dtDatabase = Session["dtDataDb"] as DataTable;
-            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.Id) == id).ToList();
+            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.id) == id).ToList();
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
@@ -99,7 +99,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
         {
             int id = TypeConversion.ToInt(ddlTargetDb.SelectedValue);
             DataTable dtDatabase = Session["dtDataDb"] as DataTable;
-            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.Id) == id).ToList();
+            List<DataRow> lstRow = dtDatabase.AsEnumerable().Where(p => p.Field<int>(GeneralVO.id) == id).ToList();
             if (lstRow.Count == 1)
             {
                 DataRow row = lstRow[0];
@@ -221,10 +221,10 @@ namespace Treasure.Main.SmallTool.DataSynchron
             List<string> lstTableList = grvTableList.GetSelectedFieldValues(new string[] { DataSynchronVO.TableName }).ConvertAll<string>(c => string.Format("{0}", c));
 
             //获取要同步的存储过程
-            List<string> lstProcedureList = grvProcedureList.GetSelectedFieldValues(new string[] { GeneralVO.Name }).ConvertAll<string>(c => string.Format("{0}", c));
+            List<string> lstProcedureList = grvProcedureList.GetSelectedFieldValues(new string[] { GeneralVO.name }).ConvertAll<string>(c => string.Format("{0}", c));
 
             //获取要同步的函数
-            List<string> lstFunctionList = grvFunctionList.GetSelectedFieldValues(new string[] { GeneralVO.Name }).ConvertAll<string>(c => string.Format("{0}", c));
+            List<string> lstFunctionList = grvFunctionList.GetSelectedFieldValues(new string[] { GeneralVO.name }).ConvertAll<string>(c => string.Format("{0}", c));
 
             try
             {
@@ -427,16 +427,16 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 switch (dtSource.Columns[0].DataType.Name)
                 {
                     case "Int32":
-                        List<int> lstInt = (from d in dtTarget.AsEnumerable() select d.Field<int>(GeneralVO.Id)).ToList();
-                        lstSourceData = dtSource.AsEnumerable().Where(p => lstInt.Contains(p.Field<int>(GeneralVO.Id)) == false).ToList();
+                        List<int> lstInt = (from d in dtTarget.AsEnumerable() select d.Field<int>(GeneralVO.id)).ToList();
+                        lstSourceData = dtSource.AsEnumerable().Where(p => lstInt.Contains(p.Field<int>(GeneralVO.id)) == false).ToList();
                         break;
                     case "Int64":
-                        List<Int64> lstInt64 = (from d in dtTarget.AsEnumerable() select d.Field<Int64>(GeneralVO.Id)).ToList();
-                        lstSourceData = dtSource.AsEnumerable().Where(p => lstInt64.Contains(p.Field<Int64>(GeneralVO.Id)) == false).ToList();
+                        List<Int64> lstInt64 = (from d in dtTarget.AsEnumerable() select d.Field<Int64>(GeneralVO.id)).ToList();
+                        lstSourceData = dtSource.AsEnumerable().Where(p => lstInt64.Contains(p.Field<Int64>(GeneralVO.id)) == false).ToList();
                         break;
                     case "String":
-                        List<string> lstString = (from d in dtTarget.AsEnumerable() select d.Field<string>(GeneralVO.Id)).ToList();
-                        lstSourceData = dtSource.AsEnumerable().Where(p => lstString.Contains(p.Field<string>(GeneralVO.Id)) == false).ToList();
+                        List<string> lstString = (from d in dtTarget.AsEnumerable() select d.Field<string>(GeneralVO.id)).ToList();
+                        lstSourceData = dtSource.AsEnumerable().Where(p => lstString.Contains(p.Field<string>(GeneralVO.id)) == false).ToList();
                         break;
                     default:
                         clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('表" + str + "的ID既然不是Int32，也不是String类型');</script>");

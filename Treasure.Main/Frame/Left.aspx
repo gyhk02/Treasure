@@ -19,9 +19,8 @@
                 <Columns>
                     <dx:TreeListTextColumn Caption="菜单" FieldName="NAME" VisibleIndex="0">
                         <DataCellTemplate>
-                            <%# Eval("TypeName").ToString() == "页面"
-                            ? "<a href='" + Eval("FILE_URL") + "?PageId=" + Eval(Treasure.Model.General.GeneralVO.Id) + "' target='frmMain'>" + Eval(Treasure.Model.General.GeneralVO.Name) + "</a>"
-                            : Eval(Treasure.Model.General.GeneralVO.Name); %>
+                            <%# Eval("TypeName").ToString() == "页面" ? "<a href='" + Eval("FILE_URL") + "?PageId=" + Eval(Treasure.Model.General.GeneralVO.id) + "' target='frmMain'>" + Eval(Treasure.Model.General.GeneralVO.name) + "</a>" : Eval(Treasure.Model.General.GeneralVO.name) %>
+                            <%--<%# Eval(Treasure.Model.General.GeneralVO.Name) %>--%>
                         </DataCellTemplate>
                     </dx:TreeListTextColumn>
                 </Columns>
