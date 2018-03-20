@@ -30,6 +30,32 @@ namespace Treasure.Main.SmallTool.ToTableClass
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            //按钮
+            if (Request.HttpMethod == "POST")
+            {
+                if (Request["btnConnection"] == "连接")
+                {
+                    ConnectDataBase();
+                    return;
+                }
+                if (Request["btnSearch"] == "查询")
+                {
+                    InitData();
+                    return;
+                }
+                if (Request["btnConfirm"] == "生成Model类")
+                {
+                    CreateModelClass();
+                    return;
+                }
+                if (Request["__CALLBACKID"] == "grvTableList")
+                {
+                    InitData();
+                    return;
+                }
+            }
+
             if (!IsPostBack)
             {
                 //绑定数据库
@@ -40,35 +66,17 @@ namespace Treasure.Main.SmallTool.ToTableClass
                 ddlDataBase.SelectedValue = "1";
                 ddlDataBase_SelectedIndexChanged(sender, e);
             }
-            else
-            {
-                InitData();
-            }
         }
 
         #endregion
 
         #region 按钮
 
-        #region 查询
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnSearch_Click(object sender, EventArgs e)
-        {
-            InitData();
-        }
-        #endregion
-
         #region 链接数据库
         /// <summary>
         /// 链接数据库
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnConnection_Click(object sender, EventArgs e)
+        protected void ConnectDataBase()
         {
             string connStr = hdnConnection.Value;
             if (string.IsNullOrEmpty(connStr) == true)
@@ -99,9 +107,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
         /// <summary>
         /// 生成Model类
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnConfirm_Click(object sender, EventArgs e)
+        protected void CreateModelClass()
         {
             ClientScriptManager clientScript = Page.ClientScript;
 
@@ -115,7 +121,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
             if (string.IsNullOrEmpty(connStr) == true)
             {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('数据库还没有链接');</script>");
-                btnConnection.Focus();
+                ddlDataBase.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(strNamespace) == true)

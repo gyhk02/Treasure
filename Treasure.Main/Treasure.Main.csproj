@@ -85,6 +85,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Document\常用代码.txt" />
     <Content Include="Document\特殊文件定位.txt" />
+    <Content Include="Document\相关内容.txt" />
     <Content Include="Document\解决方案包含的内容.txt" />
     <Content Include="Entity.aspx" />
     <Content Include="Frame\Default.aspx" />

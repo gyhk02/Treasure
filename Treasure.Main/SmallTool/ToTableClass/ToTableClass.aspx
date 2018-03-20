@@ -20,15 +20,19 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td>数据库：<asp:DropDownList ID="ddlDataBase" runat="server" OnSelectedIndexChanged="ddlDataBase_SelectedIndexChanged"></asp:DropDownList>
-                        <asp:Button ID="btnConnection" runat="server" Text="连接" OnClick="btnConnection_Click" />
+                    <td>数据库：<asp:DropDownList ID="ddlDataBase" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlDataBase_SelectedIndexChanged"></asp:DropDownList>
+
+                        <input id="btnConnection" name="btnConnection" type="submit" value="连接" />
+
                         <asp:Label ID="lblShowConnectionResult" runat="server" Text=" "></asp:Label>
                         <br />
                         <br />
                         表名：<asp:TextBox ID="txtTableName" runat="server" Width="278px"></asp:TextBox>
-                        <asp:Button ID="btnSearch" runat="server" Text="查询" OnClick="btnSearch_Click" />
+
+                        <input id="btnSearch" name="btnSearch" type="submit" value="查询" />
+
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <asp:Button ID="btnConfirm" runat="server" Text="生成Model类" OnClick="btnConfirm_Click" />
+                        <input id="btnConfirm" name="btnConfirm" type="submit" value="生成Model类" />
                         <br />
                         <br />
                         <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">

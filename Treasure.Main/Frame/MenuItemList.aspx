@@ -64,7 +64,7 @@
             <br />
             <br />
             <dx:ASPxTreeList ID="treMenuItem" runat="server" AutoGenerateColumns="False"
-                KeyFieldName="ID" ParentFieldName="PARENT_ID">
+                KeyFieldName="ID" ParentFieldName="PARENT_ID" OnCustomDataCallback="treMenuItem_CustomDataCallback" OnFocusedNodeChanged="treMenuItem_FocusedNodeChanged">
                 <Columns>
                     <dx:TreeListTextColumn Caption="名称" FieldName="NAME" VisibleIndex="0">
                     </dx:TreeListTextColumn>
@@ -81,6 +81,9 @@
                     <dx:TreeListTextColumn Caption="系统菜单" FieldName="IS_SYS" VisibleIndex="6">
                     </dx:TreeListTextColumn>
                 </Columns>
+                <Settings ShowColumnHeaders="False" />
+                <SettingsBehavior AllowFocusedNode="True" ExpandCollapseAction="NodeClick" />
+                <SettingsCustomizationWindow Enabled="True" />
             </dx:ASPxTreeList>
         </div>
     </form>
