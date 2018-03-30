@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Treasure.BLL.General;
 using Treasure.Utility.Helpers;
 
 namespace Treasure.BLL.Frame
 {
-    public class SYS_MENU_ITEM_BLL : BasicBll
+    public class SysMenuItemBll : BasicBll
     {
         #region 获取树结构的菜单列表
         /// <summary>

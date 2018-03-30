@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Treasure.Utility.Utilitys;
 
 namespace Treasure.Utility.Helpers
 {
@@ -98,25 +99,40 @@ namespace Treasure.Utility.Helpers
 
         #region 查询
 
+        #region 根据表名获取表结构
+        /// <summary>
+        /// 根据表名获取表结构
+        /// </summary>
+        /// <param name="pTableName"></param>
+        /// <returns></returns>
+        public static DataTable ExecuteDataTable(string pTableName)
+        {
+            string strsql = @"SELECT TOP 0 * FROM [" + pTableName + "]";
+
+            DataTable dt = ExecuteDataTable(CommandType.Text, strsql, null);
+
+            return dt;
+        }
+        #endregion
+
         #region 根据表名和ID获取DataRow
         /// <summary>
         /// 根据表名和ID获取DataRow
         /// </summary>
         /// <param name="pTableName">表名</param>
-        /// <param name="pCN_ID">ID</param>
+        /// <param name="pID">ID</param>
         /// <returns>DataRow</returns>
-        public static DataRow ExecuteDataTable(string pTableName, string pCN_ID)
+        public static DataRow ExecuteDataTable(string pTableName, string pID)
         {
-            string strsql = @"SELECT * FROM [" + pTableName + "] WHERE CN_ID = @CN_ID";
+            string strsql = @"SELECT * FROM [" + pTableName + "] WHERE ID = @ID";
 
             SqlParameter[] parms = new SqlParameter[]
             {
-                new SqlParameter("@CN_ID",SqlDbType.Int)
+                new SqlParameter("@ID",SqlDbType.Int)
             };
-            parms[0].Value = pCN_ID;
+            parms[0].Value = pID;
 
-            DataTable dt = new DataTable();
-            dt = ExecuteDataTable(CommandType.Text, strsql, parms);
+            DataTable dt = ExecuteDataTable(CommandType.Text, strsql, parms);
 
             return dt.Rows[0];
         }
@@ -141,7 +157,7 @@ namespace Treasure.Utility.Helpers
         /// <returns></returns>
         public static DataTable ExecuteDataTableByName(string pConnString, string pTableName)
         {
-            DataTable dt = new DataTable();
+            DataTable dt;
 
             string strsql = @"SELECT * FROM " + "[" + pTableName + "]";
 
@@ -221,9 +237,132 @@ namespace Treasure.Utility.Helpers
             return dt;
         }
         #endregion
-        
+
         #endregion
 
+        #region 新增
+
+        /// <summary>
+        /// 新增一行数据
+        /// </summary>
+        /// <param name="row">要插入的数据行</param>
+        /// <returns></returns>
+        public static string AddDataRow(DataRow row)
+        {
+            return AddDataRow(row, null);
+        }
+        /// <summary>
+        /// 新增一行数据
+        /// </summary>
+        /// <param name="row">要插入的数据行</param>
+        /// <param name="pConnString">数据库链接</param>
+        /// <returns></returns>
+        public static string AddDataRow(DataRow row, string pConnString)
+        {
+            string id = "";
+            
+            try
+            {
+                if (string.IsNullOrEmpty(pConnString) == true)
+                {
+                    pConnString = ConnString;
+                }
+
+                #region SQL及参数
+
+                List<string> lstColumnName = new List<string>();
+                List<string> lstVar = new List<string>();
+                List<SqlParameter> lstPara = new List<SqlParameter>();
+
+                DataTable dt = row.Table;
+                foreach (DataColumn col in dt.Columns)
+                {
+                    string columnName = col.ColumnName;
+
+                    lstColumnName.Add(columnName);
+                    lstVar.Add("@" + columnName);
+
+                    SqlDbType type = TypeConversion.ToSqlDbType(col.DataType);
+                    lstPara.Add(new SqlParameter("@" + columnName, type) { Value = row[col] });
+                }
+
+               string strsql = "INSERT INTO " + row.Table.TableName
+                    + "(" + string.Join(", ", lstColumnName.ToArray()) + ") SELECT " + string.Join(", ", lstVar.ToArray());
+
+                #endregion
+
+                ExecuteNonQuery(pConnString, CommandType.Text, strsql, lstPara.ToArray());
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return id;
+        }
+
+        #endregion
+
+        #region 修改
+
+        /// <summary>
+        /// 修改一行数据
+        /// </summary>
+        /// <param name="row">要修改的数据行</param>
+        /// <returns></returns>
+        public static string UpdateDataRow(DataRow row)
+        {
+            return UpdateDataRow(row, null);
+        }
+        /// <summary>
+        /// 修改一行数据
+        /// </summary>
+        /// <param name="row">要修改的数据行</param>
+        /// <param name="pConnString">数据库链接</param>
+        /// <returns></returns>
+        public static string UpdateDataRow(DataRow row, string pConnString)
+        {
+            string id = "";
+            
+            try
+            {
+                if (string.IsNullOrEmpty(pConnString) == true)
+                {
+                    pConnString = ConnString;
+                }
+
+                #region SQL及参数
+
+                List<string> lstColumn = new List<string>();
+                List<SqlParameter> lstPara = new List<SqlParameter>();
+
+                DataTable dt = row.Table;
+                foreach (DataColumn col in dt.Columns)
+                {
+                    string columnName = col.ColumnName;
+
+                    lstColumn.Add(columnName + " = @" + columnName);
+
+                    SqlDbType type = TypeConversion.ToSqlDbType(col.DataType);
+                    lstPara.Add(new SqlParameter("@" + columnName, type) { Value = row[col] });
+                }
+
+                string strsql = "UPDATE " + dt.TableName + " SET " + string.Join(", ", lstColumn.ToArray()) + " WHERE ID = @ID";
+
+                #endregion
+
+                ExecuteNonQuery(pConnString, CommandType.Text, strsql, lstPara.ToArray());
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return id;
+        }
+
+        #endregion
+        
         #endregion
 
         #region 原SQLHelper文件代码

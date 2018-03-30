@@ -14,7 +14,7 @@ namespace Treasure.Main.Frame
 
         #region 自定义变量
 
-        SYS_USER_BLL bllSysUser = new SYS_USER_BLL();
+        SysUserBll bllSysUser = new SysUserBll();
 
         #endregion
 

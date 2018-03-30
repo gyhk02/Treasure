@@ -15,7 +15,7 @@ namespace Treasure.Main.Frame
     {
         #region 自定义变量
 
-        SYS_MENU_ITEM_BLL bllSysMenuItem = new SYS_MENU_ITEM_BLL();
+        SysMenuItemBll bllSysMenuItem = new SysMenuItemBll();
 
         #endregion
 

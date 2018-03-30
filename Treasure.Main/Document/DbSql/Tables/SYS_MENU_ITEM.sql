@@ -1,4 +1,5 @@
 
+
 CREATE TABLE [dbo].[SYS_MENU_ITEM](
 	[ID] [nvarchar](32) NOT NULL,
 	[NO] [nvarchar](50) NULL,
@@ -11,6 +12,7 @@ CREATE TABLE [dbo].[SYS_MENU_ITEM](
 	[BUTTON_NAME] [varchar](255) NULL,
 	[SORT_INDEX] [int] NULL,
 	[ENABLE] [bit] NULL,
+	[IS_SYS] [bit] NOT NULL,
 	[CREATE_USER_ID] [nvarchar](32) NULL,
 	[CREATE_DATETIME] [datetime] NULL,
 	[MODIFY_USER_ID] [nvarchar](32) NULL,
@@ -21,6 +23,9 @@ CREATE TABLE [dbo].[SYS_MENU_ITEM](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
+GO
+
+ALTER TABLE [dbo].[SYS_MENU_ITEM] ADD  CONSTRAINT [DF_SYS_MENU_ITEM_IS_SYS]  DEFAULT ((0)) FOR [IS_SYS]
 GO
 
 ALTER TABLE [dbo].[SYS_MENU_ITEM]  WITH CHECK ADD  CONSTRAINT [FK_MENU_ITEM_MENU_ITEM_TYPE] FOREIGN KEY([SYS_MENU_ITEM_TYPE_ID])
@@ -72,6 +77,9 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'排序' , @level
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'启用的？' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SYS_MENU_ITEM', @level2type=N'COLUMN',@level2name=N'ENABLE'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'是否系统菜单 0.默认 1.是系统菜单' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SYS_MENU_ITEM', @level2type=N'COLUMN',@level2name=N'IS_SYS'
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SYS_MENU_ITEM', @level2type=N'COLUMN',@level2name=N'CREATE_USER_ID'

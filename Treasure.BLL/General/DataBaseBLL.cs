@@ -29,6 +29,16 @@ namespace Treasure.BLL.General
             dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
 
+            DataRow row11 = dtDatabase.NewRow();
+            row11[GeneralVO.id] = 11;
+            row11[DataSynchronVO.Version] = ConstantVO.DEVELOPMENT_VERSION;
+            row11[GeneralVO.no] = "Treasure_56";
+            row11[DataSynchronVO.Ip] = "172.16.96.56";
+            row11[DataSynchronVO.LoginName] = "erp";
+            row11[DataSynchronVO.Pwd] = "erp.123";
+            row11[DataSynchronVO.DbName] = "EVNERP20180203";
+            dtDatabase.Rows.Add(row11);
+
             DataRow row10 = dtDatabase.NewRow();
             row10[GeneralVO.id] = 10;
             row10[DataSynchronVO.Version] = ConstantVO.OFFICIAL_VERSION;
@@ -327,18 +337,14 @@ where o.type = 'U' " + condition;
         /// <returns>DataTable</returns>
         public DataTable GetTableInfoByName(int pType, string pConnection, List<string> pLstTableName)
         {
-            DataTable result = new DataTable();
-
             List<DataTable> lstTable = new List<DataTable>();
             foreach (string str in pLstTableName)
             {
                 DataTable dt = GetTableInfoByName(pType, pConnection, str);
                 lstTable.Add(dt);
             }
-
-            result = new DataTableHelper().Merge(lstTable);
-
-            return result;
+            
+            return  new DataTableHelper().Merge(lstTable);
         }
 
         /// <summary>
@@ -360,7 +366,7 @@ where o.type = 'U' " + condition;
                     strsql = @"
 select o.name " + DataSynchronVO.TableName + ", c.name " + DataSynchronVO.FieldName + ", t.name " + DataSynchronVO.FieldType + @"
 	, IIF(t.name = 'nchar' OR t.name = 'nvarchar', c.max_length / 2, c.max_length) FiledLen
-	, c.precision DecimalPrecision, c.scale DecimalDigits, ep.value FiledDescription
+	, c.precision DecimalPrecision, c.scale DecimalDigits, ep.value "+ DataSynchronVO.FieldDescription + @"
     , c.is_nullable IsNullable, c.is_identity IsIdentity, IIF(c.max_length = -1, 1, 0) IsMax, sc.text DefaultValue
 from sys.objects as o
 join sys.columns as c on o.object_id = c.object_id
@@ -375,7 +381,7 @@ order by c.column_id
                     strsql = @"
 select o.name " + DataSynchronVO.TableName + @", oa.name ConstraintName, oa.type ConstraintType
 	, ISNULL(c.name, ISNULL(kc.COLUMN_NAME, COL_NAME(fkc.parent_object_id, fkc.parent_column_id))) " + DataSynchronVO.FieldName + @"
-	, OBJECT_NAME(fk.referenced_object_id) ForeignTableName
+	, OBJECT_NAME(fk.referenced_object_id) " + DataSynchronVO.ForeignTableName + @"
 	, COL_NAME(fkc.referenced_object_id, fkc.referenced_column_id) " + DataSynchronVO.ForeignFieldName + @"
 	, sc.text DefaultValue, i.type_desc IndexDescripton
 from sys.objects o
@@ -392,7 +398,8 @@ order by oa.type
                     break;
                 case 3: //字段说明列表
                     strsql = @"
-select o.name " + DataSynchronVO.TableName + @", c.name " + DataSynchronVO.FieldName + @", ep.name DescriptionName, ep.value " + DataSynchronVO.FieldDescription + @"
+select o.name " + DataSynchronVO.TableName + @", c.name " + DataSynchronVO.FieldName + @", ep.name " + DataSynchronVO.DescriptionName
++ ", ep.value " + DataSynchronVO.FieldDescription + @"
 from sys.objects o
 join sys.columns c on o.object_id = c.object_id
 join sys.extended_properties ep on c.object_id = ep.major_id and c.column_id = ep.minor_id
@@ -402,7 +409,7 @@ order by c.column_id
                     break;
                 case 4: //表说明列表
                     strsql = @"
-select o.name " + DataSynchronVO.TableName + @", ep.name DescriptionName, ep.value TableDescription
+select o.name " + DataSynchronVO.TableName + ", ep.name " + DataSynchronVO.DescriptionName + ", ep.value " + DataSynchronVO.TableDescription + @" 
 from sys.objects o
 join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
 where o.name = @TableName

@@ -1,13 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+using Treasure.Model.General;
 
 namespace Treasure.Utility.Utilitys
 {
     public static class TypeConversion
     {
+
+        #region CShare的字段类型转换成SQL字段类型
+        /// <summary>
+        /// CShare的字段类型转换成SQL字段类型
+        /// </summary>
+        /// <param name="fieldType">CShare的字段类型</param>
+        /// <returns>SQL字段类型</returns>
+        public static SqlDbType ToSqlDbType(Type fieldType)
+        {
+            SqlDbType type = new SqlDbType();
+
+            switch (fieldType.Name)
+            {
+                case ConstantVO.SQLDBTYPE_STRING:
+                    type = SqlDbType.NVarChar;
+                    break;
+                case ConstantVO.SQLDBTYPE_VARBINARY:
+                    type = SqlDbType.VarBinary;
+                    break;
+                case ConstantVO.SQLDBTYPE_INT32:
+                    type = SqlDbType.Int;
+                    break;
+                case ConstantVO.SQLDBTYPE_INT64:
+                    type = SqlDbType.BigInt;
+                    break;
+                case ConstantVO.SQLDBTYPE_BIT:
+                    type = SqlDbType.Bit;
+                    break;
+                case ConstantVO.SQLDBTYPE_DATETIME:
+                    type = SqlDbType.DateTime;
+                    break;
+            }
+
+            return type;
+        }
+        #endregion
+
         public static string TimeToString(this object value, string formatStr)
         {
             if (value == null)
@@ -20,13 +55,12 @@ namespace Treasure.Utility.Utilitys
             DateTime.TryParse(value.ToString(), out d);
             return d.ToString(formatStr);
         }
-
-
+        
         #region 对象转换成bool
         /// <summary>
         /// 对象转换成bool
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="DataColumnType"></param>
         /// <returns></returns>
         public static bool ToBool(Object obj)
         {

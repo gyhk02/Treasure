@@ -10,6 +10,7 @@ using Treasure.BLL.General;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Helpers;
+using Treasure.Utility.Utilitys;
 
 namespace Treasure.BLL.SmallTool.DataSynchron
 {
@@ -353,7 +354,10 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+                    string errorMsg = ex.Message + @"
+
+也许再次同步表的数据即可。";
+                    LogHelper.Error(errorMsg, System.Reflection.MethodBase.GetCurrentMethod());
                 }
 
                 //记录sql语句
@@ -416,7 +420,6 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
                 int cels = dt.Columns.Count;
                 SqlParameter[] paras;
-                SqlDbType type = new SqlDbType();
                 for (int idx = 0; idx < dt.Rows.Count; idx++)
                 {
                     paras = new SqlParameter[cels];
@@ -424,27 +427,7 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
                     for (int idy = 0; idy < cels; idy++)
                     {
-                        switch (dt.Columns[idy].DataType.Name)
-                        {
-                            case ConstantVO.SQLDBTYPE_STRING:
-                                type = SqlDbType.NVarChar;
-                                break;
-                            case ConstantVO.SQLDBTYPE_VARBINARY:
-                                type = SqlDbType.VarBinary;
-                                break;
-                            case ConstantVO.SQLDBTYPE_INT32:
-                                type = SqlDbType.Int;
-                                break;
-                            case ConstantVO.SQLDBTYPE_INT64:
-                                type = SqlDbType.BigInt;
-                                break;
-                            case ConstantVO.SQLDBTYPE_BIT:
-                                type = SqlDbType.Bit;
-                                break;
-                            case ConstantVO.SQLDBTYPE_DATETIME:
-                                type = SqlDbType.DateTime;
-                                break;
-                        }
+                        SqlDbType type = TypeConversion.ToSqlDbType(dt.Columns[idy].DataType);
 
                         paras[idy] = new SqlParameter("@" + dt.Columns[idy], type) { Value = row[idy] };
                     }
@@ -677,7 +660,11 @@ order by o.name
         {
             List<string> lst = null;
 
-            string sql = @"
+            try
+            {
+                #region sql
+
+                string sql = @"
 CREATE TABLE #Sort(idx int, TableName NVARCHAR(50))
 
 --iSign 1:最初的表	2:关联后的表	3:已经插入排序表
@@ -741,13 +728,20 @@ DROP TABLE #Tables
 DROP TABLE #Sort
             ";
 
-            List<SqlParameter> paras = new List<SqlParameter>();
-            paras.Add(new SqlParameter("@Tables", string.Join(",", lstCalculation.ToArray())));
+                #endregion
 
-            DataTable dt = SQLHelper.ExecuteDataTable(pSourceConnection, CommandType.Text, sql, paras.ToArray());
+                List<SqlParameter> paras = new List<SqlParameter>();
+                paras.Add(new SqlParameter("@Tables", string.Join(",", lstCalculation.ToArray())));
 
-            lst = (from a in dt.AsEnumerable() select a.Field<string>("TableName")).ToList();
+                DataTable dt = SQLHelper.ExecuteDataTable(pSourceConnection, CommandType.Text, sql, paras.ToArray());
 
+                lst = (from a in dt.AsEnumerable() select a.Field<string>("TableName")).ToList();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+            
             return lst;
         }
         #endregion

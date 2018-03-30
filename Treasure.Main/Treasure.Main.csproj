@@ -66,14 +66,16 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Document\DbSql\SYS_GENERATE_FILE.sql" />
-    <Content Include="Document\DbSql\SYS_MENU_ITEM.sql" />
-    <Content Include="Document\DbSql\SYS_MENU_ITEM_TYPE.sql" />
-    <Content Include="Document\DbSql\SYS_ROLE.sql" />
-    <Content Include="Document\DbSql\SYS_USER.sql" />
-    <Content Include="Document\DbSql\SYS_USER_ROLE_LIST.sql" />
+    <Content Include="Document\DbSql\Functions\fn_Split.sql" />
+    <Content Include="Document\DbSql\Tables\SYS_GENERATE_FILE.sql" />
+    <Content Include="Document\DbSql\Tables\SYS_MENU_ITEM.sql" />
+    <Content Include="Document\DbSql\Tables\SYS_MENU_ITEM_TYPE.sql" />
+    <Content Include="Document\DbSql\Tables\SYS_PARAM_CREATE_TABLE_CLASS.sql" />
+    <Content Include="Document\DbSql\Tables\SYS_ROLE.sql" />
+    <Content Include="Document\DbSql\Tables\SYS_USER.sql" />
+    <Content Include="Document\DbSql\Tables\SYS_USER_ROLE_LIST.sql" />
     <Content Include="Document\Treasure.mpp" />
-    <Content Include="Document\DbSql\SYS_MENU_ITEM_TYPE.xls" />
+    <Content Include="Document\DbSql\Tables\SYS_MENU_ITEM_TYPE.xls" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -226,9 +228,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Document\DataSynchronSql\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

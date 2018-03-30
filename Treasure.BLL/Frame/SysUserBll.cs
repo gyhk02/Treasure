@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Treasure.BLL.General;
 using Treasure.Model.General;
 using Treasure.Utility.Helpers;
 
 namespace Treasure.BLL.Frame
 {
-    public class SYS_USER_BLL : BasicBll
+    public class SysUserBll : BasicBll
     {
 
         #region 登录判断

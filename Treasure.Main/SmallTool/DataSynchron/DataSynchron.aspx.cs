@@ -607,100 +607,105 @@ namespace Treasure.Main.SmallTool.DataSynchron
         {
             DataTable dtResult = new DataTable();
 
-            string pSourceConnection = hdnSourceConnection.Value;
-            string pTargetConnection = hdnTargetConnection.Value;
-            List<string> lstTableList = grvTableList.GetSelectedFieldValues(new string[] { DataSynchronVO.TableName }).ConvertAll<string>(c => string.Format("{0}", c));
-
-            //grvTableList.Columns[0].value
-
-            DataTable dtSourceTableStructure = bllDataBase.GetTableInfoByName(1, pSourceConnection, lstTableList);
-            DataTable dtTargetTableStructure = bllDataBase.GetTableInfoByName(1, pTargetConnection, lstTableList);
-
-            #region DataTable初始化
-
-            dtResult.Columns.Add(DataSynchronVO.TableName);
-            dtResult.Columns.Add(DataSynchronVO.FieldName);
-
-            dtResult.Columns.Add(DataSynchronVO.ISIGN, typeof(string));
-
-            dtResult.Columns.Add(DataSynchronVO.FieldType);
-            dtResult.Columns.Add(DataSynchronVO.FiledLen);
-            dtResult.Columns.Add(DataSynchronVO.FieldDescription);
-            dtResult.Columns.Add(DataSynchronVO.DecimalPrecision);
-            dtResult.Columns.Add(DataSynchronVO.DecimalDigits);
-            dtResult.Columns.Add(DataSynchronVO.IsNullable);
-            dtResult.Columns.Add(DataSynchronVO.IsIdentity);
-            dtResult.Columns.Add(DataSynchronVO.DefaultValue, typeof(string));
-
-            dtResult.Columns.Add(DataSynchronVO.TargetFiledType);
-            dtResult.Columns.Add(DataSynchronVO.TargetFiledLen);
-            dtResult.Columns.Add(DataSynchronVO.TargetFiledDescription);
-            dtResult.Columns.Add(DataSynchronVO.TargetDecimalPrecision);
-            dtResult.Columns.Add(DataSynchronVO.TargetDecimalDigits);
-            dtResult.Columns.Add(DataSynchronVO.TargetIsNullable);
-            dtResult.Columns.Add(DataSynchronVO.TargetIsIdentity);
-            dtResult.Columns.Add(DataSynchronVO.TargetDefaultValue, typeof(string));
-
-            #endregion
-
-            #region 数据处理
-
-            var query =
-               (from s in dtSourceTableStructure.AsEnumerable()
-                from t in dtTargetTableStructure.AsEnumerable()
-                where s.Field<string>(DataSynchronVO.TableName) == t.Field<string>(DataSynchronVO.TableName) && s.Field<string>(DataSynchronVO.FieldName) == t.Field<string>(DataSynchronVO.FieldName)
-                select new { s, t });
-
-            var lstTmp = query.ToList();
-
-            for (int idx = 0; idx < lstTmp.Count; idx++)
+            try
             {
-                DataRow rowSource = lstTmp[idx].s;
-                DataRow rowTarget = lstTmp[idx].t;
+                string pSourceConnection = hdnSourceConnection.Value;
+                string pTargetConnection = hdnTargetConnection.Value;
+                List<string> lstTableList = grvTableList.GetSelectedFieldValues(new string[] { DataSynchronVO.TableName }).ConvertAll<string>(c => string.Format("{0}", c));
+                
+                DataTable dtSourceTableStructure = bllDataBase.GetTableInfoByName(1, pSourceConnection, lstTableList);
+                DataTable dtTargetTableStructure = bllDataBase.GetTableInfoByName(1, pTargetConnection, lstTableList);
 
-                DataRow row = dtResult.NewRow();
+                #region DataTable初始化
 
-                row[DataSynchronVO.TableName] = rowSource[DataSynchronVO.TableName];
-                row[DataSynchronVO.FieldName] = rowSource[DataSynchronVO.FieldName];
-                row[DataSynchronVO.FieldType] = rowSource[DataSynchronVO.FieldType];
-                row[DataSynchronVO.FiledLen] = rowSource[DataSynchronVO.FiledLen];
-                row[DataSynchronVO.FieldDescription] = rowSource[DataSynchronVO.FieldDescription];
-                row[DataSynchronVO.DecimalPrecision] = rowSource[DataSynchronVO.DecimalPrecision];
-                row[DataSynchronVO.DecimalDigits] = rowSource[DataSynchronVO.DecimalDigits];
-                row[DataSynchronVO.IsNullable] = rowSource[DataSynchronVO.IsNullable];
-                row[DataSynchronVO.IsIdentity] = rowSource[DataSynchronVO.IsIdentity];
-                row[DataSynchronVO.DefaultValue] = rowSource[DataSynchronVO.DefaultValue];
+                dtResult.Columns.Add(DataSynchronVO.TableName);
+                dtResult.Columns.Add(DataSynchronVO.FieldName);
 
-                row[DataSynchronVO.TargetFiledType] = rowTarget[DataSynchronVO.FieldType];
-                row[DataSynchronVO.TargetFiledLen] = rowTarget[DataSynchronVO.FiledLen];
-                row[DataSynchronVO.TargetFiledDescription] = rowTarget[DataSynchronVO.FieldDescription];
-                row[DataSynchronVO.TargetDecimalPrecision] = rowTarget[DataSynchronVO.DecimalPrecision];
-                row[DataSynchronVO.TargetDecimalDigits] = rowTarget[DataSynchronVO.DecimalDigits];
-                row[DataSynchronVO.TargetIsNullable] = rowTarget[DataSynchronVO.IsNullable];
-                row[DataSynchronVO.TargetIsIdentity] = rowTarget[DataSynchronVO.IsIdentity];
-                row[DataSynchronVO.TargetDefaultValue] = rowTarget[DataSynchronVO.DefaultValue];
+                dtResult.Columns.Add(DataSynchronVO.ISIGN, typeof(string));
 
-                if (
-                    (
-                    row[DataSynchronVO.FieldType].ToString() == row[DataSynchronVO.TargetFiledType].ToString()
-                    && row[DataSynchronVO.FiledLen].ToString() == row[DataSynchronVO.TargetFiledLen].ToString()
-                    && row[DataSynchronVO.FieldDescription].ToString() == row[DataSynchronVO.TargetFiledDescription].ToString()
-                    && row[DataSynchronVO.DecimalPrecision].ToString() == row[DataSynchronVO.TargetDecimalPrecision].ToString()
-                    && row[DataSynchronVO.DecimalDigits].ToString() == row[DataSynchronVO.TargetDecimalDigits].ToString()
-                    && row[DataSynchronVO.IsNullable].ToString() == row[DataSynchronVO.TargetIsNullable].ToString()
-                    && row[DataSynchronVO.IsIdentity].ToString() == row[DataSynchronVO.TargetIsIdentity].ToString()
-                    && row[DataSynchronVO.DefaultValue].ToString() == row[DataSynchronVO.TargetDefaultValue].ToString()
-                    ) == false
-                    )
+                dtResult.Columns.Add(DataSynchronVO.FieldType);
+                dtResult.Columns.Add(DataSynchronVO.FiledLen);
+                dtResult.Columns.Add(DataSynchronVO.FieldDescription);
+                dtResult.Columns.Add(DataSynchronVO.DecimalPrecision);
+                dtResult.Columns.Add(DataSynchronVO.DecimalDigits);
+                dtResult.Columns.Add(DataSynchronVO.IsNullable);
+                dtResult.Columns.Add(DataSynchronVO.IsIdentity);
+                dtResult.Columns.Add(DataSynchronVO.DefaultValue, typeof(string));
+
+                dtResult.Columns.Add(DataSynchronVO.TargetFiledType);
+                dtResult.Columns.Add(DataSynchronVO.TargetFiledLen);
+                dtResult.Columns.Add(DataSynchronVO.TargetFiledDescription);
+                dtResult.Columns.Add(DataSynchronVO.TargetDecimalPrecision);
+                dtResult.Columns.Add(DataSynchronVO.TargetDecimalDigits);
+                dtResult.Columns.Add(DataSynchronVO.TargetIsNullable);
+                dtResult.Columns.Add(DataSynchronVO.TargetIsIdentity);
+                dtResult.Columns.Add(DataSynchronVO.TargetDefaultValue, typeof(string));
+
+                #endregion
+
+                #region 数据处理
+
+                var query =
+                   (from s in dtSourceTableStructure.AsEnumerable()
+                    from t in dtTargetTableStructure.AsEnumerable()
+                    where s.Field<string>(DataSynchronVO.TableName) == t.Field<string>(DataSynchronVO.TableName) && s.Field<string>(DataSynchronVO.FieldName) == t.Field<string>(DataSynchronVO.FieldName)
+                    select new { s, t });
+
+                var lstTmp = query.ToList();
+
+                for (int idx = 0; idx < lstTmp.Count; idx++)
                 {
-                    row[DataSynchronVO.ISIGN] = "x";
+                    DataRow rowSource = lstTmp[idx].s;
+                    DataRow rowTarget = lstTmp[idx].t;
+
+                    DataRow row = dtResult.NewRow();
+
+                    row[DataSynchronVO.TableName] = rowSource[DataSynchronVO.TableName];
+                    row[DataSynchronVO.FieldName] = rowSource[DataSynchronVO.FieldName];
+                    row[DataSynchronVO.FieldType] = rowSource[DataSynchronVO.FieldType];
+                    row[DataSynchronVO.FiledLen] = rowSource[DataSynchronVO.FiledLen];
+                    row[DataSynchronVO.FieldDescription] = rowSource[DataSynchronVO.FieldDescription];
+                    row[DataSynchronVO.DecimalPrecision] = rowSource[DataSynchronVO.DecimalPrecision];
+                    row[DataSynchronVO.DecimalDigits] = rowSource[DataSynchronVO.DecimalDigits];
+                    row[DataSynchronVO.IsNullable] = rowSource[DataSynchronVO.IsNullable];
+                    row[DataSynchronVO.IsIdentity] = rowSource[DataSynchronVO.IsIdentity];
+                    row[DataSynchronVO.DefaultValue] = rowSource[DataSynchronVO.DefaultValue];
+
+                    row[DataSynchronVO.TargetFiledType] = rowTarget[DataSynchronVO.FieldType];
+                    row[DataSynchronVO.TargetFiledLen] = rowTarget[DataSynchronVO.FiledLen];
+                    row[DataSynchronVO.TargetFiledDescription] = rowTarget[DataSynchronVO.FieldDescription];
+                    row[DataSynchronVO.TargetDecimalPrecision] = rowTarget[DataSynchronVO.DecimalPrecision];
+                    row[DataSynchronVO.TargetDecimalDigits] = rowTarget[DataSynchronVO.DecimalDigits];
+                    row[DataSynchronVO.TargetIsNullable] = rowTarget[DataSynchronVO.IsNullable];
+                    row[DataSynchronVO.TargetIsIdentity] = rowTarget[DataSynchronVO.IsIdentity];
+                    row[DataSynchronVO.TargetDefaultValue] = rowTarget[DataSynchronVO.DefaultValue];
+
+                    if (
+                        (
+                        row[DataSynchronVO.FieldType].ToString() == row[DataSynchronVO.TargetFiledType].ToString()
+                        && row[DataSynchronVO.FiledLen].ToString() == row[DataSynchronVO.TargetFiledLen].ToString()
+                        && row[DataSynchronVO.FieldDescription].ToString() == row[DataSynchronVO.TargetFiledDescription].ToString()
+                        && row[DataSynchronVO.DecimalPrecision].ToString() == row[DataSynchronVO.TargetDecimalPrecision].ToString()
+                        && row[DataSynchronVO.DecimalDigits].ToString() == row[DataSynchronVO.TargetDecimalDigits].ToString()
+                        && row[DataSynchronVO.IsNullable].ToString() == row[DataSynchronVO.TargetIsNullable].ToString()
+                        && row[DataSynchronVO.IsIdentity].ToString() == row[DataSynchronVO.TargetIsIdentity].ToString()
+                        && row[DataSynchronVO.DefaultValue].ToString() == row[DataSynchronVO.TargetDefaultValue].ToString()
+                        ) == false
+                        )
+                    {
+                        row[DataSynchronVO.ISIGN] = "x";
+                    }
+
+                    dtResult.Rows.Add(row);
                 }
 
-                dtResult.Rows.Add(row);
+                #endregion
             }
-
-            #endregion
-
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+            
             return dtResult;
         }
         #endregion

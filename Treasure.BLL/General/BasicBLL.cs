@@ -12,6 +12,42 @@ namespace Treasure.BLL.General
 
         #region 获取
 
+        #region 根据表名获取表的全部数据
+
+        /// <summary>
+        /// 根据表名获取表的全部数据
+        /// </summary>
+        /// <param name="pTableName">表名</param>
+        /// <returns>DataTable</returns>
+        public DataTable GetTableAllInfo(string pTableName)
+        {
+            return SQLHelper.ExecuteDataTableByName(pTableName);
+        }
+
+        /// <summary>
+        /// 根据表名获取表的全部数据
+        /// </summary>
+        /// <param name="pConnection">数据库链接</param>
+        /// <param name="pTableName">表名</param>
+        /// <returns>DataTable</returns>
+        public DataTable GetTableAllInfo(string pConnection, string pTableName)
+        {
+            return SQLHelper.ExecuteDataTableByName(pConnection, pTableName);
+        }
+
+        #endregion
+
+        #region 根据表名获取表结构
+        /// <summary>
+        /// 根据表名获取表结构
+        /// </summary>
+        /// <param name="pTableName"></param>
+        public DataTable GetDataTableStructure(string pTableName)
+        {
+            return SQLHelper.ExecuteDataTable(pTableName);
+        }
+        #endregion
+
         #region 根据SQL语句获取数据
         /// <summary>
         /// 根据SQL语句获取数据
@@ -21,6 +57,19 @@ namespace Treasure.BLL.General
         public DataTable GetDataTable(string pSql, params SqlParameter[] pParas)
         {
             return SQLHelper.ExecuteDataTable(CommandType.Text, pSql, pParas);
+        }
+        #endregion
+
+        #region 根据表的id获取一行记录
+        /// <summary>
+        /// 根据表的id获取一行记录
+        /// </summary>
+        /// <param name="pTableName"></param>
+        /// <param name="pId"></param>
+        /// <returns></returns>
+        public DataRow GetDataRowById(string pTableName, string pId)
+        {
+            return SQLHelper.ExecuteDataTable(pTableName, pId);
         }
         #endregion
 
@@ -43,27 +92,30 @@ namespace Treasure.BLL.General
 
         #endregion
 
-        #region 根据表名获取表的全部数据
+        #region 插入
 
         /// <summary>
-        /// 根据表名获取表的全部数据
+        /// 新增一行数据
         /// </summary>
-        /// <param name="pTableName">表名</param>
-        /// <returns>DataTable</returns>
-        public DataTable GetTableAllInfo(string pTableName)
+        /// <param name="row">要插入的数据行</param>
+        /// <returns></returns>
+        public string AddDataRow(DataRow row)
         {
-            return SQLHelper.ExecuteDataTableByName(pTableName);
+            return SQLHelper.AddDataRow(row);
         }
 
+        #endregion
+
+        #region 修改
+
         /// <summary>
-        /// 根据表名获取表的全部数据
+        /// 修改一行数据
         /// </summary>
-        /// <param name="pConnection">数据库链接</param>
-        /// <param name="pTableName">表名</param>
-        /// <returns>DataTable</returns>
-        public DataTable GetTableAllInfo(string pConnection, string pTableName)
+        /// <param name="row">要修改的数据行</param>
+        /// <returns></returns>
+        public string UpdateDataRow(DataRow row)
         {
-            return SQLHelper.ExecuteDataTableByName(pConnection, pTableName);
+            return SQLHelper.UpdateDataRow(row);
         }
 
         #endregion

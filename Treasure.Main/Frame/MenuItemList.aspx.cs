@@ -14,8 +14,8 @@ namespace Treasure.Main.Frame
 
         #region 自定义变量
 
-        SYS_MENU_ITEM_BLL bllSysMenuItem = new SYS_MENU_ITEM_BLL();
-        GeneralBll bllGeneral = new GeneralBll();
+        SysMenuItemBll bllSysMenuItem = new SysMenuItemBll();
+       
 
         #endregion
 
@@ -31,33 +31,6 @@ namespace Treasure.Main.Frame
 
             if (!IsPostBack)
             {
-                //父节点
-                DataTable dtTreeMenuItem = bllSysMenuItem.GetMenuItemByTree();
-
-                DataRow rowTreeMenuItem = dtTreeMenuItem.NewRow();
-                rowTreeMenuItem[SysMenuItemTable.Fields.id] = null;
-                rowTreeMenuItem[SysMenuItemTable.Fields.name] = ConstantVO.pleaseSelect;
-                dtTreeMenuItem.Rows.InsertAt(rowTreeMenuItem, 0);
-
-                ddlParent.DataSource = dtTreeMenuItem;
-                ddlParent.DataTextField = SysMenuItemTable.Fields.name;
-                ddlParent.DataValueField = SysMenuItemTable.Fields.id;
-                ddlParent.DataBind();
-
-                //类型
-                DataTable dtMenuItemType = bllSysMenuItem.GetTableAllInfo(SysMenuItemTypeTable.tableName);
-                ddlType.DataSource = dtMenuItemType;
-                ddlType.DataTextField = SysMenuItemTypeTable.Fields.name;
-                ddlType.DataValueField = SysMenuItemTypeTable.Fields.id;
-                ddlType.DataBind();
-
-                //是否启用
-                DataTable dtYesOrNot = bllGeneral.GetYesOrNot();
-                DropDownListExtend.BindToShowName(ddlEnable, dtYesOrNot, false);
-
-                //是否系统菜单
-                DropDownListExtend.BindToShowName(ddlIsSys, dtYesOrNot, false);
-
                 InitData();
             }
         }
@@ -84,22 +57,5 @@ namespace Treasure.Main.Frame
 
         #endregion
 
-        /// <summary>
-        /// 选择变动时
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void treMenuItem_FocusedNodeChanged(object sender, EventArgs e)
-        {
-            TreeListNode node = treMenuItem.FocusedNode;
-
-            string a = "";
-
-        }
-
-        protected void treMenuItem_CustomDataCallback(object sender, TreeListCustomDataCallbackEventArgs e)
-        {
-            string a = "";
-        }
     }
 }

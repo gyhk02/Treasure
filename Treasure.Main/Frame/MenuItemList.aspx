@@ -14,57 +14,9 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <table>
-                <tr>
-                    <td>名称：</td>
-                    <td>
-                        <asp:TextBox ID="txtName" runat="server"></asp:TextBox></td>
-                    <td>父节点：</td>
-                    <td>
-                        <asp:DropDownList ID="ddlParent" runat="server"></asp:DropDownList></td>
-                    <td>类型：</td>
-                    <td>
-                        <asp:DropDownList ID="ddlType" runat="server"></asp:DropDownList></td>
-                </tr>
-                <tr>
-                    <td>图片：</td>
-                    <td>
-                        <asp:TextBox ID="txtPictureUrl" runat="server"></asp:TextBox></td>
-                    <td>文件路径：</td>
-                    <td>
-                        <asp:TextBox ID="txtFileUrl" runat="server"></asp:TextBox></td>
-                    <td>按钮名称</td>
-                    <td>
-                        <asp:TextBox ID="txtButtonName" runat="server"></asp:TextBox></td>
-                </tr>
-                <tr>
-                    <td>是否启用</td>
-                    <td>
-                        <asp:DropDownList ID="ddlEnable" runat="server"></asp:DropDownList></td>
-                    <td>是否系统菜单</td>
-                    <td>
-                        <asp:DropDownList ID="ddlIsSys" runat="server"></asp:DropDownList></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>
-                        <asp:Button ID="btnAdd" runat="server" Text="新增" />
-                    </td>
-                    <td>&nbsp;</td>
-                    <td>
-                        <asp:Button ID="btnUpdate" runat="server" Text="修改" />
-                    </td>
-                </tr>
-            </table>
-
-            <br />
-            <br />
-            <dx:ASPxTreeList ID="treMenuItem" runat="server" AutoGenerateColumns="False"
-                KeyFieldName="ID" ParentFieldName="PARENT_ID" OnCustomDataCallback="treMenuItem_CustomDataCallback" OnFocusedNodeChanged="treMenuItem_FocusedNodeChanged">
+            <a href="Menu_Add.aspx">新增菜单</a>
+            <br /><br />
+            <dx:ASPxTreeList ID="treMenuItem" runat="server" AutoGenerateColumns="False" KeyFieldName="ID" ParentFieldName="PARENT_ID">
                 <Columns>
                     <dx:TreeListTextColumn Caption="名称" FieldName="NAME" VisibleIndex="0">
                     </dx:TreeListTextColumn>
@@ -80,11 +32,13 @@
                     </dx:TreeListTextColumn>
                     <dx:TreeListTextColumn Caption="系统菜单" FieldName="IS_SYS" VisibleIndex="6">
                     </dx:TreeListTextColumn>
+                    <dx:TreeListHyperLinkColumn Caption="修改" FieldName="ID" VisibleIndex="7">
+                        <PropertiesHyperLink NavigateUrlFormatString="Menu_Add.aspx?ID={0}" Text="修改">
+                        </PropertiesHyperLink>
+                    </dx:TreeListHyperLinkColumn>
                 </Columns>
-                <Settings ShowColumnHeaders="False" />
-                <SettingsBehavior AllowFocusedNode="True" ExpandCollapseAction="NodeClick" />
-                <SettingsCustomizationWindow Enabled="True" />
             </dx:ASPxTreeList>
+            <br />
         </div>
     </form>
 </body>

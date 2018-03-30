@@ -46,14 +46,14 @@ namespace Treasure.Utility.Extend
             {
                 DataRow row = dt.NewRow();
                 row[GeneralVO.id] = "-1";
-                row[GeneralVO.name] = ConstantVO.pleaseSelect; 
+                row[GeneralVO.name] = ConstantVO.pleaseSelect;
                 dt.Rows.InsertAt(row, 0);
             }
 
             ddl.DataSource = dt;
             ddl.DataValueField = GeneralVO.id;
             ddl.DataTextField = GeneralVO.name;
-            ddl.DataBind();           
+            ddl.DataBind();
         }
         #endregion
 
