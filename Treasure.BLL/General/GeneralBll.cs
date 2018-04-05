@@ -19,12 +19,12 @@ namespace Treasure.BLL.General
             dt.Columns.Add(GeneralVO.name);
 
             DataRow rowYes = dt.NewRow();
-            rowYes[GeneralVO.id] = 1;
+            rowYes[GeneralVO.id] = true;
             rowYes[GeneralVO.name] = "是";
             dt.Rows.Add(rowYes);
 
             DataRow rowNot = dt.NewRow();
-            rowNot[GeneralVO.id] = 0;
+            rowNot[GeneralVO.id] = false;
             rowNot[GeneralVO.name] = "否";
             dt.Rows.Add(rowNot);
 

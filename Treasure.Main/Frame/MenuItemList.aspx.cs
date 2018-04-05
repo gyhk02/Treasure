@@ -1,11 +1,14 @@
 ﻿using DevExpress.Web.ASPxTreeList;
 using System;
+using System.Collections.Specialized;
 using System.Data;
+using System.Web.UI;
 using Treasure.BLL.Frame;
 using Treasure.BLL.General;
 using Treasure.Model.Frame;
 using Treasure.Model.General;
 using Treasure.Utility.Extend;
+using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.Frame
 {
@@ -14,8 +17,8 @@ namespace Treasure.Main.Frame
 
         #region 自定义变量
 
-        SysMenuItemBll bllSysMenuItem = new SysMenuItemBll();
-       
+        SysMenuItemBll bll = new SysMenuItemBll();
+
 
         #endregion
 
@@ -38,6 +41,33 @@ namespace Treasure.Main.Frame
         #endregion
 
         #region 按钮
+
+        #region 删除
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void treMenuItem_NodeDeleting(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e)
+        {
+            ClientScriptManager clientScript = Page.ClientScript;
+
+            string id = TypeConversion.ToString(e.Keys[GeneralVO.id]);
+            if (bll.DeleteById(SysMenuItemTable.tableName, id) == false)
+            {
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('删除失败');</script>");
+            }
+
+            clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('删除成功');</script>");
+
+            //要退出编辑模式才能重新绑定数据
+            treMenuItem.CancelEdit();
+            e.Cancel = true;
+
+            InitData();
+        }
+        #endregion
+
         #endregion
 
         #region 自定义事件
@@ -48,7 +78,7 @@ namespace Treasure.Main.Frame
         /// </summary>
         private void InitData()
         {
-            DataTable dtMenuItem = bllSysMenuItem.GetMenuItemList();
+            DataTable dtMenuItem = bll.GetMenuItemList();
             treMenuItem.DataSource = dtMenuItem;
             treMenuItem.DataBind();
             treMenuItem.ExpandAll();
@@ -56,6 +86,8 @@ namespace Treasure.Main.Frame
         #endregion
 
         #endregion
+
+
 
     }
 }

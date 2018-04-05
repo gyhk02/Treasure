@@ -9,21 +9,30 @@ using System.Web;
 namespace Treasure.Main.SmallTool.EncryptAndDecrypt
 {
     public static class EncryptHelper
-    {    
+    {
+        /// <summary>
+        /// 密钥
+        /// </summary>
+        static string encryptKey = "aRong";
+
         /// <summary>
         /// 加密字符串
         /// </summary>
         /// <param name="input"></param>
         /// <param name="sKey"></param>
         /// <returns></returns>
-        public static string EncryptString(string input, string sKey)
+        public static string EncryptString(string input, string sKey = "")
         {
+            if (string.IsNullOrEmpty(sKey) == true)
+            {
+                sKey = encryptKey;
+            }
+
             byte[] data = Encoding.UTF8.GetBytes(input);
             using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
             {
                 Byte[] dd = ASCIIEncoding.ASCII.GetBytes("dddddddd");
                 des.Key = ASCIIEncoding.ASCII.GetBytes(sKey);
-                //des.Key = Encoding.Default.GetBytes(sKey);
                 des.IV = ASCIIEncoding.ASCII.GetBytes(sKey);
                 ICryptoTransform desencrypt = des.CreateEncryptor();
                 byte[] result = desencrypt.TransformFinalBlock(data, 0, data.Length);
@@ -37,8 +46,13 @@ namespace Treasure.Main.SmallTool.EncryptAndDecrypt
         /// <param name="input"></param>
         /// <param name="sKey"></param>
         /// <returns></returns>
-        public static string DecryptString(string input, string sKey)
+        public static string DecryptString(string input, string sKey = "")
         {
+            if (string.IsNullOrEmpty(sKey) == true)
+            {
+                sKey = encryptKey;
+            }
+
             string[] sInput = input.Split("-".ToCharArray());
             byte[] data = new byte[sInput.Length];
             for (int i = 0; i < sInput.Length; i++)

@@ -176,7 +176,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
         {
             string createFileName = bllCamelName.getBigCamelName(tableName) + "ParentTable";
             string className = bllCamelName.getBigCamelName(tableName) + "Table";
-            string fileName = savePath + "\\" + createFileName + ".cs";
+            string fileName = savePath + @"\\" + createFileName + ".cs";
             string connStr = hdnConnection.Value;
 
             //获取表的全部字段
@@ -203,6 +203,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
                 .Append("    }" + ConstantVO.ENTER_R)
                 .Append("}");
 
+            File.Delete(fileName);
             File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
         }
         #endregion
@@ -217,7 +218,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
         private void CreateTableClass(string savePath, string tableNamespace, string tableName)
         {
             string createFileName = bllCamelName.getBigCamelName(tableName) + "Table";
-            string fileName = savePath + "\\" + createFileName + ".cs";
+            string fileName = savePath + @"\\" + createFileName + ".cs";
 
             if (File.Exists(fileName) == true)
             {

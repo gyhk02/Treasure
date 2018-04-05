@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Treasure.Model.General;
 using Treasure.Utility.Utilitys;
 
 namespace Treasure.Utility.Helpers
@@ -51,6 +52,54 @@ namespace Treasure.Utility.Helpers
         }
 
         #region 删除
+
+        #region 根据ID删除记录
+
+        /// <summary>
+        /// 根据ID删除记录
+        /// </summary>
+        /// <param name="pTableName">表名</param>
+        /// <param name="pId">id</param>
+        /// <returns></returns>
+        public static bool DeleteById(string pTableName, string pId)
+        {
+            return DeleteById(null, pTableName, pId);
+        }
+
+        /// <summary>
+        /// 根据ID删除记录
+        /// </summary>
+        /// <param name="pConnString">数据库链接</param>
+        /// <param name="pTableName">表名</param>
+        /// <param name="pId">id</param>
+        /// <returns></returns>
+        public static bool DeleteById(string pConnString, string pTableName, string pId)
+        {
+            bool result = false;
+
+            string strsql = @"DELETE FROM [" + pTableName + "] WHERE ID = @ID";
+
+            try
+            {
+                if (string.IsNullOrEmpty(pConnString) == true)
+                {
+                    pConnString = ConnString;
+                }
+
+                List<SqlParameter> lstPara = new List<SqlParameter>();
+                lstPara.Add(new SqlParameter("@ID", SqlDbType.NVarChar) { Value = pId });
+
+                ExecuteNonQuery(pConnString, CommandType.Text, strsql, lstPara.ToArray());
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return result;
+        }
+        #endregion
 
         #region 根据表名删除表的全部数据
 
@@ -124,17 +173,24 @@ namespace Treasure.Utility.Helpers
         /// <returns>DataRow</returns>
         public static DataRow ExecuteDataTable(string pTableName, string pID)
         {
+            DataRow row = null;
+
             string strsql = @"SELECT * FROM [" + pTableName + "] WHERE ID = @ID";
 
             SqlParameter[] parms = new SqlParameter[]
             {
-                new SqlParameter("@ID",SqlDbType.Int)
+                new SqlParameter("@ID",SqlDbType.NVarChar)
             };
             parms[0].Value = pID;
 
             DataTable dt = ExecuteDataTable(CommandType.Text, strsql, parms);
 
-            return dt.Rows[0];
+            if (dt.Rows.Count > 0)
+            {
+                row = dt.Rows[0];
+            }
+
+            return row;
         }
         #endregion
 
@@ -199,8 +255,8 @@ namespace Treasure.Utility.Helpers
         /// <returns>DataTable</returns>
         public static DataTable ExecuteDataTable(string connString, CommandType cmdType, string cmdText, params SqlParameter[] cmdParms)
         {
-
             DataTable dt = new DataTable();
+            DataSet ds = new DataSet();
             SqlConnection conn = new SqlConnection(connString);
             SqlDataAdapter sda = new SqlDataAdapter();
             SqlCommand cmd = new SqlCommand();
@@ -214,15 +270,38 @@ namespace Treasure.Utility.Helpers
                 sda.SelectCommand.CommandText = cmdText;
                 sda.SelectCommand.CommandType = cmdType;
                 sda.SelectCommand.Connection = conn;
+                //sda.TableMappings.Add()
+                sda.MissingSchemaAction = MissingSchemaAction.Add;
+
+                //获取表名
+                System.Text.RegularExpressions.Regex rg
+                    = new System.Text.RegularExpressions.Regex(@"(?<=FROM\s\[?)\w+|(?<=JOIN\s\[?)\w+|(?<=LEFT JOIN\s\[?)\w+");
+                System.Text.RegularExpressions.MatchCollection mc = rg.Matches(cmdText);
+
+                string bakTableName = "";
+                if (mc.Count == 1)
+                {
+                    bakTableName = mc[0].Value;
+                }
 
                 if (cmdType == CommandType.StoredProcedure) sda.SelectCommand.CommandTimeout = 5000;
 
                 if (cmdParms != null)
                 {
                     foreach (SqlParameter parm in cmdParms)
+                    {
                         sda.SelectCommand.Parameters.Add(parm);
+                    }
                 }
-                sda.Fill(dt);
+
+                if (string.IsNullOrEmpty(bakTableName) == true)
+                {
+                    sda.Fill(ds);
+                }
+                else
+                {
+                    sda.Fill(ds, bakTableName);
+                }
 
                 sda.SelectCommand.Parameters.Clear();
             }
@@ -234,6 +313,12 @@ namespace Treasure.Utility.Helpers
             {
                 conn.Close();
             }
+
+            if (ds.Tables.Count > 0)
+            {
+                dt = ds.Tables[0];
+            }
+
             return dt;
         }
         #endregion
@@ -260,7 +345,7 @@ namespace Treasure.Utility.Helpers
         public static string AddDataRow(DataRow row, string pConnString)
         {
             string id = "";
-            
+
             try
             {
                 if (string.IsNullOrEmpty(pConnString) == true)
@@ -279,15 +364,20 @@ namespace Treasure.Utility.Helpers
                 {
                     string columnName = col.ColumnName;
 
-                    lstColumnName.Add(columnName);
-                    lstVar.Add("@" + columnName);
+                    //ID_INDEX是自增长
+                    if (columnName.Equals(GeneralVO.idIndex) == false)
+                    {
+                        lstColumnName.Add(columnName);
+                        lstVar.Add("@" + columnName);
 
-                    SqlDbType type = TypeConversion.ToSqlDbType(col.DataType);
-                    lstPara.Add(new SqlParameter("@" + columnName, type) { Value = row[col] });
+                        SqlDbType type = TypeConversion.ToSqlDbType(col.DataType);
+                        lstPara.Add(new SqlParameter("@" + columnName, type) { Value = row[col] });
+                    }
                 }
 
-               string strsql = "INSERT INTO " + row.Table.TableName
-                    + "(" + string.Join(", ", lstColumnName.ToArray()) + ") SELECT " + string.Join(", ", lstVar.ToArray());
+                string strsql = "INSERT INTO " + row.Table.TableName
+                     + "(" + string.Join(", ", lstColumnName.ToArray()) + ") SELECT "
+                     + string.Join(", ", lstVar.ToArray());
 
                 #endregion
 
@@ -323,7 +413,7 @@ namespace Treasure.Utility.Helpers
         public static string UpdateDataRow(DataRow row, string pConnString)
         {
             string id = "";
-            
+
             try
             {
                 if (string.IsNullOrEmpty(pConnString) == true)
@@ -341,10 +431,13 @@ namespace Treasure.Utility.Helpers
                 {
                     string columnName = col.ColumnName;
 
-                    lstColumn.Add(columnName + " = @" + columnName);
+                    if (columnName.Equals(GeneralVO.idIndex) == false)
+                    {
+                        lstColumn.Add(columnName + " = @" + columnName);
 
-                    SqlDbType type = TypeConversion.ToSqlDbType(col.DataType);
-                    lstPara.Add(new SqlParameter("@" + columnName, type) { Value = row[col] });
+                        SqlDbType type = TypeConversion.ToSqlDbType(col.DataType);
+                        lstPara.Add(new SqlParameter("@" + columnName, type) { Value = row[col] });
+                    }
                 }
 
                 string strsql = "UPDATE " + dt.TableName + " SET " + string.Join(", ", lstColumn.ToArray()) + " WHERE ID = @ID";
@@ -362,7 +455,7 @@ namespace Treasure.Utility.Helpers
         }
 
         #endregion
-        
+
         #endregion
 
         #region 原SQLHelper文件代码

@@ -138,7 +138,7 @@
                         <br />
                     </td>
                     <td style="vertical-align: top;">
-                        <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="1">
+                        <dx:ASPxPageControl ID="ASPxPageControl1" runat="server" ActiveTabIndex="0">
                             <TabPages>
                                 <dx:TabPage Text="表">
                                     <ContentCollection>

@@ -49,6 +49,7 @@
     <Compile Include="General\CamelNameBLL.cs" />
     <Compile Include="General\DataBaseBll.cs" />
     <Compile Include="General\GeneralBll.cs" />
+    <Compile Include="ProjectCollection\FirstProject\SysMenuItemTypeBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmallTool\DataSynchron\DataSynchronBLL.cs" />
   </ItemGroup>

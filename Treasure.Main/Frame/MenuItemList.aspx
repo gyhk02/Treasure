@@ -14,9 +14,10 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <a href="Menu_Add.aspx">新增菜单</a>
+            <a href="MenuAdd.aspx">新增菜单</a>
             <br /><br />
-            <dx:ASPxTreeList ID="treMenuItem" runat="server" AutoGenerateColumns="False" KeyFieldName="ID" ParentFieldName="PARENT_ID">
+            <dx:ASPxTreeList ID="treMenuItem" runat="server" AutoGenerateColumns="False"
+                 KeyFieldName="ID" ParentFieldName="PARENT_ID" OnNodeDeleting="treMenuItem_NodeDeleting">
                 <Columns>
                     <dx:TreeListTextColumn Caption="名称" FieldName="NAME" VisibleIndex="0">
                     </dx:TreeListTextColumn>
@@ -33,10 +34,15 @@
                     <dx:TreeListTextColumn Caption="系统菜单" FieldName="IS_SYS" VisibleIndex="6">
                     </dx:TreeListTextColumn>
                     <dx:TreeListHyperLinkColumn Caption="修改" FieldName="ID" VisibleIndex="7">
-                        <PropertiesHyperLink NavigateUrlFormatString="Menu_Add.aspx?ID={0}" Text="修改">
+                        <PropertiesHyperLink NavigateUrlFormatString="MenuAdd.aspx?ID={0}" Text="修改">
                         </PropertiesHyperLink>
                     </dx:TreeListHyperLinkColumn>
+                    <dx:TreeListCommandColumn Caption="删除" VisibleIndex="8">
+                        <DeleteButton Text="删除" Visible="True">
+                        </DeleteButton>
+                    </dx:TreeListCommandColumn>
                 </Columns>
+                <SettingsBehavior AllowFocusedNode="True" />
             </dx:ASPxTreeList>
             <br />
         </div>

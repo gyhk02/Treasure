@@ -1,13 +1,86 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Treasure.BLL.General;
 using Treasure.Utility.Helpers;
+using Treasure.Utility.Utilitys;
 
 namespace Treasure.BLL.Frame
 {
     public class SysMenuItemBll : BasicBll
     {
+
+        #region 获取菜单编号
+        /// <summary>
+        /// 获取菜单编号
+        /// </summary>
+        /// <param name="pParentId"></param>
+        /// <returns></returns>
+        public string GetMenuItemNo(string pParentId)
+        {
+            string result = "";
+
+            #region sql             
+
+            string sqlByNull = @"
+SELECT TOP 1
+
+    LEFT(
+        SUBSTRING(P.NO, 1, P.SYS_MENU_ITEM_TYPE_ID * 2)
+        + RIGHT('0' + CONVERT(NVARCHAR(2), (SUBSTRING(ISNULL(C.NO, '00000000'), 1 + P.SYS_MENU_ITEM_TYPE_ID * 2, 2) + 1)), 2)
+        + '00000000', 8
+    ) NEXTNO
+FROM(
+    SELECT NULL ID, '0000000000' NO, 0 SYS_MENU_ITEM_TYPE_ID
+) P
+LEFT JOIN SYS_MENU_ITEM C ON ISNULL(P.ID, '') = ISNULL(C.PARENT_ID, '')
+ORDER BY C.NO DESC";
+
+            string sql = @"
+SELECT TOP 1 
+	LEFT(
+		SUBSTRING(P.NO, 1, P.SYS_MENU_ITEM_TYPE_ID * 2) 
+		+ RIGHT('0' + CONVERT(NVARCHAR(2), (SUBSTRING(ISNULL(C.NO, '00000000'), 1 + P.SYS_MENU_ITEM_TYPE_ID * 2, 2) + 1)), 2)
+		+ '00000000', 8
+	) NEXTNO
+FROM SYS_MENU_ITEM P
+LEFT JOIN SYS_MENU_ITEM C ON P.ID = C.PARENT_ID
+WHERE P.ID = @PARENT_ID
+ORDER BY C.NO DESC";
+
+            #endregion
+
+            try
+            {
+                string strSql = "";
+                if (string.IsNullOrEmpty(TypeConversion.ToString(pParentId)) == true)
+                {
+                    strSql = sqlByNull;
+                }
+                else
+                {
+                    strSql = sql;
+                }
+
+                List<SqlParameter> lstPara = new List<SqlParameter>();
+                lstPara.Add(new SqlParameter("@PARENT_ID", SqlDbType.NVarChar) { Value = pParentId });
+
+                DataTable dt = base.GetDataTable(strSql, lstPara.ToArray());
+                if (dt.Rows.Count > 0)
+                {
+                    result = TypeConversion.ToString(dt.Rows[0][0]);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 获取树结构的菜单列表
         /// <summary>
         /// 获取树结构的菜单列表
@@ -83,7 +156,7 @@ JOIN SYS_MENU_ITEM_TYPE SMIT ON SMI.SYS_MENU_ITEM_TYPE_ID = SMIT.ID
             return dt;
         }
         #endregion
-        
+
         #region 获取菜单列表
         /// <summary>
         /// 获取菜单列表

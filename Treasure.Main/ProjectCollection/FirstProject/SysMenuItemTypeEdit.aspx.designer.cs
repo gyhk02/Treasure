@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Treasure.Main.Frame {
+namespace Treasure.Main.ProjectCollection.FirstProject {
     
     
-    public partial class Default {
+    public partial class SysMenuItemTypeEdit {
         
         /// <summary>
         /// form1 控件。
@@ -22,30 +22,39 @@ namespace Treasure.Main.Frame {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// frmLeft 控件。
+        /// txtNO 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe frmLeft;
+        protected global::DevExpress.Web.ASPxTextBox txtNO;
         
         /// <summary>
-        /// frmMain 控件。
+        /// txtNAME 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe frmMain;
+        protected global::DevExpress.Web.ASPxTextBox txtNAME;
         
         /// <summary>
-        /// ddlMenu 控件。
+        /// txtSORT_INDEX 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMenu;
+        protected global::DevExpress.Web.ASPxTextBox txtSORT_INDEX;
+        
+        /// <summary>
+        /// hdnID 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnID;
     }
 }

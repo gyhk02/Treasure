@@ -77,6 +77,19 @@ namespace Treasure.BLL.General
 
         #region 删除
 
+        #region 根据ID删除记录
+        /// <summary>
+        /// 根据ID删除记录
+        /// </summary>
+        /// <param name="pTableName">表名</param>
+        /// <param name="pId">id</param>
+        /// <returns></returns>
+        public bool DeleteById(string pTableName, string pId)
+        {
+            return SQLHelper.DeleteById(pTableName, pId);
+        }
+        #endregion
+
         #region 根据表名删除全部数据
         /// <summary>
         /// 根据表名删除全部数据

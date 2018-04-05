@@ -42,6 +42,11 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
+                    <td>&nbsp;</td>
+                    <td><a href="SmallTool/ToTableClass/ToTableClass.aspx" target="_blank">生成Model</a></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
                     <td>EVQ</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>

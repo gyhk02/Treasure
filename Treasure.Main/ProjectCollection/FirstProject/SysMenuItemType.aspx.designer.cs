@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Treasure.Main.Frame {
+namespace Treasure.Main.ProjectCollection.FirstProject {
     
     
-    public partial class Default {
+    public partial class SysMenuItemType {
         
         /// <summary>
         /// form1 控件。
@@ -22,30 +22,48 @@ namespace Treasure.Main.Frame {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// frmLeft 控件。
+        /// txtNo 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe frmLeft;
+        protected global::DevExpress.Web.ASPxTextBox txtNo;
         
         /// <summary>
-        /// frmMain 控件。
+        /// txtName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe frmMain;
+        protected global::DevExpress.Web.ASPxTextBox txtName;
         
         /// <summary>
-        /// ddlMenu 控件。
+        /// grdData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMenu;
+        protected global::DevExpress.Web.ASPxGridView grdData;
+        
+        /// <summary>
+        /// ASPxGridViewExporter1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxGridViewExporter ASPxGridViewExporter1;
+        
+        /// <summary>
+        /// hidCondition 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidCondition;
     }
 }
