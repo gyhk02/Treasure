@@ -21,7 +21,7 @@ namespace Treasure.BLL.General
         /// <returns>DataTable</returns>
         public DataTable GetTableAllInfo(string pTableName)
         {
-            return SQLHelper.ExecuteDataTableByName(pTableName);
+            return SqlHelper.ExecuteDataTableByName(pTableName);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Treasure.BLL.General
         /// <returns>DataTable</returns>
         public DataTable GetTableAllInfo(string pConnection, string pTableName)
         {
-            return SQLHelper.ExecuteDataTableByName(pConnection, pTableName);
+            return SqlHelper.ExecuteDataTableByName(pConnection, pTableName);
         }
 
         #endregion
@@ -44,7 +44,7 @@ namespace Treasure.BLL.General
         /// <param name="pTableName"></param>
         public DataTable GetDataTableStructure(string pTableName)
         {
-            return SQLHelper.ExecuteDataTable(pTableName);
+            return SqlHelper.ExecuteDataTable(pTableName);
         }
         #endregion
 
@@ -56,7 +56,7 @@ namespace Treasure.BLL.General
         /// <returns></returns>
         public DataTable GetDataTable(string pSql, params SqlParameter[] pParas)
         {
-            return SQLHelper.ExecuteDataTable(CommandType.Text, pSql, pParas);
+            return SqlHelper.ExecuteDataTable(CommandType.Text, pSql, pParas);
         }
         #endregion
 
@@ -69,7 +69,7 @@ namespace Treasure.BLL.General
         /// <returns></returns>
         public DataRow GetDataRowById(string pTableName, string pId)
         {
-            return SQLHelper.ExecuteDataTable(pTableName, pId);
+            return SqlHelper.ExecuteDataTable(pTableName, pId);
         }
         #endregion
 
@@ -86,7 +86,7 @@ namespace Treasure.BLL.General
         /// <returns></returns>
         public bool DeleteById(string pTableName, string pId)
         {
-            return SQLHelper.DeleteById(pTableName, pId);
+            return SqlHelper.DeleteById(pTableName, pId);
         }
         #endregion
 
@@ -99,7 +99,7 @@ namespace Treasure.BLL.General
         /// <returns></returns>
         public bool DeleteDataTableByName(string pConnString, string pTableName)
         {
-            return SQLHelper.DeleteDataTableByName(pConnString, pTableName);
+            return SqlHelper.DeleteDataTableByName(pConnString, pTableName);
         }
         #endregion
 
@@ -114,7 +114,7 @@ namespace Treasure.BLL.General
         /// <returns></returns>
         public string AddDataRow(DataRow row)
         {
-            return SQLHelper.AddDataRow(row);
+            return SqlHelper.AddDataRow(row);
         }
 
         #endregion
@@ -128,7 +128,7 @@ namespace Treasure.BLL.General
         /// <returns></returns>
         public string UpdateDataRow(DataRow row)
         {
-            return SQLHelper.UpdateDataRow(row);
+            return SqlHelper.UpdateDataRow(row);
         }
 
         #endregion

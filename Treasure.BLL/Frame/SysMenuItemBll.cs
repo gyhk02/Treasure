@@ -11,6 +11,30 @@ namespace Treasure.BLL.Frame
     public class SysMenuItemBll : BasicBll
     {
 
+        #region 获取非系统的项目
+        /// <summary>
+        /// 获取非系统的项目
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetProjectByNoSys()
+        {
+            DataTable dt = null;
+
+            string sql = "SELECT * FROM SYS_MENU_ITEM WHERE (PARENT_ID IS NULL OR PARENT_ID = '') AND IS_SYS = 0";
+
+            try
+            {
+                dt = base.GetDataTable(sql, null);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return dt;
+        }
+        #endregion
+        
         #region 获取菜单编号
         /// <summary>
         /// 获取菜单编号
@@ -115,7 +139,7 @@ ORDER BY C.NO DESC";
             DataTable dt = null;
 
             string sql = @"
-SELECT SMI.ID, SMI.NAME, SMIT.NAME MENU_TYPE_NAME, SMI.PICTURE_URL, SMI.FILE_URL, SMI.BUTTON_NAME, SMI.ENABLE, SMI.IS_SYS, SMI.PARENT_ID
+SELECT SMI.ID, SMI.NAME, SMI.ENGLISH_NAME, SMIT.NAME MENU_TYPE_NAME, SMI.PICTURE_URL, SMI.FILE_URL, SMI.BUTTON_NAME, SMI.ENABLE, SMI.IS_SYS, SMI.PARENT_ID
 FROM SYS_MENU_ITEM SMI
 JOIN SYS_MENU_ITEM_TYPE SMIT ON SMI.SYS_MENU_ITEM_TYPE_ID = SMIT.ID
 ";

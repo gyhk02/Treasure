@@ -33,11 +33,13 @@
                         <asp:TextBox ID="txtName" runat="server"></asp:TextBox></td>
                     <td父节点：</td>
                     <td>
-                        <asp:DropDownList ID="ddlParentId" runat="server"></asp:DropDownList></td>
-                    <td>&nbsp;
-                    </td>
+                        <asp:DropDownList ID="ddlParentId" runat="server"></asp:DropDownList></td>                    
                     <td>
-                        &nbsp;</td>
+                        &nbsp;</td> 
+                        <td>英文名称：</td> <td>
+                        <dx:ASPxTextBox ID="txtEnglishName" runat="server" Width="170px">
+                        </dx:ASPxTextBox>
+                    </td>
                 </tr>
                 <tr>
                     <td>图片：：</td>

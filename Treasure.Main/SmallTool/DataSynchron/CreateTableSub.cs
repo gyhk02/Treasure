@@ -80,7 +80,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
             string sql = "";
 
-            DataTable dt = bllDataBase.GetTableInfoByName(4, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(4, pSourceTable, pSourceConnection);
             foreach (DataRow row in dt.Rows)
             {
                 sql = sql + @"
@@ -114,7 +114,7 @@ EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].
 
             string sql = "";
 
-            DataTable dt = bllDataBase.GetTableInfoByName(3, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(3, pSourceTable, pSourceConnection);
             foreach (DataRow row in dt.Rows)
             {
                 sql = sql + @"
@@ -150,7 +150,7 @@ EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].
 
             StringBuilder sql = new StringBuilder();
 
-            DataTable dt = bllDataBase.GetTableInfoByName(2, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(2, pSourceTable, pSourceConnection);
             foreach (DataRow row in dt.Rows)
             {
                 string constraintType = row[DataSynchronVO.ConstraintType].ToString().Trim().ToUpper();
@@ -207,7 +207,7 @@ EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].
 
             StringBuilder sql = new StringBuilder();
 
-            DataTable dt = bllDataBase.GetTableInfoByName(2, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(2, pSourceTable, pSourceConnection);
             foreach (DataRow row in dt.Rows)
             {
                 string constraintType = row[DataSynchronVO.ConstraintType].ToString().Trim().ToUpper();
@@ -261,7 +261,7 @@ EXEC sys.sp_addextendedproperty @name=N'" + row[DataSynchronVO.DescriptionName].
                 .Append(")")
                 .Append("CREATE TABLE [dbo].[" + pSourceTable + "](" + ConstantVO.ENTER_STRING);
 
-            DataTable dt = bllDataBase.GetTableInfoByName(1, pSourceConnection, pSourceTable);
+            DataTable dt = bllDataBase.GetTableInfoByName(1, pSourceTable, pSourceConnection);
             foreach (DataRow row in dt.Rows)
             {
                 string filedtype = row[DataSynchronVO.FieldType].ToString().Trim().ToLower();

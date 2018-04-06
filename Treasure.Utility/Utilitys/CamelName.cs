@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Treasure.BLL.General
+namespace Treasure.Utility.Utilitys
 {
-    public class CamelNameBLL
+    public static class CamelName
     {
 
         #region 小驼峰法
@@ -15,7 +15,7 @@ namespace Treasure.BLL.General
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public string getSmallCamelName(string input)
+        public static string getSmallCamelName(string input)
         {
             string[] arr = input.Split('_');
 
@@ -43,7 +43,7 @@ namespace Treasure.BLL.General
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public string getBigCamelName(string input)
+        public static string getBigCamelName(string input)
         {
             string[] arr = input.Split('_');
 

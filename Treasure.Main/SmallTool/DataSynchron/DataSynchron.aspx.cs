@@ -449,7 +449,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 else
                 {
                     //判断表中是否有byte类型
-                    DataTable dtStructure = bllDataBase.GetTableInfoByName(1, pSourceConnection, str);
+                    DataTable dtStructure = bllDataBase.GetTableInfoByName(1, str, pSourceConnection);
                     List<DataRow> lst = dtStructure.AsEnumerable().Where(t => t.Field<string>(DataSynchronVO.FieldType).ToLower() == "varbinary").ToList();
                     if (lst.Count > 0)
                     {
@@ -549,7 +549,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
             foreach (string str in lstTable)
             {
                 //判断表中是否有byte类型
-                DataTable dtStructure = bllDataBase.GetTableInfoByName(1, pSourceConnection, str);
+                DataTable dtStructure = bllDataBase.GetTableInfoByName(1, str, pSourceConnection);
                 List<DataRow> lst = dtStructure.AsEnumerable().Where(t => t.Field<string>(DataSynchronVO.FieldType).ToLower() == "varbinary").ToList();
                 if (lst.Count > 0)
                 {
@@ -613,8 +613,8 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 string pTargetConnection = hdnTargetConnection.Value;
                 List<string> lstTableList = grvTableList.GetSelectedFieldValues(new string[] { DataSynchronVO.TableName }).ConvertAll<string>(c => string.Format("{0}", c));
                 
-                DataTable dtSourceTableStructure = bllDataBase.GetTableInfoByName(1, pSourceConnection, lstTableList);
-                DataTable dtTargetTableStructure = bllDataBase.GetTableInfoByName(1, pTargetConnection, lstTableList);
+                DataTable dtSourceTableStructure = bllDataBase.GetTableInfoByName(1, lstTableList, pSourceConnection);
+                DataTable dtTargetTableStructure = bllDataBase.GetTableInfoByName(1, lstTableList, pTargetConnection);
 
                 #region DataTable初始化
 

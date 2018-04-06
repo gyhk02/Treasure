@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Treasure.Main.Frame {
+namespace Treasure.Main.SmallTool.AutoGenerateFile {
     
     
-    public partial class MenuAdd {
+    public partial class GenerateBySingleTable {
         
         /// <summary>
         /// form1 控件。
@@ -22,84 +22,66 @@ namespace Treasure.Main.Frame {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// txtName 控件。
+        /// gluTableList 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtName;
+        protected global::DevExpress.Web.ASPxGridLookup gluTableList;
         
         /// <summary>
-        /// ddlParentId 控件。
+        /// grdData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlParentId;
+        protected global::DevExpress.Web.ASPxGridView grdData;
         
         /// <summary>
-        /// txtEnglishName 控件。
+        /// gluProject 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtEnglishName;
+        protected global::DevExpress.Web.ASPxGridLookup gluProject;
         
         /// <summary>
-        /// txtPictureUrl 控件。
+        /// chkReportExcel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPictureUrl;
+        protected global::DevExpress.Web.ASPxCheckBox chkReportExcel;
         
         /// <summary>
-        /// txtFileUrl 控件。
+        /// hdnTableName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFileUrl;
+        protected global::System.Web.UI.WebControls.HiddenField hdnTableName;
         
         /// <summary>
-        /// txtButtonName 控件。
+        /// hdnProjectPathByPrefix 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtButtonName;
+        protected global::System.Web.UI.WebControls.HiddenField hdnProjectPathByPrefix;
         
         /// <summary>
-        /// ddlEnable 控件。
+        /// hdnProjectNamespaceByPrefix 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEnable;
-        
-        /// <summary>
-        /// ddlIsSys 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlIsSys;
-        
-        /// <summary>
-        /// hdnId 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnId;
+        protected global::System.Web.UI.WebControls.HiddenField hdnProjectNamespaceByPrefix;
     }
 }

@@ -106,6 +106,7 @@ namespace Treasure.Main.Frame
                 if (row != null)
                 {
                     txtName.Text = row[SysMenuItemTable.Fields.name].ToString();
+                    txtEnglishName.Text = TypeConversion.ToString(row[SysMenuItemTable.Fields.englishName]);
                     ddlParentId.SelectedValue = row[SysMenuItemTable.Fields.parentId].ToString();
                     txtPictureUrl.Text = row[SysMenuItemTable.Fields.pictureUrl].ToString();
                     txtFileUrl.Text = row[SysMenuItemTable.Fields.fileUrl].ToString();
@@ -156,10 +157,11 @@ namespace Treasure.Main.Frame
             row[SysMenuItemTable.Fields.sysMenuItemTypeId] = sysMenuItemTypeId;
 
             row[SysMenuItemTable.Fields.id] = Guid.NewGuid().ToString().Replace("-", "");
-            row[SysMenuItemTable.Fields.name] = txtName.Text;
-            row[SysMenuItemTable.Fields.pictureUrl] = txtPictureUrl.Text;
-            row[SysMenuItemTable.Fields.fileUrl] = txtFileUrl.Text;
-            row[SysMenuItemTable.Fields.buttonName] = txtButtonName.Text;
+            row[SysMenuItemTable.Fields.name] = txtName.Text.Trim();
+            row[SysMenuItemTable.Fields.englishName] = txtEnglishName.Text.Trim();
+            row[SysMenuItemTable.Fields.pictureUrl] = txtPictureUrl.Text.Trim();
+            row[SysMenuItemTable.Fields.fileUrl] = txtFileUrl.Text.Trim();
+            row[SysMenuItemTable.Fields.buttonName] = txtButtonName.Text.Trim();
             row[SysMenuItemTable.Fields.enable] = ddlEnable.SelectedValue;
             row[SysMenuItemTable.Fields.isSys] = ddlIsSys.SelectedValue;
 
@@ -199,10 +201,11 @@ namespace Treasure.Main.Frame
             row[SysMenuItemTable.Fields.parentId] = parentId;
             row[SysMenuItemTable.Fields.sysMenuItemTypeId] = sysMenuItemTypeId;
 
-            row[SysMenuItemTable.Fields.name] = txtName.Text;
-            row[SysMenuItemTable.Fields.pictureUrl] = txtPictureUrl.Text;
-            row[SysMenuItemTable.Fields.fileUrl] = txtFileUrl.Text;
-            row[SysMenuItemTable.Fields.buttonName] = txtButtonName.Text;
+            row[SysMenuItemTable.Fields.name] = txtName.Text.Trim();
+            row[SysMenuItemTable.Fields.englishName] = txtEnglishName.Text.Trim();
+            row[SysMenuItemTable.Fields.pictureUrl] = txtPictureUrl.Text.Trim();
+            row[SysMenuItemTable.Fields.fileUrl] = txtFileUrl.Text.Trim();
+            row[SysMenuItemTable.Fields.buttonName] = txtButtonName.Text.Trim();
             row[SysMenuItemTable.Fields.enable] = ddlEnable.SelectedValue;
             row[SysMenuItemTable.Fields.isSys] = ddlIsSys.SelectedValue;
 

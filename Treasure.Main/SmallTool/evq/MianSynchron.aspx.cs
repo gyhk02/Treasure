@@ -119,8 +119,8 @@ namespace Treasure.Main.SmallTool.evq
         {
             DataTable dtResult = new DataTable();
 
-            DataTable dtSourceTableStructure = bllDataBase.GetTableInfoByName(1, priSourceConnection, priSourceTableList);
-            DataTable dtTargetTableStructure = bllDataBase.GetTableInfoByName(1, priTargetConnection, priSourceTableList);
+            DataTable dtSourceTableStructure = bllDataBase.GetTableInfoByName(1, priSourceTableList, priSourceConnection);
+            DataTable dtTargetTableStructure = bllDataBase.GetTableInfoByName(1, priSourceTableList, priTargetConnection);
 
             #region DataTable初始化
 

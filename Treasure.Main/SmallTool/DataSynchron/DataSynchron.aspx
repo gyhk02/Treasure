@@ -154,7 +154,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False" KeyFieldName="ID">
+                                                        <dx:ASPxGridView ID="grvTableList" runat="server" AutoGenerateColumns="False" 
+                                                            KeyFieldName="ID">
                                                             <SettingsPager Mode="ShowAllRecords">
                                                             </SettingsPager>
                                                             <Columns>

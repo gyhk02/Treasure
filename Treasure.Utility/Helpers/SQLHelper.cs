@@ -14,7 +14,7 @@ namespace Treasure.Utility.Helpers
     /// <summary>
     /// 数据库操作帮忙类
     /// </summary>
-    public class SQLHelper
+    public static class SqlHelper
     {
         public static string ConnString = "Data Source=.;Initial Catalog=Treasure;User ID=sa;Password=1;";
         private static Hashtable parmCache = Hashtable.Synchronized(new Hashtable());

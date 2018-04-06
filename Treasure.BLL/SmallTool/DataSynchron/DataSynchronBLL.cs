@@ -41,7 +41,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
 
             try
             {
-                SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
+                SqlHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
                 result = true;
             }
             catch (Exception ex)
@@ -89,7 +89,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
 
             try
             {
-                SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
+                SqlHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql, null);
                 result = true;
             }
             catch (Exception ex)
@@ -176,7 +176,7 @@ namespace Treasure.BLL.SmallTool.DataSynchron
 
                 try
                 {
-                    SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql.ToString(), null);
+                    SqlHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql.ToString(), null);
                     result = true;
                 }
                 catch (Exception ex)
@@ -278,7 +278,7 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
                     try
                     {
-                        SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, sql, paras);
+                        SqlHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, sql, paras);
                     }
                     catch (Exception ex)
                     {
@@ -349,7 +349,7 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
                 try
                 {
-                    SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql.ToString(), null);
+                    SqlHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, strsql.ToString(), null);
                     result = true;
                 }
                 catch (Exception ex)
@@ -434,7 +434,7 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
                     try
                     {
-                        SQLHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, sql, paras);
+                        SqlHelper.ExecuteNonQuery(pTargetConnection, CommandType.Text, sql, paras);
                     }
                     catch (Exception ex)
                     {
@@ -464,7 +464,7 @@ SET IDENTITY_INSERT [" + pTableName + @"] OFF ";
 
             try
             {
-                SQLHelper.ExecuteNonQuery(pConnection, CommandType.Text, pSql, null);
+                SqlHelper.ExecuteNonQuery(pConnection, CommandType.Text, pSql, null);
                 result = true;
             }
             catch (Exception ex)
@@ -530,7 +530,7 @@ from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
 where o.type = 'U' " + condition;
 
-            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
+            result = SqlHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
 
             return result;
         }
@@ -636,7 +636,7 @@ order by o.name
                 List<SqlParameter> paras = new List<SqlParameter>();
                 paras.Add(new SqlParameter("@ObjectType", strType));
 
-                result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, paras.ToArray());
+                result = SqlHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, paras.ToArray());
             }
             catch (Exception ex)
             {
@@ -733,7 +733,7 @@ DROP TABLE #Sort
                 List<SqlParameter> paras = new List<SqlParameter>();
                 paras.Add(new SqlParameter("@Tables", string.Join(",", lstCalculation.ToArray())));
 
-                DataTable dt = SQLHelper.ExecuteDataTable(pSourceConnection, CommandType.Text, sql, paras.ToArray());
+                DataTable dt = SqlHelper.ExecuteDataTable(pSourceConnection, CommandType.Text, sql, paras.ToArray());
 
                 lst = (from a in dt.AsEnumerable() select a.Field<string>("TableName")).ToList();
             }
@@ -775,7 +775,7 @@ select @text";
             paras.Add(new SqlParameter("@ProcedureName", pName));
             paras.Add(new SqlParameter("@ObjectType", strType));
 
-            DataTable dt = SQLHelper.ExecuteDataTable(pConnString, CommandType.Text, sql, paras.ToArray());
+            DataTable dt = SqlHelper.ExecuteDataTable(pConnString, CommandType.Text, sql, paras.ToArray());
             if (dt != null && dt.Rows.Count > 0)
             {
                 result = dt.Rows[0][0].ToString();
@@ -805,7 +805,7 @@ select @text";
             paras.Add(new SqlParameter("@ProcedureName", pName));
             paras.Add(new SqlParameter("@ObjectType", strType));
 
-            DataTable dt = SQLHelper.ExecuteDataTable(pConnString, CommandType.Text, sql, paras.ToArray());
+            DataTable dt = SqlHelper.ExecuteDataTable(pConnString, CommandType.Text, sql, paras.ToArray());
             if (dt != null && dt.Rows.Count > 0)
             {
                 result = true;

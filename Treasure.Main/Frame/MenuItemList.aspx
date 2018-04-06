@@ -21,26 +21,28 @@
                 <Columns>
                     <dx:TreeListTextColumn Caption="名称" FieldName="NAME" VisibleIndex="0">
                     </dx:TreeListTextColumn>
-                    <dx:TreeListTextColumn Caption="类型" FieldName="MENU_TYPE_NAME" VisibleIndex="1">
+                    <dx:TreeListTextColumn Caption="类型" FieldName="MENU_TYPE_NAME" VisibleIndex="2">
                     </dx:TreeListTextColumn>
-                    <dx:TreeListTextColumn Caption="图片" FieldName="PICTURE_URL" VisibleIndex="2">
+                    <dx:TreeListTextColumn Caption="图片" FieldName="PICTURE_URL" VisibleIndex="3">
                     </dx:TreeListTextColumn>
-                    <dx:TreeListTextColumn Caption="文件" FieldName="FILE_URL" VisibleIndex="3">
+                    <dx:TreeListTextColumn Caption="文件" FieldName="FILE_URL" VisibleIndex="4">
                     </dx:TreeListTextColumn>
-                    <dx:TreeListTextColumn Caption="按钮" FieldName="BUTTON_NAME" VisibleIndex="4">
+                    <dx:TreeListTextColumn Caption="按钮" FieldName="BUTTON_NAME" VisibleIndex="5">
                     </dx:TreeListTextColumn>
-                    <dx:TreeListTextColumn Caption="启用" FieldName="ENABLE" VisibleIndex="5">
+                    <dx:TreeListTextColumn Caption="启用" FieldName="ENABLE" VisibleIndex="6">
                     </dx:TreeListTextColumn>
-                    <dx:TreeListTextColumn Caption="系统菜单" FieldName="IS_SYS" VisibleIndex="6">
+                    <dx:TreeListTextColumn Caption="系统菜单" FieldName="IS_SYS" VisibleIndex="7">
                     </dx:TreeListTextColumn>
-                    <dx:TreeListHyperLinkColumn Caption="修改" FieldName="ID" VisibleIndex="7">
+                    <dx:TreeListHyperLinkColumn Caption="修改" FieldName="ID" VisibleIndex="8">
                         <PropertiesHyperLink NavigateUrlFormatString="MenuAdd.aspx?ID={0}" Text="修改">
                         </PropertiesHyperLink>
                     </dx:TreeListHyperLinkColumn>
-                    <dx:TreeListCommandColumn Caption="删除" VisibleIndex="8">
+                    <dx:TreeListCommandColumn Caption="删除" VisibleIndex="9">
                         <DeleteButton Text="删除" Visible="True">
                         </DeleteButton>
                     </dx:TreeListCommandColumn>
+                    <dx:TreeListTextColumn Caption="英文名称" FieldName="ENGLISH_NAME" VisibleIndex="1">
+                    </dx:TreeListTextColumn>
                 </Columns>
                 <SettingsBehavior AllowFocusedNode="True" />
             </dx:ASPxTreeList>

@@ -200,7 +200,7 @@ where o.type = 'U' " + condition + @"
 order by o.name
 ";
 
-            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
+            result = SqlHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
 
             return result;
         }
@@ -214,8 +214,12 @@ order by o.name
         /// </summary>
         /// <param name="pConnection">数据库链接</param>
         /// <returns>DataTable</returns>
-        public DataTable GetTableList(string pConnection)
+        public DataTable GetTableList(string pConnection = "")
         {
+            if (string.IsNullOrEmpty(pConnection) == true)
+            {
+                pConnection = SqlHelper.ConnString;
+            }
             return GetTableList(pConnection, null, null);
         }
 
@@ -257,7 +261,7 @@ order by o.name
         /// <returns>DataTable</returns>
         private DataTable GetTableList(string pConnection, List<string> pTableList, string pTableName)
         {
-            DataTable result = new DataTable();
+            DataTable result = null;
 
             string condition = "";
 
@@ -289,7 +293,7 @@ from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
 where o.type = 'U' " + condition;
 
-            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
+            result = SqlHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
 
             return result;
         }
@@ -335,16 +339,16 @@ where o.type = 'U' " + condition;
         /// <param name="pConnection">数据库链接</param>
         /// <param name="pLstTableName">表名集合</param>
         /// <returns>DataTable</returns>
-        public DataTable GetTableInfoByName(int pType, string pConnection, List<string> pLstTableName)
+        public DataTable GetTableInfoByName(int pType, List<string> pLstTableName, string pConnection)
         {
             List<DataTable> lstTable = new List<DataTable>();
             foreach (string str in pLstTableName)
             {
-                DataTable dt = GetTableInfoByName(pType, pConnection, str);
+                DataTable dt = GetTableInfoByName(pType, str, pConnection);
                 lstTable.Add(dt);
             }
-            
-            return  new DataTableHelper().Merge(lstTable);
+
+            return new DataTableHelper().Merge(lstTable);
         }
 
         /// <summary>
@@ -354,9 +358,14 @@ where o.type = 'U' " + condition;
         /// <param name="pConnection">数据库链接</param>
         /// <param name="pTableName">表名</param>
         /// <returns>DataTable</returns>
-        public DataTable GetTableInfoByName(int pType, string pConnection, string pTableName)
+        public DataTable GetTableInfoByName(int pType, string pTableName, string pConnection = "")
         {
-            DataTable result = new DataTable();
+            DataTable result = null;
+
+            if (string.IsNullOrEmpty(pConnection) == true)
+            {
+                pConnection = SqlHelper.ConnString;
+            }
 
             string strsql = "";
 
@@ -366,16 +375,25 @@ where o.type = 'U' " + condition;
                     strsql = @"
 select o.name " + DataSynchronVO.TableName + ", c.name " + DataSynchronVO.FieldName + ", t.name " + DataSynchronVO.FieldType + @"
 	, IIF(t.name = 'nchar' OR t.name = 'nvarchar', c.max_length / 2, c.max_length) FiledLen
-	, c.precision DecimalPrecision, c.scale DecimalDigits, ep.value "+ DataSynchronVO.FieldDescription + @"
+	, c.precision DecimalPrecision, c.scale DecimalDigits, ep.value " + DataSynchronVO.FieldDescription + @"
     , c.is_nullable IsNullable, c.is_identity IsIdentity, IIF(c.max_length = -1, 1, 0) IsMax, sc.text DefaultValue
+	, convert(bit, iif(fk." + DataSynchronVO.ForeignTableName + @" is null, 0, 1)) isForeign
+    ,  fk." + DataSynchronVO.ForeignTableName + @", fk." + DataSynchronVO.ForeignFieldName + @"
 from sys.objects as o
 join sys.columns as c on o.object_id = c.object_id
 join sys.types as t on c.system_type_id = t.system_type_id and c.user_type_id = t.user_type_id
 left join sys.extended_properties as ep on c.object_id = ep.major_id and c.column_id = ep.minor_id and ep.name = 'MS_Description'
 left join syscomments sc on c.default_object_id = sc.id
+left join(
+	select OBJECT_NAME(fk.parent_object_id) " + DataSynchronVO.TableName + @"
+        , COL_NAME(fkc.parent_object_id, fkc.parent_column_id) " + DataSynchronVO.FieldName + @"
+	    , OBJECT_NAME(fk.referenced_object_id) " + DataSynchronVO.ForeignTableName + @"
+        , COL_NAME(fkc.referenced_object_id, fkc.referenced_column_id) " + DataSynchronVO.ForeignFieldName + @"
+	FROM sys.foreign_keys fk
+	JOIN sys.foreign_key_columns fkc on fk.object_id = fkc.constraint_object_id
+) fk on fk." + DataSynchronVO.TableName + @" = o.name and fk." + DataSynchronVO.FieldName + @" = c.name
 where o.name = @TableName
-order by c.column_id
-";
+order by c.column_id";
                     break;
                 case 2: //约束列表
                     strsql = @"
@@ -420,7 +438,7 @@ where o.name = @TableName
             SqlParameter[] paras = new SqlParameter[1];
             paras[0] = new SqlParameter("@TableName", pTableName);
 
-            result = SQLHelper.ExecuteDataTable(pConnection, CommandType.Text, strsql, paras);
+            result = SqlHelper.ExecuteDataTable(pConnection, CommandType.Text, strsql, paras);
 
             return result;
         }

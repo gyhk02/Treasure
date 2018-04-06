@@ -1,16 +1,9 @@
-﻿using DevExpress.Web.Export;
-using DevExpress.XtraPrinting;
-using DevExpress.XtraPrintingLinks;
+﻿using DevExpress.XtraPrinting;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Treasure.BLL.ProjectCollection.FirstProject;
-using Treasure.Main.SmallTool.EncryptAndDecrypt;
 using Treasure.Model.General;
 using Treasure.Model.ProjectCollection.FirstProject;
 using Treasure.Utility.Utilitys;

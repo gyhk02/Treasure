@@ -22,7 +22,6 @@ namespace Treasure.Main.SmallTool.ToTableClass
         #region 自定义变量
 
         DataBaseBll bllDataBase = new DataBaseBll();
-        CamelNameBLL bllCamelName = new CamelNameBLL();
 
         #endregion
 
@@ -174,13 +173,13 @@ namespace Treasure.Main.SmallTool.ToTableClass
         /// <param name="tableName"></param>
         private void CreateParentTableClass(string savePath, string tableNamespace, string tableName)
         {
-            string createFileName = bllCamelName.getBigCamelName(tableName) + "ParentTable";
-            string className = bllCamelName.getBigCamelName(tableName) + "Table";
+            string createFileName =  CamelName.getBigCamelName(tableName) + "ParentTable";
+            string className = CamelName.getBigCamelName(tableName) + "Table";
             string fileName = savePath + @"\\" + createFileName + ".cs";
             string connStr = hdnConnection.Value;
 
             //获取表的全部字段
-            DataTable dtField = bllDataBase.GetTableInfoByName(1, connStr, tableName);
+            DataTable dtField = bllDataBase.GetTableInfoByName(1, tableName, connStr);
 
             StringBuilder content = new StringBuilder();
 
@@ -196,7 +195,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
             foreach (DataRow row in dtField.Rows)
             {
                 string fieldName = TypeConversion.ToString(row[DataSynchronVO.FieldName]);
-                content.Append("            public static string " + bllCamelName.getSmallCamelName(fieldName) + " = \"" + fieldName + "\"; " + ConstantVO.ENTER_R);
+                content.Append("            public static string " + CamelName.getSmallCamelName(fieldName) + " = \"" + fieldName + "\"; " + ConstantVO.ENTER_R);
             }
 
             content.Append("        }" + ConstantVO.ENTER_R)
@@ -217,7 +216,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
         /// <param name="tableName">表的名称</param>
         private void CreateTableClass(string savePath, string tableNamespace, string tableName)
         {
-            string createFileName = bllCamelName.getBigCamelName(tableName) + "Table";
+            string createFileName = CamelName.getBigCamelName(tableName) + "Table";
             string fileName = savePath + @"\\" + createFileName + ".cs";
 
             if (File.Exists(fileName) == true)

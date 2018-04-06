@@ -46,7 +46,6 @@
     <Compile Include="General\BasicWebBLL.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="General\CamelNameBLL.cs" />
     <Compile Include="General\DataBaseBll.cs" />
     <Compile Include="General\GeneralBll.cs" />
     <Compile Include="ProjectCollection\FirstProject\SysMenuItemTypeBll.cs" />
