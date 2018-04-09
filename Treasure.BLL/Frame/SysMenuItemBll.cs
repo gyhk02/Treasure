@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using Treasure.BLL.General;
+using Treasure.Bll.General;
 using Treasure.Utility.Helpers;
 using Treasure.Utility.Utilitys;
 
-namespace Treasure.BLL.Frame
+namespace Treasure.Bll.Frame
 {
     public class SysMenuItemBll : BasicBll
     {
@@ -34,7 +34,7 @@ namespace Treasure.BLL.Frame
             return dt;
         }
         #endregion
-        
+
         #region 获取菜单编号
         /// <summary>
         /// 获取菜单编号

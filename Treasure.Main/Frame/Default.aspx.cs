@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Treasure.BLL.Frame;
+using Treasure.Bll.Frame;
 using Treasure.Utility.Extend;
 using Treasure.Utility.Utilitys;
 

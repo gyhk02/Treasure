@@ -4,8 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Web;
-using Treasure.BLL.General;
-using Treasure.BLL.SmallTool.DataSynchron;
+using Treasure.Bll.General;
+using Treasure.Bll.SmallTool.DataSynchron;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Helpers;
@@ -15,7 +15,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 {
     public class CreateTableSub
     {
-        DataSynchronBLL bll = new DataSynchronBLL();
+        DataSynchronBll bll = new DataSynchronBll();
         DataBaseBll bllDataBase = new DataBaseBll();
 
         #region 创建表

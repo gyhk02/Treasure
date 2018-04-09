@@ -1,7 +1,8 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using Treasure.Model.General;
 
-namespace Treasure.BLL.General
+namespace Treasure.Bll.General
 {
     public class GeneralBll
     {
@@ -32,5 +33,24 @@ namespace Treasure.BLL.General
         }
         #endregion
 
+        #region Grid默认排除的字段
+        /// <summary>
+        /// Grid默认排除的字段
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetExcludedFields()
+        {
+            List<string> lst = new List<string>();
+
+            lst.Add(GeneralVO.id);
+            lst.Add(GeneralVO.idIndex);
+            lst.Add(GeneralVO.createUserId);
+            lst.Add(GeneralVO.createDatetime);
+            lst.Add(GeneralVO.modifyUserId);
+            lst.Add(GeneralVO.modifyDatetime);
+
+            return lst;
+        }
+        #endregion
     }
 }

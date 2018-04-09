@@ -7,7 +7,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Treasure.BLL.General;
+using Treasure.Bll.General;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Extend;

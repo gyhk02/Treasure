@@ -6,8 +6,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using Treasure.BLL.General;
-using Treasure.BLL.SmallTool.DataSynchron;
+using Treasure.Bll.General;
+using Treasure.Bll.SmallTool.DataSynchron;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Extend;
@@ -21,7 +21,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
 
         #region 自定义变量
 
-        DataSynchronBLL bll = new DataSynchronBLL();
+        DataSynchronBll bll = new DataSynchronBll();
         DataBaseBll bllDataBase = new DataBaseBll();
 
         #endregion

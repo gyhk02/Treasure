@@ -5,8 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Treasure.BLL.General;
-using Treasure.BLL.SmallTool.DataSynchron;
+using Treasure.Bll.General;
+using Treasure.Bll.SmallTool.DataSynchron;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Helpers;
@@ -20,7 +20,7 @@ namespace Treasure.Main.SmallTool.evq
 
         string priSourceConnection = "Data Source=172.16.96.48;Initial Catalog=Frame;User ID=csharp;Password=csharp.123;Persist Security Info=True;";
         string priTargetConnection = "Data Source=172.16.96.55;Initial Catalog=Frame;User ID=programmer;Password=123456;Persist Security Info=True;";
-        DataSynchronBLL bllSynchron = new DataSynchronBLL();
+        DataSynchronBll bllSynchron = new DataSynchronBll();
         DataBaseBll bllDataBase = new DataBaseBll();
         List<string> priSourceTableList = new List<string>();
 

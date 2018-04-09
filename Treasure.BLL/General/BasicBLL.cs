@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using Treasure.Utility.Helpers;
 
-namespace Treasure.BLL.General
+namespace Treasure.Bll.General
 {
     /// <summary>
     /// 逻辑层基类

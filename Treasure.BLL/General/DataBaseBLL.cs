@@ -9,7 +9,7 @@ using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Helpers;
 
-namespace Treasure.BLL.General
+namespace Treasure.Bll.General
 {
     public class DataBaseBll
     {

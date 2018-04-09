@@ -243,9 +243,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Treasure.BLL\Treasure.BLL.csproj">
+    <ProjectReference Include="..\Treasure.BLL\Treasure.Bll.csproj">
       <Project>{1eebd6d2-6382-4020-9d69-e7de853232a5}</Project>
-      <Name>Treasure.BLL</Name>
+      <Name>Treasure.Bll</Name>
     </ProjectReference>
     <ProjectReference Include="..\Treasure.Model\Treasure.Model.csproj">
       <Project>{03e7cb0b-9167-4c9e-8447-5465c9927ac3}</Project>

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using Treasure.BLL.General;
+using Treasure.Bll.General;
 
-namespace Treasure.BLL.ProjectCollection.FirstProject
+namespace Treasure.Bll.ProjectCollection.FirstProject
 {
     public class SysMenuItemTypeBll : BasicBll
     {

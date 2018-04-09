@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Treasure.BLL.Frame;
-using Treasure.BLL.General;
+using Treasure.Bll.Frame;
+using Treasure.Bll.General;
 
 namespace Treasure.Main.Frame
 {

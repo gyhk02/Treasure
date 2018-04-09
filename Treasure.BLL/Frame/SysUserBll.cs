@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using Treasure.BLL.General;
+using Treasure.Bll.General;
 using Treasure.Model.General;
 using Treasure.Utility.Helpers;
 
-namespace Treasure.BLL.Frame
+namespace Treasure.Bll.Frame
 {
     public class SysUserBll : BasicBll
     {

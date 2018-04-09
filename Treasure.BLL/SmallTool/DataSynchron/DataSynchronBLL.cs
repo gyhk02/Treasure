@@ -6,18 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
-using Treasure.BLL.General;
+using Treasure.Bll.General;
 using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Helpers;
 using Treasure.Utility.Utilitys;
 
-namespace Treasure.BLL.SmallTool.DataSynchron
+namespace Treasure.Bll.SmallTool.DataSynchron
 {
     /// <summary>
     /// 数据同步类
     /// </summary>
-    public class DataSynchronBLL : BasicBll
+    public class DataSynchronBll : BasicBll
     {
         #region 函数同步
         /// <summary>
