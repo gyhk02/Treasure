@@ -21,7 +21,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// <param name="fieldTable"></param>
         /// <returns></returns>
         public static string GetCreateModelFileForParentContent(
-               string pTableName, string pProjectName, string pProjectNamespaceByPrefix, string pClassName, DataTable fieldTable)
+               string pTableName, string projectNamespace, string pClassName, DataTable fieldTable)
         {
             string result = "";
 
@@ -32,7 +32,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             {
                 fieldHtml.Append("            public static string "
                     + CamelName.getSmallCamelName(TypeConversion.ToString(row[DataSynchronVO.FieldName])) + " = \""
-                    + TypeConversion.ToString(row[DataSynchronVO.FieldName]) + "\"; ");
+                    + TypeConversion.ToString(row[DataSynchronVO.FieldName]) + "\"; " + ConstantVO.ENTER_R);
             }
 
             #endregion
@@ -40,7 +40,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             #region 内容
 
             result = @"
-namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
+namespace " + projectNamespace + @"
 {
     public partial class " + pClassName + @"Table
     {
@@ -67,14 +67,16 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
         /// <param name="pProjectNamespaceByPrefix"></param>
         /// <param name="pClassName"></param>
         /// <returns></returns>
-        public static string GetCreateModelFileForEditContent(string pProjectName, string pProjectNamespaceByPrefix, string pClassName)
+        public static string GetCreateModelFileForEditContent(string pProjectNamespace, string pClassName)
         {
             string result = "";
 
             #region 内容
 
+            //string pProjectNamespaceByPrefix
+
             result = @"
-namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
+namespace " + pProjectNamespace + @"
 {
     public partial class " + pClassName + @"Table
     {
@@ -93,7 +95,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
         /// </summary>
         /// <returns></returns>
         public static string GetCreateBllFileContent(
-            string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName
+            string pTableName, List<object> lstQueryField, string pProjectNamespace, string pClassName
             , string pSolutionName)
         {
             string result = "";
@@ -132,7 +134,7 @@ using System.Data;
 using System.Data.SqlClient;
 using " + pSolutionName + @".Bll.General;
 
-namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
+namespace " + pProjectNamespace + @"
 {
     public class " + pClassName + @"Bll : BasicBll
     {
@@ -173,7 +175,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
         /// </summary>
         /// <returns></returns>
         public static string GetCreateListFileForDesignerContent(
-            string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName)
+            string pTableName, List<object> lstQueryField, string pProjectNamespace, string pClassName)
         {
             string result = "";
 
@@ -208,7 +210,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @" {
+namespace " + pProjectNamespace + @" {
     
     
     public partial class " + pClassName + @" {
@@ -265,7 +267,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @" {
         /// </summary>
         /// <returns></returns>
         public static string GetCreateListFileForCsContent(
-            string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName)
+            string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespace, string pClassName)
         {
             string result = "";
 
@@ -305,7 +307,7 @@ using Treasure.Model.General;
 using Treasure.Model.ProjectCollection." + pProjectName + @";
 using Treasure.Utility.Utilitys;
 
-namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
+namespace " + pProjectNamespace + @"
 {
     public partial class " + pClassName + @" : System.Web.UI.Page
     {
@@ -452,7 +454,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
         /// </summary>
         /// <returns></returns>
         public static string CreateListFileForAspx(
-            string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName
+            string pTableName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName
             , DataTable pFieldTable)
         {
             string result = "";
@@ -582,7 +584,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
         /// </summary>
         /// <returns></returns>
         public static string GetCreateEditFileForDesignerContent(
-            string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName
+            string pTableName, List<object> lstQueryField, string pProjectNamespace, string pClassName
             , DataTable pFieldTable)
         {
             string result = "";
@@ -628,7 +630,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @" {    
+namespace " + pProjectNamespace + @" {    
     
 
     public partial class " + pClassName + @"Edit {
@@ -869,8 +871,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
         /// </summary>
         /// <returns></returns>
         public static string CreateEditFileForAspx(
-            string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName
-            , DataTable pFieldTable)
+            string pTableName, List<object> lstQueryField, string pProjectNamespace, string pClassName, DataTable pFieldTable)
         {
             string result = "";
 
@@ -912,7 +913,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
             #region 内容
 
             result = @"
-<%@ Page Language=""C#"" AutoEventWireup=""true"" CodeBehind=""" + pClassName + @"Edit.aspx.cs"" Inherits=""" + pProjectNamespaceByPrefix + @"." + pProjectName + @"." + pClassName + @"Edit"" %>
+<%@ Page Language=""C#"" AutoEventWireup=""true"" CodeBehind=""" + pClassName + @"Edit.aspx.cs"" Inherits=""" + pProjectNamespace + @"." + pClassName + @"Edit"" %>
 
 <%@ Register assembly=""DevExpress.Web.v16.1, Version=16.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"" namespace=""DevExpress.Web"" tagprefix=""dx"" %>
 

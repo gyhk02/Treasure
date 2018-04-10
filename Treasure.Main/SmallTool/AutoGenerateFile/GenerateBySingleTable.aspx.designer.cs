@@ -67,31 +67,22 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile {
         protected global::System.Web.UI.WebControls.HiddenField hdnTableName;
         
         /// <summary>
-        /// hdnProjectPathByPrefix 控件。
+        /// hdnProjectRootFolder 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnProjectPathByPrefix;
+        protected global::System.Web.UI.WebControls.HiddenField hdnProjectRootFolder;
         
         /// <summary>
-        /// hdnProjectNamespaceByPrefix 控件。
+        /// hdnRunProjectName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnProjectNamespaceByPrefix;
-        
-        /// <summary>
-        /// hdnProjectFolder 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnProjectFolder;
+        protected global::System.Web.UI.WebControls.HiddenField hdnRunProjectName;
         
         /// <summary>
         /// hdnSolutionPath 控件。

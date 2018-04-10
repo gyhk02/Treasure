@@ -1,18 +1,12 @@
-﻿using DevExpress.Web;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Treasure.Bll.Frame;
 using Treasure.Bll.General;
 using Treasure.Model.Frame;
-using Treasure.Model.General;
 using Treasure.Model.SmallTool.DataSynchron;
 using Treasure.Utility.Utilitys;
 
@@ -36,19 +30,23 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             {
                 //项目存储目录
                 string projectFolder = "ProjectCollection";
-                hdnProjectFolder.Value = projectFolder;
+                hdnProjectRootFolder.Value = projectFolder;
 
-                //目录前缀
-                hdnProjectPathByPrefix.Value = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, projectFolder);
+                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-                //命名空间前缀
-                hdnProjectNamespaceByPrefix.Value = typeof(GenerateBySingleTable).Assembly.GetName().Name + "." + projectFolder;
+                //当前运行的项目名称
+                string tmpStr = baseDirectory;
+                string[] tmpArr = tmpStr.Split(new string[] { "\\" }, StringSplitOptions.None);
+                string runProjectName = tmpArr[tmpArr.Length - 1 - 1];
+                hdnRunProjectName.Value = runProjectName;
+
+                //解决方案路径
+                tmpStr = tmpStr.Replace("\\" + runProjectName + "\\", "");
+                hdnSolutionPath.Value = tmpStr;
 
                 //解决方案名称
-                hdnSolutionName.Value = "";
-
-                //解决方案目录
-                hdnSolutionPath.Value = "";
+                tmpArr = tmpStr.Split(new string[] { "\\" }, StringSplitOptions.None);
+                hdnSolutionName.Value = tmpArr[tmpArr.Length - 1];
 
                 InitTableList();
                 InitProject();
@@ -143,7 +141,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
                 return;
             }
 
-            string projectPath = Path.Combine(hdnProjectPathByPrefix.Value, projectName);
+            string projectPath = hdnSolutionPath.Value + @"\\" + hdnRunProjectName.Value + @"\\" + hdnProjectRootFolder.Value + @"\\" + projectName;
             if (Directory.Exists(projectPath) == false)
             {
                 Directory.CreateDirectory(projectPath);
@@ -151,8 +149,15 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             #endregion
 
+            DataTable fieldTable = Session["FieldTable"] as DataTable;
+            if (fieldTable == null || fieldTable.Rows.Count == 0)
+            {
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('此表没有字段');</script>");
+                return;
+            }
+
             //列表文件
-            string listFileMsg = CreateListFile(tableName, projectName, lstQueryField);
+            string listFileMsg = CreateListFile(tableName, projectName, lstQueryField, fieldTable);
             if (string.IsNullOrEmpty(listFileMsg) == false)
             {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + listFileMsg + "');</script>");
@@ -160,7 +165,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             }
 
             //编辑文件
-            string editFileMsg = CreateEditFile(tableName, projectName, lstQueryField);
+            string editFileMsg = CreateEditFile(tableName, projectName, lstQueryField, fieldTable);
             if (string.IsNullOrEmpty(editFileMsg) == false)
             {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + editFileMsg + "');</script>");
@@ -176,7 +181,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             }
 
             //Model文件
-            string modelFileMsg = CreateModelFile(tableName, projectName);
+            string modelFileMsg = CreateModelFile(tableName, projectName, fieldTable);
             if (string.IsNullOrEmpty(modelFileMsg) == false)
             {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + modelFileMsg + "');</script>");
@@ -195,7 +200,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// 创建Model文件主体
         /// </summary>
         /// <returns></returns>
-        private string CreateModelFile(string pTableName, string pProjectName)
+        private string CreateModelFile(string pTableName, string pProjectName, DataTable pFieldTable)
         {
             string errorMsg = "";
 
@@ -205,7 +210,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
                 return editMsg;
             }
 
-            string parentMsg = CreateModelFileForParent(pTableName, pProjectName);
+            string parentMsg = CreateModelFileForParent(pTableName, pProjectName, pFieldTable);
             if (string.IsNullOrEmpty(parentMsg) == false)
             {
                 return parentMsg;
@@ -226,14 +231,22 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string className = CamelName.getBigCamelName(pTableName);
 
-            string projectNamespaceByPrefix = hdnSolutionName.Value + ".Model." + hdnProjectFolder.Value;
+            string thePath = hdnSolutionPath.Value + @"\\" + hdnSolutionName.Value + ".Model\\" + hdnProjectRootFolder.Value + @"\\" + pProjectName;
+            if (Directory.Exists(thePath) == false)
+            {
+                Directory.CreateDirectory(thePath);
+            }
+            string fileName = thePath + @"\\" + className + "Table.cs";
 
-            string content = GenerateBySingleTableContent.GetCreateModelFileForEditContent(pProjectName, projectNamespaceByPrefix, className);
+            //文件不存在才创建
+            if (File.Exists(fileName) == false)
+            {
+                string projectNamespace = hdnSolutionName.Value + ".Model." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-            string fileName = hdnSolutionPath + @"\\" + hdnSolutionName.Value + "\\Model\\" + hdnProjectFolder.Value + @"\\" + pProjectName
-                + @"\\" + className + "Table.cs";
-            File.AppendAllText(fileName, content, Encoding.UTF8);
+                string content = GenerateBySingleTableContent.GetCreateModelFileForEditContent(projectNamespace, className);
 
+                File.AppendAllText(fileName, content, Encoding.UTF8);
+            }
             return errorMsg;
         }
         #endregion
@@ -243,21 +256,26 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// Model之可Parent
         /// </summary>
         /// <returns></returns>
-        private string CreateModelFileForParent(string pTableName, string pProjectName)
+        private string CreateModelFileForParent(string pTableName, string pProjectName, DataTable pFieldTable)
         {
             string errorMsg = "";
 
             string className = CamelName.getBigCamelName(pTableName);
 
-            string projectNamespaceByPrefix = hdnSolutionName.Value + ".Model." + hdnProjectFolder.Value;
+            string thePath = hdnSolutionPath.Value + @"\\" + hdnSolutionName.Value + ".Model\\"
+                + hdnProjectRootFolder.Value + @"\\" + pProjectName + "\\AutoGenerated";
+            if (Directory.Exists(thePath) == false)
+            {
+                Directory.CreateDirectory(thePath);
+            }
+            string fileName = thePath + @"\\" + className + "ParentTable.cs";
 
-            DataTable fieldTable = grdData.DataSource as DataTable;
+            string projectNamespace = hdnSolutionName.Value + ".Model." + hdnProjectRootFolder.Value + "." + pProjectName;
 
             string content = GenerateBySingleTableContent.GetCreateModelFileForParentContent(
-               pTableName, pProjectName, projectNamespaceByPrefix, className, fieldTable);
+                pTableName, projectNamespace, className, pFieldTable);
 
-            string fileName = hdnSolutionPath + @"\\" + hdnSolutionName.Value + "\\Model\\" + hdnProjectFolder.Value + @"\\" + pProjectName
-              + "\\AutoGenerated\\" + className + "ParentTable.cs";
+            File.Delete(fileName);
             File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
 
             return errorMsg;
@@ -280,15 +298,23 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string className = CamelName.getBigCamelName(pTableName);
 
-            string projectNamespaceByPrefix = hdnSolutionName.Value + ".Bll." + hdnProjectFolder.Value;
+            string filePath = hdnSolutionPath.Value + @"\\" + hdnSolutionName.Value + ".Bll\\" + hdnProjectRootFolder.Value + @"\\" + pProjectName;
+            if (Directory.Exists(filePath) == false)
+            {
+                Directory.CreateDirectory(filePath);
+            }
+            string fileName = filePath + @"\\" + className + "Bll.cs";
 
-            string content = GenerateBySingleTableContent.GetCreateBllFileContent(
-                pTableName, pProjectName, lstQueryField, projectNamespaceByPrefix, className, hdnSolutionName.Value);
+            //文件不存在才创建
+            if (File.Exists(fileName) == false)
+            {
+                string projectNamespace = hdnSolutionName.Value + ".Bll." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-            string fileName = hdnSolutionPath + @"\\" + hdnSolutionName.Value + "\\Bll\\" + hdnProjectFolder.Value + @"\\" + pProjectName
-                + @"\\" + className + "Bll.cs";
-            File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
+                string content = GenerateBySingleTableContent.GetCreateBllFileContent(
+                    pTableName, lstQueryField, projectNamespace, className, hdnSolutionName.Value);
 
+                File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
+            }
             return errorMsg;
         }
         #endregion
@@ -300,7 +326,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// 创建列表文件主体
         /// </summary>
         /// <returns></returns>
-        private string CreateListFile(string pTableName, string pProjectName, List<object> lstQueryField)
+        private string CreateListFile(string pTableName, string pProjectName, List<object> lstQueryField, DataTable pFieldTable)
         {
             string errorMsg = "";
 
@@ -316,7 +342,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
                 return csMsg;
             }
 
-            string aspxMsg = CreateListFileForAspx(pTableName, pProjectName, lstQueryField);
+            string aspxMsg = CreateListFileForAspx(pTableName, pProjectName, lstQueryField, pFieldTable);
             if (string.IsNullOrEmpty(aspxMsg) == false)
             {
                 return aspxMsg;
@@ -337,14 +363,24 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string className = CamelName.getBigCamelName(pTableName);
 
-            string content = GenerateBySingleTableContent.GetCreateListFileForDesignerContent(
-               pTableName, pProjectName, lstQueryField, hdnProjectNamespaceByPrefix.Value, className);
+            string thePath = hdnSolutionPath.Value + @"\\" + hdnRunProjectName.Value + @"\\" + hdnProjectRootFolder.Value + @"\\" + pProjectName;
+            if (Directory.Exists(thePath) == false)
+            {
+                Directory.CreateDirectory(thePath);
+            }
 
-            string fileName = Path.Combine(
-                Path.Combine(hdnProjectPathByPrefix.Value, pProjectName)
-                , className + ".aspx.designer.cs");
-            File.AppendAllText(fileName, content, Encoding.UTF8);
+            string fileName = thePath + @"\\" + className + ".aspx.designer.cs";
 
+            //文件不存在才创建
+            if (File.Exists(fileName) == false)
+            {
+                string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
+
+                string content = GenerateBySingleTableContent.GetCreateListFileForDesignerContent(
+                   pTableName, lstQueryField, projectNamespace, className);
+
+                File.AppendAllText(fileName, content, Encoding.UTF8);
+            }
             return errorMsg;
         }
         #endregion
@@ -360,14 +396,24 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string className = CamelName.getBigCamelName(pTableName);
 
-            string content = GenerateBySingleTableContent.GetCreateListFileForCsContent(
-               pTableName, pProjectName, lstQueryField, hdnProjectNamespaceByPrefix.Value, className);
+            string thePath = hdnSolutionPath.Value + @"\\" + hdnRunProjectName.Value + @"\\" + hdnProjectRootFolder.Value + @"\\" + pProjectName;
+            if (Directory.Exists(thePath) == false)
+            {
+                Directory.CreateDirectory(thePath);
+            }
 
-            string fileName = Path.Combine(
-                Path.Combine(hdnProjectPathByPrefix.Value, pProjectName)
-                , className + ".aspx.cs");
-            File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
+            string fileName = thePath + @"\\" + className + ".aspx.cs";
 
+            //文件不存在才创建
+            if (File.Exists(fileName) == false)
+            {
+                string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
+
+                string content = GenerateBySingleTableContent.GetCreateListFileForCsContent(
+                    pTableName, pProjectName, lstQueryField, projectNamespace, className);
+
+                File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
+            }
             return errorMsg;
         }
         #endregion
@@ -377,23 +423,30 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// 列表之aspx
         /// </summary>
         /// <returns></returns>
-        private string CreateListFileForAspx(string pTableName, string pProjectName, List<object> lstQueryField)
+        private string CreateListFileForAspx(string pTableName, string pProjectName, List<object> lstQueryField, DataTable pFieldTable)
         {
             string errorMsg = "";
 
             string className = CamelName.getBigCamelName(pTableName);
 
-            DataTable fieldTable = grdData.DataSource as DataTable;
+            string thePath = hdnSolutionPath.Value + @"\\" + hdnRunProjectName.Value + @"\\" + hdnProjectRootFolder.Value + @"\\" + pProjectName;
+            if (Directory.Exists(thePath) == false)
+            {
+                Directory.CreateDirectory(thePath);
+            }
 
-            string content = GenerateBySingleTableContent.CreateListFileForAspx(
-                pTableName, pProjectName, lstQueryField, hdnProjectNamespaceByPrefix.Value, className
-                , fieldTable);
+            string fileName = thePath + @"\\" + className + ".aspx";
 
-            string fileName = Path.Combine(
-                Path.Combine(hdnProjectPathByPrefix.Value, pProjectName)
-                , className + ".aspx");
-            File.AppendAllText(fileName, content, Encoding.UTF8);
+            //文件不存在才创建
+            if (File.Exists(fileName) == false)
+            {
+                string projectNamespaceByPrefix = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value;
 
+                string content = GenerateBySingleTableContent.CreateListFileForAspx(
+                    pTableName, lstQueryField, projectNamespaceByPrefix, className, pFieldTable);
+
+                File.AppendAllText(fileName, content, Encoding.UTF8);
+            }
             return errorMsg;
         }
         #endregion
@@ -407,23 +460,23 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// 创建编辑文件主体
         /// </summary>
         /// <returns></returns>
-        private string CreateEditFile(string pTableName, string pProjectName, List<object> lstQueryField)
+        private string CreateEditFile(string pTableName, string pProjectName, List<object> lstQueryField, DataTable pFieldTable)
         {
             string errorMsg = "";
 
-            string designerMsg = CreateEditFileForDesigner(pTableName, pProjectName, lstQueryField);
+            string designerMsg = CreateEditFileForDesigner(pTableName, pProjectName, lstQueryField, pFieldTable);
             if (string.IsNullOrEmpty(designerMsg) == false)
             {
                 return designerMsg;
             }
 
-            string csMsg = CreateEditFileForCs(pTableName, pProjectName, lstQueryField);
+            string csMsg = CreateEditFileForCs(pTableName, pProjectName, lstQueryField, pFieldTable);
             if (string.IsNullOrEmpty(csMsg) == false)
             {
                 return csMsg;
             }
 
-            string aspxMsg = CreateEditFileForAspx(pTableName, pProjectName, lstQueryField);
+            string aspxMsg = CreateEditFileForAspx(pTableName, pProjectName, lstQueryField, pFieldTable);
             if (string.IsNullOrEmpty(aspxMsg) == false)
             {
                 return aspxMsg;
@@ -438,21 +491,30 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// 编辑之设计
         /// </summary>
         /// <returns></returns>
-        private string CreateEditFileForDesigner(string pTableName, string pProjectName, List<object> lstQueryField)
+        private string CreateEditFileForDesigner(string pTableName, string pProjectName, List<object> lstQueryField, DataTable pFieldTable)
         {
             string errorMsg = "";
 
             string className = CamelName.getBigCamelName(pTableName);
 
-            DataTable fieldTable = grdData.DataSource as DataTable;
+            string thePath = hdnSolutionPath.Value + @"\\" + hdnRunProjectName.Value + @"\\" + hdnProjectRootFolder.Value + @"\\" + pProjectName;
+            if (Directory.Exists(thePath) == false)
+            {
+                Directory.CreateDirectory(thePath);
+            }
 
-            string content = GenerateBySingleTableContent.GetCreateEditFileForDesignerContent(
-               pTableName, pProjectName, lstQueryField, hdnProjectNamespaceByPrefix.Value, className, fieldTable);
+            string fileName = thePath + @"\\" + className + "Edit.aspx.designer.cs";
 
-            string fileName = Path.Combine(
-                Path.Combine(hdnProjectPathByPrefix.Value, pProjectName)
-                , className + "Edit.aspx.designer.cs");
-            File.AppendAllText(fileName, content, Encoding.UTF8);
+            //文件不存在才创建
+            if (File.Exists(fileName) == false)
+            {
+                string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
+
+                string content = GenerateBySingleTableContent.GetCreateEditFileForDesignerContent(
+                   pTableName, lstQueryField, projectNamespace, className, pFieldTable);
+
+                File.AppendAllText(fileName, content, Encoding.UTF8);
+            }
 
             return errorMsg;
         }
@@ -463,22 +525,31 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// 编辑之cs
         /// </summary>
         /// <returns></returns>
-        private string CreateEditFileForCs(string pTableName, string pProjectName, List<object> lstQueryField)
+        private string CreateEditFileForCs(string pTableName, string pProjectName, List<object> lstQueryField, DataTable pFieldTable)
         {
             string errorMsg = "";
 
             string className = CamelName.getBigCamelName(pTableName);
 
-            DataTable fieldTable = grdData.DataSource as DataTable;
+            string thePath = hdnSolutionPath.Value + @"\\" + hdnRunProjectName.Value + @"\\" + hdnProjectRootFolder.Value + @"\\" + pProjectName;
+            if (Directory.Exists(thePath) == false)
+            {
+                Directory.CreateDirectory(thePath);
+            }
 
-            string content = GenerateBySingleTableContent.GetCreateEditFileForCsContent(
-               pTableName, pProjectName, lstQueryField, hdnProjectNamespaceByPrefix.Value, className, fieldTable);
+            string fileName = thePath + @"\\" + className + "Edit.aspx.cs";
 
-            string fileName = Path.Combine(
-                Path.Combine(hdnProjectPathByPrefix.Value, pProjectName)
-                , className + "Edit.aspx.cs");
-            File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
+            //文件不存在才创建
+            if (File.Exists(fileName) == false)
+            {
 
+                string projectNamespaceByPrefix = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value;
+
+                string content = GenerateBySingleTableContent.GetCreateEditFileForCsContent(
+                   pTableName, pProjectName, lstQueryField, projectNamespaceByPrefix, className, pFieldTable);
+
+                File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
+            }
             return errorMsg;
         }
         #endregion
@@ -488,23 +559,30 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// 编辑之aspx
         /// </summary>
         /// <returns></returns>
-        private string CreateEditFileForAspx(string pTableName, string pProjectName, List<object> lstQueryField)
+        private string CreateEditFileForAspx(string pTableName, string pProjectName, List<object> lstQueryField, DataTable pFieldTable)
         {
             string errorMsg = "";
 
             string className = CamelName.getBigCamelName(pTableName);
 
-            DataTable fieldTable = grdData.DataSource as DataTable;
+            string thePath = hdnSolutionPath.Value + @"\\" + hdnRunProjectName.Value + @"\\" + hdnProjectRootFolder.Value + @"\\" + pProjectName;
+            if (Directory.Exists(thePath) == false)
+            {
+                Directory.CreateDirectory(thePath);
+            }
 
-            string content = GenerateBySingleTableContent.CreateEditFileForAspx(
-                pTableName, pProjectName, lstQueryField, hdnProjectNamespaceByPrefix.Value, className
-                , fieldTable);
+            string fileName = thePath + @"\\" + className + ".aspx";
 
-            string fileName = Path.Combine(
-                Path.Combine(hdnProjectPathByPrefix.Value, pProjectName)
-                , className + ".aspx");
-            File.AppendAllText(fileName, content, Encoding.UTF8);
+            //文件不存在才创建
+            if (File.Exists(fileName) == false)
+            {
+                string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
 
+                string content = GenerateBySingleTableContent.CreateEditFileForAspx(
+                    pTableName, lstQueryField, projectNamespace, className, pFieldTable);
+
+                File.AppendAllText(fileName, content, Encoding.UTF8);
+            }
             return errorMsg;
         }
         #endregion
@@ -535,6 +613,9 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
                     }
                 }
             }
+
+            Session["FieldTable"] = dt;
+
             grdData.DataSource = dt;
             grdData.DataBind();
         }

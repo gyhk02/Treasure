@@ -91,11 +91,10 @@
             </div>
             <div style="float:left;">
                 <asp:HiddenField ID="hdnTableName" runat="server" />
-                <asp:HiddenField ID="hdnProjectPathByPrefix" runat="server" />
-                <asp:HiddenField ID="hdnProjectNamespaceByPrefix" runat="server" />
-                <asp:HiddenField ID="hdnProjectFolder" runat="server" />
+                <asp:HiddenField ID="hdnProjectRootFolder" runat="server" />
+                <asp:HiddenField ID="hdnRunProjectName" runat="server" />                
                 <asp:HiddenField ID="hdnSolutionPath" runat="server" />
-                <asp:HiddenField ID="hdnSolutionName" runat="server" />
+                <asp:HiddenField ID="hdnSolutionName" runat="server" />                
             </div>
         </div>
 
