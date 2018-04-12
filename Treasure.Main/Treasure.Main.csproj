@@ -108,7 +108,6 @@
     <Content Include="SmallTool\EncryptAndDecrypt\Encrypt_Decrypt.aspx" />
     <Content Include="SmallTool\evq\MianSynchron.aspx" />
     <Content Include="SmallTool\ToTableClass\ToTableClass.aspx" />
-    <Content Include="Test\Test.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -184,7 +183,6 @@
     <Compile Include="ProjectCollection\FirstProject\SysMenuItemTypeEdit.aspx.designer.cs">
       <DependentUpon>SysMenuItemTypeEdit.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ProjectCollection\SecondProject\Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmallTool\AutoGenerateFile\GenerateBySingleTable.aspx.cs">
       <DependentUpon>GenerateBySingleTable.aspx</DependentUpon>
@@ -234,13 +232,6 @@
     <Compile Include="SmallTool\ToTableClass\ToTableClass.aspx.designer.cs">
       <DependentUpon>ToTableClass.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Test\Test.aspx.cs">
-      <DependentUpon>Test.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Test\Test.aspx.designer.cs">
-      <DependentUpon>Test.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Treasure.BLL\Treasure.Bll.csproj">
@@ -258,6 +249,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Document\DataSynchronSql\" />
+    <Folder Include="Test\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

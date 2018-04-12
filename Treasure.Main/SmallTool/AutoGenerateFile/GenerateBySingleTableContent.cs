@@ -116,9 +116,9 @@ namespace " + pProjectNamespace + @"
                 switch (fieldType)
                 {
                     case "nvarchar":
-                        whereHtml.Append(" AND " + fieldName + " LIKE '%' + " + fieldName + " + '%'");
+                        whereHtml.Append(" AND " + fieldName + " LIKE '%' + @" + fieldName + " + '%'");
                         paraHtml.Append("            lstPara.Add("
-                            + "new SqlParameter(\"" + fieldName + "\", SqlDbType.NVarChar) { Value = dicPara[\"" + fieldName + "\"] });"
+                            + "new SqlParameter(@\"" + fieldName + "\", SqlDbType.NVarChar) { Value = dicPara[\"" + fieldName + "\"] });"
                             + ConstantVO.ENTER_R);
                         break;
                 }
@@ -267,9 +267,56 @@ namespace " + pProjectNamespace + @" {
         /// </summary>
         /// <returns></returns>
         public static string GetCreateListFileForCsContent(
-            string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespace, string pClassName)
+            string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespace
+            , string pClassName, string pSolutionName, bool pIsReport)
         {
             string result = "";
+
+            #region PageLoad的HTML
+
+            string PageLoadHtml = "";
+            if (pIsReport == true)
+            {
+                PageLoadHtml = @"
+                if (Request[""btnExportExcel""] == ""导出Excel"")
+                {
+                    ExportExcel();
+                    return;
+                }";
+            }
+
+            #endregion
+
+            #region ExportExcel的Html
+
+            string ExportExcelHtml = "";
+
+            if (pIsReport == true)
+            {
+                ExportExcelHtml = @"
+
+        #region 导出Excel
+        /// <summary>
+        /// 导出Excel
+        /// </summary>
+        private void ExportExcel()
+        {
+            InitData();
+
+            DataTable dt = grdData.DataSource as DataTable;
+            if (dt.Rows.Count == 0)
+            {
+                ClientScriptManager clientScript = Page.ClientScript;
+                clientScript.RegisterStartupScript(this.GetType(), """", ""<script type=text/javascript>alert('没有数据');</script>"");
+                return;
+            }
+
+            ASPxGridViewExporter1.WriteXlsToResponse();
+        }
+        #endregion";
+            }
+
+            #endregion
 
             #region InitData方法中的HTML
 
@@ -284,7 +331,7 @@ namespace " + pProjectNamespace + @" {
                 {
                     case "nvarchar":
                         InitDataQueryHtml.Append("            string " + CamelName.getSmallCamelName(fieldName)
-                            + " = txtN" + CamelName.getBigCamelName(fieldName) + ".Text.Trim();"
+                            + " = txt" + CamelName.getBigCamelName(fieldName) + ".Text.Trim();"
                             + ConstantVO.ENTER_R);
                         InitDataQueryHtml.Append("            dicPara.Add(\"" + fieldName + "\", " + CamelName.getSmallCamelName(fieldName) + ");"
                             + ConstantVO.ENTER_R);
@@ -302,10 +349,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web.UI;
-using Treasure.BLL.ProjectCollection." + pProjectName + @";
-using Treasure.Model.General;
-using Treasure.Model.ProjectCollection." + pProjectName + @";
-using Treasure.Utility.Utilitys;
+using " + pSolutionName + @".Bll.ProjectCollection." + pProjectName + @";
+using " + pSolutionName + @".Model.General;
+using " + pSolutionName + @".Model.ProjectCollection." + pProjectName + @";
+using " + pSolutionName + @".Utility.Utilitys;
 
 namespace " + pProjectNamespace + @"
 {
@@ -333,11 +380,7 @@ namespace " + pProjectNamespace + @"
                     Add();
                     return;
                 }
-                if (Request[""btnExportExcel""] == ""导出Excel"")
-                {
-                    ExportExcel();
-                    return;
-                }
+" + PageLoadHtml + @"
                 if (Request[""__CALLBACKID""] == ""grdData"")
                 {
                     InitData();
@@ -353,26 +396,7 @@ namespace " + pProjectNamespace + @"
         #endregion
 
         #region 自定义事件
-
-        #region 导出Excel
-        /// <summary>
-        /// 导出Excel
-        /// </summary>
-        private void ExportExcel()
-        {
-            InitData();
-
-            DataTable dt = grdData.DataSource as DataTable;
-            if (dt.Rows.Count == 0)
-            {
-                ClientScriptManager clientScript = Page.ClientScript;
-                clientScript.RegisterStartupScript(this.GetType(), """", ""<script type=text/javascript>alert('没有数据');</script>"");
-                return;
-            }
-
-            ASPxGridViewExporter1.WriteXlsToResponse();
-        }
-        #endregion
+" + ExportExcelHtml + @"
 
         #region 查询
         /// <summary>
@@ -455,9 +479,15 @@ namespace " + pProjectNamespace + @"
         /// <returns></returns>
         public static string CreateListFileForAspx(
             string pTableName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName
-            , DataTable pFieldTable)
+            , DataTable pFieldTable, bool pIsReport)
         {
             string result = "";
+
+            string strReport = "";
+            if (pIsReport == true)
+            {
+                strReport = "                    <td><input id=\"btnExportExcel\" name=\"btnExportExcel\" type=\"submit\" value=\"导出Excel\" /></td>";
+            }
 
             #region 查询HTML
 
@@ -484,8 +514,8 @@ namespace " + pProjectNamespace + @"
             }
 
             queryHtml.Append("                    <td>" + ConstantVO.ENTER_R);
-            queryHtml.Append("                        < input id = \"btnQuery\" name = \"btnQuery\" type = \"submit\" value = \"查询\" /></ td > " + ConstantVO.ENTER_R);
-            queryHtml.Append("                    < td > &nbsp; &nbsp; &nbsp;</ td > " + ConstantVO.ENTER_R);
+            queryHtml.Append("                        <input id = \"btnQuery\" name = \"btnQuery\" type = \"submit\" value = \"查询\" /></td> " + ConstantVO.ENTER_R);
+            queryHtml.Append("                    <td> &nbsp; &nbsp; &nbsp;</td> " + ConstantVO.ENTER_R);
 
             #endregion
 
@@ -542,7 +572,7 @@ namespace " + pProjectNamespace + @"
                 <tr>
 " + queryHtml.ToString() + @"
                     <td><input id=""btnAdd"" name=""btnAdd"" type=""submit"" value=""新增"" /></td>
-                    <td><input id=""btnExportExcel"" name=""btnExportExcel"" type=""submit"" value=""导出Excel"" /></td>
+" + strReport + @"
                     <td>&nbsp;</td>
                 </tr>
             </table>
@@ -670,7 +700,7 @@ namespace " + pProjectNamespace + @" {
         /// <returns></returns>
         public static string GetCreateEditFileForCsContent(
             string pTableName, string pProjectName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName
-            , DataTable pFieldTable)
+            , DataTable pFieldTable, string pSolutionName)
         {
             string result = "";
 
@@ -722,9 +752,9 @@ namespace " + pProjectNamespace + @" {
 using System;
 using System.Data;
 using System.Web.UI;
-using Treasure.BLL.ProjectCollection." + pProjectName + @";
-using Treasure.Model.ProjectCollection." + pProjectName + @";
-using Treasure.Utility.Utilitys;
+using " + pSolutionName + @".Bll.ProjectCollection." + pProjectName + @";
+using " + pSolutionName + @".Model.ProjectCollection." + pProjectName + @";
+using " + pSolutionName + @".Utility.Utilitys;
 
 namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
 {
@@ -827,8 +857,8 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
             row[" + pClassName + @"Table.Fields.id] = Guid.NewGuid().ToString().Replace(""-"", """");
 " + AddHtml.ToString() + @"
 
-            row[SysMenuItemTypeTable.Fields.createDatetime] = today;
-            row[SysMenuItemTypeTable.Fields.modifyDatetime] = today;
+            row[" + pClassName + @"Table.Fields.createDatetime] = today;
+            row[" + pClassName + @"Table.Fields.modifyDatetime] = today;
 
             bll.AddDataRow(row);
 
@@ -845,8 +875,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
             DataRow row = bll.GetDataRowById(" + pClassName + @"Table.tableName, hdnID.Value);
 
 " + EditHtml.ToString() + @"
-
-            row[SysMenuItemTypeTable.Fields.modifyDatetime] = today;
+            row[" + pClassName + @"Table.Fields.modifyDatetime] = today;
 
             bll.UpdateDataRow(row);
 
