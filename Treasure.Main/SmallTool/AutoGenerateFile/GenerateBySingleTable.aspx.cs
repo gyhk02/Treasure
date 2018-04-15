@@ -88,9 +88,6 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         #endregion
 
         #region 按钮
-        #endregion
-
-        #region 自定义事件
 
         #region 查询
         /// <summary>
@@ -304,16 +301,14 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             }
             string fileName = filePath + @"\\" + className + "Bll.cs";
 
-            //文件不存在才创建
-            if (File.Exists(fileName) == false)
-            {
-                string projectNamespace = hdnSolutionName.Value + ".Bll." + hdnProjectRootFolder.Value + "." + pProjectName;
+            string projectNamespace = hdnSolutionName.Value + ".Bll." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-                string content = GenerateBySingleTableContent.GetCreateBllFileContent(
-                    pTableName, lstQueryField, projectNamespace, className, hdnSolutionName.Value);
+            string content = GenerateBySingleTableContent.GetCreateBllFileContent(
+                pTableName, lstQueryField, projectNamespace, className, hdnSolutionName.Value);
 
-                File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
-            }
+            File.Delete(fileName);
+            File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
+
             return errorMsg;
         }
         #endregion
@@ -370,16 +365,14 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string fileName = thePath + @"\\" + className + ".aspx.designer.cs";
 
-            //文件不存在才创建
-            if (File.Exists(fileName) == false)
-            {
-                string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
+            string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-                string content = GenerateBySingleTableContent.GetCreateListFileForDesignerContent(
-                   pTableName, lstQueryField, projectNamespace, className);
+            string content = GenerateBySingleTableContent.GetCreateListFileForDesignerContent(
+               pTableName, lstQueryField, projectNamespace, className);
 
-                File.AppendAllText(fileName, content, Encoding.UTF8);
-            }
+            File.Delete(fileName);
+            File.AppendAllText(fileName, content, Encoding.UTF8);
+
             return errorMsg;
         }
         #endregion
@@ -403,20 +396,18 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string fileName = thePath + @"\\" + className + ".aspx.cs";
 
-            //文件不存在才创建
-            if (File.Exists(fileName) == false)
-            {
-                string solutionName = hdnSolutionName.Value;
+            string solutionName = hdnSolutionName.Value;
 
-                string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
+            string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-                bool IsReport = chkReportExcel.Checked;
+            bool IsReport = chkReportExcel.Checked;
 
-                string content = GenerateBySingleTableContent.GetCreateListFileForCsContent(
-                    pTableName, pProjectName, lstQueryField, projectNamespace, className, solutionName, IsReport);
+            string content = GenerateBySingleTableContent.GetCreateListFileForCsContent(
+                pTableName, pProjectName, lstQueryField, projectNamespace, className, solutionName, IsReport);
 
-                File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
-            }
+            File.Delete(fileName);
+            File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
+
             return errorMsg;
         }
         #endregion
@@ -440,18 +431,16 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string fileName = thePath + @"\\" + className + ".aspx";
 
-            //文件不存在才创建
-            if (File.Exists(fileName) == false)
-            {
-                string projectNamespaceByPrefix = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
+            string projectNamespaceByPrefix = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-                bool IsReport = chkReportExcel.Checked;
+            bool IsReport = chkReportExcel.Checked;
 
-                string content = GenerateBySingleTableContent.CreateListFileForAspx(
-                    pTableName, lstQueryField, projectNamespaceByPrefix, className, pFieldTable, IsReport);
+            string content = GenerateBySingleTableContent.CreateListFileForAspx(
+                pTableName, lstQueryField, projectNamespaceByPrefix, className, pFieldTable, IsReport);
 
-                File.AppendAllText(fileName, content, Encoding.UTF8);
-            }
+            File.Delete(fileName);
+            File.AppendAllText(fileName, content, Encoding.UTF8);
+
             return errorMsg;
         }
         #endregion
@@ -510,16 +499,13 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string fileName = thePath + @"\\" + className + "Edit.aspx.designer.cs";
 
-            //文件不存在才创建
-            if (File.Exists(fileName) == false)
-            {
-                string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
+            string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-                string content = GenerateBySingleTableContent.GetCreateEditFileForDesignerContent(
-                   pTableName, lstQueryField, projectNamespace, className, pFieldTable);
+            string content = GenerateBySingleTableContent.GetCreateEditFileForDesignerContent(
+               pTableName, lstQueryField, projectNamespace, className, pFieldTable);
 
-                File.AppendAllText(fileName, content, Encoding.UTF8);
-            }
+            File.Delete(fileName);
+            File.AppendAllText(fileName, content, Encoding.UTF8);
 
             return errorMsg;
         }
@@ -544,19 +530,16 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string fileName = thePath + @"\\" + className + "Edit.aspx.cs";
 
-            //文件不存在才创建
-            if (File.Exists(fileName) == false)
-            {
+            string projectNamespaceByPrefix = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value;
 
-                string projectNamespaceByPrefix = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value;
+            string solutionName = hdnSolutionName.Value;
 
-                string solutionName = hdnSolutionName.Value;
+            string content = GenerateBySingleTableContent.GetCreateEditFileForCsContent(
+               pTableName, pProjectName, lstQueryField, projectNamespaceByPrefix, className, pFieldTable, solutionName);
 
-                string content = GenerateBySingleTableContent.GetCreateEditFileForCsContent(
-                   pTableName, pProjectName, lstQueryField, projectNamespaceByPrefix, className, pFieldTable, solutionName);
+            File.Delete(fileName);
+            File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
 
-                File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
-            }
             return errorMsg;
         }
         #endregion
@@ -580,16 +563,14 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string fileName = thePath + @"\\" + className + "Edit.aspx";
 
-            //文件不存在才创建
-            if (File.Exists(fileName) == false)
-            {
-                string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
+            string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-                string content = GenerateBySingleTableContent.CreateEditFileForAspx(
-                    pTableName, lstQueryField, projectNamespace, className, pFieldTable);
+            string content = GenerateBySingleTableContent.CreateEditFileForAspx(
+                pTableName, lstQueryField, projectNamespace, className, pFieldTable);
 
-                File.AppendAllText(fileName, content, Encoding.UTF8);
-            }
+            File.Delete(fileName);
+            File.AppendAllText(fileName, content, Encoding.UTF8);
+
             return errorMsg;
         }
         #endregion
@@ -597,6 +578,10 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         #endregion
 
         #endregion
+
+        #endregion
+
+        #region 自定义事件
 
         #region 初始化
         /// <summary>
@@ -609,12 +594,12 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             DataTable dt = null;
             if (string.IsNullOrEmpty(tableName) == false)
             {
-                string colIsForeign = "IsForeign";
+                string colIsForeign = "IsForeignStr";
                 dt = bllDataBase.GetTableInfoByName(1, tableName);
                 dt.Columns.Add(colIsForeign);
                 foreach (DataRow row in dt.Rows)
                 {
-                    if (TypeConversion.ToBool(row["isForeign"]) == true)
+                    if (TypeConversion.ToBool(row["IsForeign"]) == true)
                     {
                         row[colIsForeign] = "√";
                     }

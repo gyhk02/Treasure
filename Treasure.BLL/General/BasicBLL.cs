@@ -10,6 +10,31 @@ namespace Treasure.Bll.General
     public class BasicBll
     {
 
+        #region 执行SQL
+
+        /// <summary>
+        /// 执行sql
+        /// </summary>
+        /// <param name="pCommandType"></param>
+        /// <param name="pSQL"></param>
+        /// <param name="paras"></param>
+        /// <returns></returns>
+        public int ExecuteNonQuery(CommandType pCommandType, string pSQL, SqlParameter[] paras)
+        {
+            return ExecuteNonQuery(null, pCommandType, pSQL, paras);
+        }
+
+        public int ExecuteNonQuery(string pConnection, CommandType pCommandType, string pSQL, SqlParameter[] paras)
+        {
+            if (string.IsNullOrEmpty(pConnection) == true)
+            {
+                pConnection = SqlHelper.ConnString;
+            }
+            return SqlHelper.ExecuteNonQuery(pConnection, pCommandType, pSQL, paras);
+        }
+
+        #endregion
+
         #region 获取
 
         #region 根据表名获取表的全部数据

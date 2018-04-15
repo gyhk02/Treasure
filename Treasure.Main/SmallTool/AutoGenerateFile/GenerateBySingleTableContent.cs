@@ -10,6 +10,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 {
     public static class GenerateBySingleTableContent
     {
+
         #region Model之Parent
         /// <summary>
         /// Model之Parent
@@ -30,7 +31,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             StringBuilder fieldHtml = new StringBuilder();
             foreach (DataRow row in fieldTable.Rows)
             {
-                fieldHtml.Append("            public static string "
+                fieldHtml.Append("            public readonly static string "
                     + CamelName.getSmallCamelName(TypeConversion.ToString(row[DataSynchronVO.FieldName])) + " = \""
                     + TypeConversion.ToString(row[DataSynchronVO.FieldName]) + "\"; " + ConstantVO.ENTER_R);
             }
@@ -44,7 +45,7 @@ namespace " + projectNamespace + @"
 {
     public partial class " + pClassName + @"Table
     {
-        public static string tableName = """ + pTableName + @"""; 
+        public readonly static string tableName = """ + pTableName + @"""; 
 
         public static class Fields
         {
@@ -187,14 +188,11 @@ namespace " + pProjectNamespace + @"
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
 
-                switch (fieldType)
-                {
-                    case "nvarchar":
-                        queryHtml.Append("        protected global::DevExpress.Web.ASPxTextBox txt" + CamelName.getBigCamelName(fieldName)
-                            + ";"
-                            + ConstantVO.ENTER_R);
-                        break;
-                }
+                Dictionary<string, string> pDic = new Dictionary<string, string>();
+                pDic.Add("FieldName", fieldName);
+                queryHtml.Append("        "
+                    + GenerateForDataType.GetString(fieldType, "GetCreateListFileForDesignerContent", pDic) 
+                    + ConstantVO.ENTER_R);
             }
             #endregion
 
@@ -294,7 +292,6 @@ namespace " + pProjectNamespace + @" {
             if (pIsReport == true)
             {
                 ExportExcelHtml = @"
-
         #region 导出Excel
         /// <summary>
         /// 导出Excel
@@ -327,16 +324,12 @@ namespace " + pProjectNamespace + @" {
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
 
-                switch (fieldType)
-                {
-                    case "nvarchar":
-                        InitDataQueryHtml.Append("            string " + CamelName.getSmallCamelName(fieldName)
-                            + " = txt" + CamelName.getBigCamelName(fieldName) + ".Text.Trim();"
-                            + ConstantVO.ENTER_R);
-                        InitDataQueryHtml.Append("            dicPara.Add(\"" + fieldName + "\", " + CamelName.getSmallCamelName(fieldName) + ");"
-                            + ConstantVO.ENTER_R);
-                        break;
-                }
+                Dictionary<string, string> pDic = new Dictionary<string, string>();
+                pDic.Add("FieldName", fieldName);
+
+                InitDataQueryHtml.Append("            "
+                    + GenerateForDataType.GetString(fieldType, "GetCreateListFileForCsContent", pDic)
+                    + ConstantVO.ENTER_R);                
             }
 
             #endregion
@@ -395,7 +388,8 @@ namespace " + pProjectNamespace + @"
         }
         #endregion
 
-        #region 自定义事件
+        #region 按钮
+
 " + ExportExcelHtml + @"
 
         #region 查询
@@ -416,24 +410,6 @@ namespace " + pProjectNamespace + @"
         {
             Response.Redirect(""" + pClassName + @"Edit.aspx"");
         }
-        #endregion
-
-        #region 初始化列表
-        /// <summary>
-        /// 初始化列表
-        /// </summary>
-        private void InitData()
-        {
-            Dictionary<string, object> dicPara = new Dictionary<string, object>();
-
-" + InitDataQueryHtml.ToString() + @"
-
-            DataTable dt = bll.Query(dicPara);
-            grdData.DataSource = dt;
-            grdData.DataBind();
-        }
-        #endregion
-
         #endregion
 
         #region 删除
@@ -460,9 +436,28 @@ namespace " + pProjectNamespace + @"
 
             InitData();
         }
+        #endregion
 
         #endregion
 
+        #region 自定义事件
+
+        #region 初始化列表
+        /// <summary>
+        /// 初始化列表
+        /// </summary>
+        private void InitData()
+        {
+            Dictionary<string, object> dicPara = new Dictionary<string, object>();
+
+" + InitDataQueryHtml.ToString() + @"
+            DataTable dt = bll.Query(dicPara);
+            grdData.DataSource = dt;
+            grdData.DataBind();
+        }
+        #endregion
+
+        #endregion
     }
 }";
 
@@ -502,13 +497,11 @@ namespace " + pProjectNamespace + @"
                 queryHtml.Append("                    <td>" + fieldDescription + "</td>" + ConstantVO.ENTER_R);
                 queryHtml.Append("                    <td>" + ConstantVO.ENTER_R);
 
-                switch (fieldType)
-                {
-                    case "nvarchar":
-                        queryHtml.Append("                        <dx:ASPxTextBox ID=\"txt" + CamelName.getBigCamelName(fieldName) + "\" runat=\"server\" Width=\"170px\">" + ConstantVO.ENTER_R);
-                        queryHtml.Append("                        </dx:ASPxTextBox>" + ConstantVO.ENTER_R);
-                        break;
-                }
+                Dictionary<string, string> pDic = new Dictionary<string, string>();
+                pDic.Add("FieldName", fieldName);
+                queryHtml.Append("                        "
+                    + GenerateForDataType.GetString(fieldType, "CreateListFileForAspx_Query", pDic)
+                    + ConstantVO.ENTER_R);
 
                 queryHtml.Append("                    </td>" + ConstantVO.ENTER_R);
             }
@@ -537,16 +530,14 @@ namespace " + pProjectNamespace + @"
                     continue;
                 }
 
-                switch (TypeConversion.ToString(row[DataSynchronVO.FieldType]))
-                {
-                    case "nvarchar":
-                        gridColumnsHtml.Append("<dx:GridViewDataTextColumn Caption=\"" + TypeConversion.ToString(row[DataSynchronVO.FieldDescription])
-                            + "\" FieldName=\"" + fieldName
-                            + "\" Name=\"col" + fieldName
-                            + "\" VisibleIndex=\"" + idx.ToString() + "\">");
-                        gridColumnsHtml.Append("</dx:GridViewDataTextColumn>");
-                        break;
-                }
+                Dictionary<string, string> pDic = new Dictionary<string, string>();
+                pDic.Add("Caption", TypeConversion.ToString(row[DataSynchronVO.FieldDescription]));
+                pDic.Add("FieldName", fieldName);
+                pDic.Add("Idx", idx.ToString());
+                gridColumnsHtml.Append("                    "
+                    + GenerateForDataType.GetString(TypeConversion.ToString(row[DataSynchronVO.FieldType]), "CreateListFileForAspx_Grid", pDic)
+                    + ConstantVO.ENTER_R
+                    );
             }
 
             #endregion

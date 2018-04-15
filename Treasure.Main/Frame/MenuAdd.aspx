@@ -74,7 +74,7 @@
                 </tr>
             </table>
         </div>
-        <asp:HiddenField ID="hdnId" runat="server" />
+        <asp:HiddenField ID="hdnMenuId" runat="server" />
     </form>
 </body>
 </html>

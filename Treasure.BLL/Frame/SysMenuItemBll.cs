@@ -11,6 +11,76 @@ namespace Treasure.Bll.Frame
     public class SysMenuItemBll : BasicBll
     {
 
+        #region 删除菜单
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="pNO"></param>
+        /// <param name="typeId"></param>
+        /// <returns></returns>
+        public bool DeleteMenu(string pNO, string typeId)
+        {
+            bool result = false;
+
+            try
+            {
+                string sql = @"
+DELETE FROM A
+FROM SYS_MENU_ITEM A 
+WHERE NO LIKE LEFT(@NO, CONVERT(INT, @TYPE_ID) * 2 ) + '%'";
+
+                List<SqlParameter> lstPara = new List<SqlParameter>();
+                lstPara.Add(new SqlParameter("@NO", pNO));
+                lstPara.Add(new SqlParameter("@TYPE_ID", typeId));
+
+                base.ExecuteNonQuery(CommandType.Text, sql, lstPara.ToArray());
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region 修改子节点编号
+        /// <summary>
+        /// 修改子节点编号
+        /// </summary>
+        /// <param name="pOldNo">旧编号</param>
+        /// <param name="pNewNo">新编号</param>
+        /// <param name="pTypeId">菜单类型</param>
+        /// <returns></returns>
+        public bool UpdateChildNo(string pOldNo, string pNewNo, string pTypeId)
+        {
+            bool result = false;
+
+            try
+            {
+                string sql = @"
+UPDATE A SET A.NO = LEFT(@NEW_NO, CONVERT(INT, @TYPE_ID) * 2) + RIGHT(A.NO, (4 - CONVERT(INT, @TYPE_ID)) * 2)
+FROM SYS_MENU_ITEM A 
+WHERE NO LIKE LEFT(@OLD_NO, CONVERT(INT, @TYPE_ID) * 2 ) + '%'";
+
+                List<SqlParameter> lstPara = new List<SqlParameter>();
+                lstPara.Add(new SqlParameter("@OLD_NO", pOldNo));
+                lstPara.Add(new SqlParameter("@NEW_NO", pNewNo));
+                lstPara.Add(new SqlParameter("@TYPE_ID", pTypeId));
+
+                base.ExecuteNonQuery(CommandType.Text, sql, lstPara.ToArray());
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 获取非系统的项目
         /// <summary>
         /// 获取非系统的项目

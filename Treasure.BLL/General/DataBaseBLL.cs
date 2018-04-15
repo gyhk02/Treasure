@@ -291,7 +291,7 @@ order by o.name
 select distinct o.object_id " + GeneralVO.id + ", o.name " + DataSynchronVO.TableName + @", ep.value " + DataSynchronVO.TableDescription + @"
 from sys.objects o
 left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
-where o.type = 'U' " + condition;
+where o.name <> 'sysdiagrams' and o.type = 'U' " + condition;
 
             result = SqlHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
 

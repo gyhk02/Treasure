@@ -34,14 +34,17 @@ namespace Treasure.Main.Frame
                 if (Request["btnAdd"] == "新增")
                 {
                     Add();
+                    return;
                 }
                 if (Request["btnEdit"] == "修改")
                 {
                     Edit();
+                    return;
                 }
                 if (Request["btnBack"] == "返回")
                 {
                     Back();
+                    return;
                 }
             }
 
@@ -68,11 +71,11 @@ namespace Treasure.Main.Frame
                 DropDownListExtend.BindToShowName(ddlIsSys, dtYesOrNot, false);
 
                 //接收参数
-                hdnId.Value = Request["ID"];
+                hdnMenuId.Value = Request["ID"];
 
                 //显示隐藏新增或修改按钮
                 ClientScriptManager clientScript = Page.ClientScript;
-                if (hdnId.Value != null && string.IsNullOrEmpty(hdnId.Value) == false)
+                if (hdnMenuId.Value != null && string.IsNullOrEmpty(hdnMenuId.Value) == false)
                 {
                     clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>ShowAddOrEdit('btnEdit');</script>");
                 }
@@ -98,7 +101,7 @@ namespace Treasure.Main.Frame
         /// </summary>
         private void InitData()
         {
-            string id = hdnId.Value;
+            string id = hdnMenuId.Value;
 
             if (string.IsNullOrEmpty(id) == false)
             {
@@ -146,7 +149,7 @@ namespace Treasure.Main.Frame
                 if (parentSysMenuItemTypeId == 4)
                 {
                     ClientScriptManager clientScript = Page.ClientScript;
-                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('父节点已经是按钮，不能在下面添加子节点');</script>");
+                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>ShowAddOrEdit('btnAdd');alert('父节点已经是按钮，不能在下面添加子节点');</script>");
                     return;
                 }
                 sysMenuItemTypeId = (parentSysMenuItemTypeId + 1).ToString();
@@ -180,24 +183,54 @@ namespace Treasure.Main.Frame
         /// </summary>
         private void Edit()
         {
-            DataRow row = bll.GetDataRowById(SysMenuItemTable.tableName, hdnId.Value);
+            ClientScriptManager clientScript = Page.ClientScript;
+
+            DataRow row = bll.GetDataRowById(SysMenuItemTable.tableName, hdnMenuId.Value);
 
             string parentId = ddlParentId.SelectedValue;
             string sysMenuItemTypeId = "1";
+
             if (string.IsNullOrEmpty(parentId) == false)
             {
                 DataRow rowParent = bll.GetDataRowById(SysMenuItemTable.tableName, parentId);
+
+                //只能平级修改
+                if (TypeConversion.ToInt(row[SysMenuItemTable.Fields.sysMenuItemTypeId])
+                    != TypeConversion.ToInt(rowParent[SysMenuItemTable.Fields.sysMenuItemTypeId]) + 1)
+                {
+                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>ShowAddOrEdit('btnEdit');alert('修改时，只能平级调动。');</script>");
+                    return;
+                }
+
                 int parentSysMenuItemTypeId = TypeConversion.ToInt(rowParent[SysMenuItemTable.Fields.sysMenuItemTypeId]);
                 if (parentSysMenuItemTypeId == 4)
                 {
-                    ClientScriptManager clientScript = Page.ClientScript;
-                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('父节点已经是按钮，不能在下面添加子节点');</script>");
+                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>ShowAddOrEdit('btnEdit');alert('父节点已经是按钮，不能在下面添加子节点');</script>");
                     return;
                 }
                 sysMenuItemTypeId = (parentSysMenuItemTypeId + 1).ToString();
             }
 
-            row[SysMenuItemTable.Fields.no] = bll.GetMenuItemNo(parentId);
+            string oldSysMenuItemNo = TypeConversion.ToString(row[SysMenuItemTable.Fields.no]);
+            string newSysMenuItemNo = bll.GetMenuItemNo(parentId);
+
+            string sysMenuItemNo = newSysMenuItemNo;
+            if (TypeConversion.ToString(row[SysMenuItemTable.Fields.parentId]) == parentId)
+            {
+                //如果上级节点不变的话，编号不需要变化
+                sysMenuItemNo = oldSysMenuItemNo;
+            }
+            else
+            {
+                //修改当前节点的子节点编号
+                if (bll.UpdateChildNo(oldSysMenuItemNo, newSysMenuItemNo, TypeConversion.ToString(row[SysMenuItemTable.Fields.sysMenuItemTypeId])) == false)
+                {
+                    clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>ShowAddOrEdit('btnEdit');alert('修改菜单碰到不明异常');</script>");
+                    return;
+                }
+            }
+
+            row[SysMenuItemTable.Fields.no] = sysMenuItemNo;
             row[SysMenuItemTable.Fields.parentId] = parentId;
             row[SysMenuItemTable.Fields.sysMenuItemTypeId] = sysMenuItemTypeId;
 

@@ -8,6 +8,11 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
+    <style type="text/css">
+        .auto-style1 {
+            width: 39px;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -28,7 +33,7 @@
                         </td>
                         <td>&nbsp;                 
                         </td>
-                        <td>
+                        <td class="auto-style1">
                             <input id="btnQuery" name="btnQuery" type="submit" value="查询" /></td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
@@ -46,11 +51,15 @@
                         </dx:GridViewDataTextColumn>
                         <dx:GridViewDataTextColumn Caption="字段描述" VisibleIndex="3" FieldName="FieldDescription">
                         </dx:GridViewDataTextColumn>
-                        <dx:GridViewDataTextColumn Caption="外键" VisibleIndex="4" FieldName="IsForeign">
+                        <dx:GridViewDataTextColumn Caption="是外键" VisibleIndex="4" FieldName="IsForeignStr">
                         </dx:GridViewDataTextColumn>
                         <dx:GridViewCommandColumn Caption="是查询条件?" ShowSelectCheckbox="True" VisibleIndex="0">
                         </dx:GridViewCommandColumn>
                         <dx:GridViewDataTextColumn Caption="字段类型" FieldName="FieldType" VisibleIndex="2">
+                        </dx:GridViewDataTextColumn>
+                        <dx:GridViewDataTextColumn Caption="外键关联表" FieldName="ForeignTableName" VisibleIndex="6">
+                        </dx:GridViewDataTextColumn>
+                        <dx:GridViewDataTextColumn Caption="外键关联字段" FieldName="ForeignFieldName" VisibleIndex="7">
                         </dx:GridViewDataTextColumn>
                     </Columns>
                 </dx:ASPxGridView>

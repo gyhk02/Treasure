@@ -192,6 +192,7 @@
       <DependentUpon>GenerateBySingleTable.aspx</DependentUpon>
     </Compile>
     <Compile Include="SmallTool\AutoGenerateFile\GenerateBySingleTableContent.cs" />
+    <Compile Include="SmallTool\AutoGenerateFile\GenerateForDataType.cs" />
     <Compile Include="SmallTool\DataSynchron\CreateTableSub.cs" />
     <Compile Include="SmallTool\DataSynchron\DataSynchron.aspx.cs">
       <DependentUpon>DataSynchron.aspx</DependentUpon>

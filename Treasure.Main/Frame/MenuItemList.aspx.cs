@@ -53,9 +53,14 @@ namespace Treasure.Main.Frame
             ClientScriptManager clientScript = Page.ClientScript;
 
             string id = TypeConversion.ToString(e.Keys[GeneralVO.id]);
-            if (bll.DeleteById(SysMenuItemTable.tableName, id) == false)
+
+            DataRow row = bll.GetDataRowById(SysMenuItemTable.tableName, id);
+
+            if (bll.DeleteMenu(TypeConversion.ToString(row[SysMenuItemTable.Fields.no])
+                , TypeConversion.ToString(row[SysMenuItemTable.Fields.sysMenuItemTypeId])) == false)
             {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('删除失败');</script>");
+                return;
             }
 
             clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('删除成功');</script>");
