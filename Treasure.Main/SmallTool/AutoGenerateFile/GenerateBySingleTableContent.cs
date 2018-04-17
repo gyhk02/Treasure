@@ -114,15 +114,12 @@ namespace " + pProjectNamespace + @"
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
 
-                switch (fieldType)
-                {
-                    case "nvarchar":
-                        whereHtml.Append(" AND " + fieldName + " LIKE '%' + @" + fieldName + " + '%'");
-                        paraHtml.Append("            lstPara.Add("
-                            + "new SqlParameter(@\"" + fieldName + "\", SqlDbType.NVarChar) { Value = dicPara[\"" + fieldName + "\"] });"
-                            + ConstantVO.ENTER_R);
-                        break;
-                }
+                Dictionary<string, string> pDic = new Dictionary<string, string>();
+                pDic.Add("FieldName", fieldName);
+                whereHtml.Append(GenerateForDataType.GetString(fieldType, "GetCreateBllFileContent_Where", pDic));
+                paraHtml.Append("            "
+                    + GenerateForDataType.GetString(fieldType, "GetCreateBllFileContent_Para", pDic)
+                    + ConstantVO.ENTER_R);
             }
 
             #endregion
@@ -191,7 +188,7 @@ namespace " + pProjectNamespace + @"
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
                 queryHtml.Append("        "
-                    + GenerateForDataType.GetString(fieldType, "GetCreateListFileForDesignerContent", pDic) 
+                    + GenerateForDataType.GetString(fieldType, "GetCreateListFileForDesignerContent", pDic)
                     + ConstantVO.ENTER_R);
             }
             #endregion
@@ -329,7 +326,7 @@ namespace " + pProjectNamespace + @" {
 
                 InitDataQueryHtml.Append("            "
                     + GenerateForDataType.GetString(fieldType, "GetCreateListFileForCsContent", pDic)
-                    + ConstantVO.ENTER_R);                
+                    + ConstantVO.ENTER_R);
             }
 
             #endregion
@@ -493,17 +490,13 @@ namespace " + pProjectNamespace + @"
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
                 string fieldDescription = TypeConversion.ToString(arrQueryField[2]);
-
-                queryHtml.Append("                    <td>" + fieldDescription + "</td>" + ConstantVO.ENTER_R);
-                queryHtml.Append("                    <td>" + ConstantVO.ENTER_R);
-
+                
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
+                pDic.Add("FieldDescription", fieldDescription);
                 queryHtml.Append("                        "
                     + GenerateForDataType.GetString(fieldType, "CreateListFileForAspx_Query", pDic)
                     + ConstantVO.ENTER_R);
-
-                queryHtml.Append("                    </td>" + ConstantVO.ENTER_R);
             }
 
             queryHtml.Append("                    <td>" + ConstantVO.ENTER_R);
@@ -627,14 +620,12 @@ namespace " + pProjectNamespace + @"
                     continue;
                 }
 
-                switch (TypeConversion.ToString(row[DataSynchronVO.FieldType]))
-                {
-                    case "nvarchar":
-                        fieldHtml.Append("        protected global::DevExpress.Web.ASPxTextBox txt" + CamelName.getBigCamelName(fieldName)
-                            + ";"
-                            + ConstantVO.ENTER_R);
-                        break;
-                }
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                dic.Add("FieldName", fieldName);
+                fieldHtml.Append("        "
+                    + GenerateForDataType.GetString(TypeConversion.ToString(row[DataSynchronVO.FieldType]), "GetCreateEditFileForDesignerContent", dic)
+                    + ConstantVO.ENTER_R);
+
             }
 
             #endregion
@@ -719,20 +710,20 @@ namespace " + pProjectNamespace + @" {
                     continue;
                 }
 
-                switch (TypeConversion.ToString(row[DataSynchronVO.FieldType]))
-                {
-                    case "nvarchar":
-                        InitDataHtml.Append("                    txt" + fieldName + ".Text = TypeConversion.ToString(row["
-                            + pClassName + "Table.Fields." + CamelName.getSmallCamelName(fieldName) + "]);"
-                            + ConstantVO.ENTER_R);
-                        AddHtml.Append("            row["
-                            + pClassName + "Table.Fields." + CamelName.getSmallCamelName(fieldName) + "] = txt" + fieldName + ".Text.Trim();"
-                            + ConstantVO.ENTER_R);
-                        EditHtml.Append("            row["
-                            + pClassName + "Table.Fields." + CamelName.getSmallCamelName(fieldName) + "] = txt" + fieldName + ".Text.Trim();"
-                            + ConstantVO.ENTER_R);
-                        break;
-                }
+                string fieldType = TypeConversion.ToString(row[DataSynchronVO.FieldType]);
+
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                dic.Add("ClassName", pClassName);
+                dic.Add("FieldName", fieldName);
+                InitDataHtml.Append("                    "
+                    + GenerateForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Init", dic)
+                    + ConstantVO.ENTER_R);
+                AddHtml.Append("                    "
+                    + GenerateForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Add", dic)
+                    + ConstantVO.ENTER_R);
+                EditHtml.Append("                    "
+                    + GenerateForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Edit", dic)
+                    + ConstantVO.ENTER_R);
             }
 
             #endregion
@@ -912,20 +903,11 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
                     continue;
                 }
 
-                switch (TypeConversion.ToString(row[DataSynchronVO.FieldType]))
-                {
-                    case "nvarchar":
-                        editHtml.Append("                <tr>" + ConstantVO.ENTER_R);
-                        editHtml.Append("                    <td>" + TypeConversion.ToString(row[DataSynchronVO.FieldDescription]) + "：</td>"
-                            + ConstantVO.ENTER_R);
-                        editHtml.Append("                    <td>" + ConstantVO.ENTER_R);
-                        editHtml.Append("                        <dx:ASPxTextBox ID=\"txt" + fieldName + "\" runat=\"server\" Width=\"170px\">"
-                            + ConstantVO.ENTER_R);
-                        editHtml.Append("                        </dx:ASPxTextBox>" + ConstantVO.ENTER_R);
-                        editHtml.Append("                    </td>" + ConstantVO.ENTER_R);
-                        editHtml.Append("                </tr>" + ConstantVO.ENTER_R);
-                        break;
-                }
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                dic.Add("FieldDescription", TypeConversion.ToString(row[DataSynchronVO.FieldDescription]));
+                dic.Add("FieldName", fieldName);
+                editHtml.Append(GenerateForDataType.GetString(TypeConversion.ToString(row[DataSynchronVO.FieldType]), "CreateEditFileForAspx", dic)
+                    + ConstantVO.ENTER_R);
             }
 
             #endregion

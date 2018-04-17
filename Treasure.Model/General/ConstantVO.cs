@@ -20,6 +20,11 @@ namespace Treasure.Model.General
         public static string ENTER_RN_JS = "\\r\\n";
         public static char ENTER_R = '\r';
         public static string ENTER_BR = "<br />";
+        
+        /// <summary>
+        /// 平时显示的时间
+        /// </summary>
+        public const string DATE_Y_M_D = "yyyy-MM-dd";
 
         /// <summary>
         /// 平时显示的时间

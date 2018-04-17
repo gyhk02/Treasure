@@ -61,31 +61,7 @@ namespace Treasure.Main.ProjectCollection.FirstProject
         #endregion
 
         #region 按钮
-        #endregion
-
-        #region 自定义事件
-
-        #region 初始化数据
-        /// <summary>
-        /// 初始化数据
-        /// </summary>
-        private void InitData()
-        {
-            string id = hdnID.Value;
-
-            if (string.IsNullOrEmpty(id) == false)
-            {
-                DataRow row = bll.GetDataRowById(SysMenuItemTypeTable.tableName, id);
-                if (row != null)
-                {
-                    txtNO.Text = TypeConversion.ToString(row[SysMenuItemTypeTable.Fields.no]);
-                    txtNAME.Text = TypeConversion.ToString(row[SysMenuItemTypeTable.Fields.name]);
-                    txtSORT_INDEX.Text = TypeConversion.ToString(row[SysMenuItemTypeTable.Fields.sortIndex]);
-                }
-            }
-        }
-        #endregion
-
+        
         #region 返回
         /// <summary>
         /// 返回
@@ -136,6 +112,31 @@ namespace Treasure.Main.ProjectCollection.FirstProject
             bll.UpdateDataRow(row);
 
             Response.Redirect("SysMenuItemType.aspx");
+        }
+        #endregion
+
+        #endregion
+
+        #region 自定义事件
+
+        #region 初始化数据
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitData()
+        {
+            string id = hdnID.Value;
+
+            if (string.IsNullOrEmpty(id) == false)
+            {
+                DataRow row = bll.GetDataRowById(SysMenuItemTypeTable.tableName, id);
+                if (row != null)
+                {
+                    txtNO.Text = TypeConversion.ToString(row[SysMenuItemTypeTable.Fields.no]);
+                    txtNAME.Text = TypeConversion.ToString(row[SysMenuItemTypeTable.Fields.name]);
+                    txtSORT_INDEX.Text = TypeConversion.ToString(row[SysMenuItemTypeTable.Fields.sortIndex]);
+                }
+            }
         }
         #endregion
 

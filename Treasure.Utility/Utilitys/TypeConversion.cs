@@ -55,7 +55,21 @@ namespace Treasure.Utility.Utilitys
             DateTime.TryParse(value.ToString(), out d);
             return d.ToString(formatStr);
         }
-        
+
+        public static DateTime? ToDateTime(this object value)
+        {
+            DateTime d;
+
+            if (value == null)
+                return null;
+
+            if (string.IsNullOrEmpty(value.ToString()) == true)
+                return null;
+
+            DateTime.TryParse(value.ToString(), out d);
+            return d;
+        }
+
         #region 对象转换成bool
         /// <summary>
         /// 对象转换成bool
