@@ -104,11 +104,22 @@ namespace " + pProjectNamespace + @"
             #region 方法中的HTML
 
             //条件HTML
-            StringBuilder whereHtml = new StringBuilder();
+            StringBuilder sqlHtml = new StringBuilder();
 
             //参数HTML
             StringBuilder paraHtml = new StringBuilder();
 
+            sqlHtml.Append("            string sql = \"SELECT");
+            foreach (object[] arrQueryField in lstQueryField)
+            {
+                string fieldName = TypeConversion.ToString(arrQueryField[0]);
+                string fieldType = TypeConversion.ToString(arrQueryField[1]);
+                Dictionary<string, string> pDic = new Dictionary<string, string>();
+                pDic.Add("FieldName", fieldName);
+
+                sqlHtml.Append(GenerateForDataType.GetString(fieldType, "GetCreateBllFileContent_BoolStr", pDic));
+            }
+            sqlHtml.Append(" * FROM TEST_TABLE WHERE 1 = 1\";");
             foreach (object[] arrQueryField in lstQueryField)
             {
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
@@ -116,7 +127,9 @@ namespace " + pProjectNamespace + @"
 
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
-                whereHtml.Append(GenerateForDataType.GetString(fieldType, "GetCreateBllFileContent_Where", pDic));
+
+                sqlHtml.Append(GenerateForDataType.GetString(fieldType, "GetCreateBllFileContent_Where", pDic));
+
                 paraHtml.Append("            "
                     + GenerateForDataType.GetString(fieldType, "GetCreateBllFileContent_Para", pDic)
                     + ConstantVO.ENTER_R);
@@ -131,6 +144,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using " + pSolutionName + @".Bll.General;
+using " + pSolutionName + @".Utility.Utilitys;
+using " + pSolutionName + @".Model.General;
+using " + pSolutionName + @".Utility.Utilitys;
 
 namespace " + pProjectNamespace + @"
 {
@@ -146,7 +162,7 @@ namespace " + pProjectNamespace + @"
         {
             DataTable dt = null;
 
-            string sql = ""SELECT * FROM " + pTableName + @" WHERE 1 = 1 " + whereHtml.ToString() + @""";
+" + sqlHtml.ToString() + @"
 
             List<SqlParameter> lstPara = new List<SqlParameter>();
 " + paraHtml.ToString() + @"
@@ -312,21 +328,36 @@ namespace " + pProjectNamespace + @" {
 
             #endregion
 
-            #region InitData方法中的HTML
+            #region 查询相关的HTML
 
-            StringBuilder InitDataQueryHtml = new StringBuilder();
+            StringBuilder PageLoadBoolMothedHtml = new StringBuilder();
+            StringBuilder PageLoadIsPostBackHtml = new StringBuilder();
+            StringBuilder BoolMothedHtml = new StringBuilder();
+
+            StringBuilder InitDataHtml = new StringBuilder();
+            StringBuilder QueryHtml = new StringBuilder();
 
             foreach (object[] arrQueryField in lstQueryField)
             {
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
+                string fieldDescription = TypeConversion.ToString(arrQueryField[2]);
 
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
+                pDic.Add("FieldDescription", fieldDescription);
 
-                InitDataQueryHtml.Append("            "
-                    + GenerateForDataType.GetString(fieldType, "GetCreateListFileForCsContent", pDic)
+                InitDataHtml.Append("            "
+                    + GenerateForDataType.GetString(fieldType, "GetCreateListFileForCsContent_InitData", pDic)
                     + ConstantVO.ENTER_R);
+
+                QueryHtml.Append(GenerateForDataType.GetString(fieldType, "GetCreateListFileForCsContent_Query", pDic));
+
+                PageLoadBoolMothedHtml.Append(GenerateForDataType.GetString(fieldType, "GetCreateListFileForCsContent_PageLoadBoolMothed", pDic));
+                PageLoadIsPostBackHtml.Append("                "
+                    + GenerateForDataType.GetString(fieldType, "GetCreateListFileForCsContent_PageLoadIsPostBack", pDic)
+                    + ConstantVO.ENTER_R);
+                BoolMothedHtml.Append(GenerateForDataType.GetString(fieldType, "GetCreateListFileForCsContent_BoolMothed", pDic));
             }
 
             #endregion
@@ -339,9 +370,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web.UI;
+using " + pSolutionName + @".Bll.General;
 using " + pSolutionName + @".Bll.ProjectCollection." + pProjectName + @";
 using " + pSolutionName + @".Model.General;
 using " + pSolutionName + @".Model.ProjectCollection." + pProjectName + @";
+using " + pSolutionName + @".Utility.Extend;
 using " + pSolutionName + @".Utility.Utilitys;
 
 namespace " + pProjectNamespace + @"
@@ -351,6 +384,7 @@ namespace " + pProjectNamespace + @"
         #region 自定义变量
 
         " + pClassName + @"Bll bll = new " + pClassName + @"Bll();
+        GeneralBll bllGeneral = new GeneralBll();
 
         #endregion
 
@@ -371,6 +405,7 @@ namespace " + pProjectNamespace + @"
                     return;
                 }
 " + PageLoadHtml + @"
+" + PageLoadBoolMothedHtml.ToString() + @"
                 if (Request[""__CALLBACKID""] == ""grdData"")
                 {
                     InitData();
@@ -378,8 +413,9 @@ namespace " + pProjectNamespace + @"
                 }
             }
 
-            if (!IsPostBack)
+            if (IsPostBack==false)
             {
+" + PageLoadIsPostBackHtml.ToString() + @"
                 InitData();
             }
         }
@@ -395,6 +431,8 @@ namespace " + pProjectNamespace + @"
         /// </summary>
         private void Query()
         {
+" + QueryHtml.ToString() + @"
+
             InitData();
         }
         #endregion
@@ -438,7 +476,7 @@ namespace " + pProjectNamespace + @"
         #endregion
 
         #region 自定义事件
-
+" + BoolMothedHtml.ToString() + @"
         #region 初始化列表
         /// <summary>
         /// 初始化列表
@@ -447,7 +485,7 @@ namespace " + pProjectNamespace + @"
         {
             Dictionary<string, object> dicPara = new Dictionary<string, object>();
 
-" + InitDataQueryHtml.ToString() + @"
+" + InitDataHtml.ToString() + @"
             DataTable dt = bll.Query(dicPara);
             grdData.DataSource = dt;
             grdData.DataBind();
@@ -490,7 +528,7 @@ namespace " + pProjectNamespace + @"
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
                 string fieldDescription = TypeConversion.ToString(arrQueryField[2]);
-                
+
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
                 pDic.Add("FieldDescription", fieldDescription);

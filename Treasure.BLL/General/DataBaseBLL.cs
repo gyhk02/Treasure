@@ -29,6 +29,16 @@ namespace Treasure.Bll.General
             dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
 
+            DataRow row12 = dtDatabase.NewRow();
+            row12[GeneralVO.id] = 12;
+            row12[DataSynchronVO.Version] = ConstantVO.OFFICIAL_VERSION;
+            row12[GeneralVO.no] = "ePDM_正式版_18";
+            row12[DataSynchronVO.Ip] = "172.16.96.18";
+            row12[DataSynchronVO.LoginName] = "erp";
+            row12[DataSynchronVO.Pwd] = "0.123456789";
+            row12[DataSynchronVO.DbName] = "EVNERP";
+            dtDatabase.Rows.Add(row12);
+
             DataRow row11 = dtDatabase.NewRow();
             row11[GeneralVO.id] = 11;
             row11[DataSynchronVO.Version] = ConstantVO.DEVELOPMENT_VERSION;
@@ -101,7 +111,7 @@ namespace Treasure.Bll.General
 
             DataRow row4 = dtDatabase.NewRow();
             row4[GeneralVO.id] = 4;
-            row4[DataSynchronVO.Version] = ConstantVO.OFFICIAL_VERSION;
+            row4[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
             row4[GeneralVO.no] = "ePDM_测试库";
             row4[DataSynchronVO.Ip] = "172.16.96.56";
             row4[DataSynchronVO.LoginName] = "erp";
@@ -290,7 +300,7 @@ order by o.name
             string sql = @"
 select distinct o.object_id " + GeneralVO.id + ", o.name " + DataSynchronVO.TableName + @", ep.value " + DataSynchronVO.TableDescription + @"
 from sys.objects o
-left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0
+left join sys.extended_properties ep on o.object_id = ep.major_id and ep.minor_id = 0 AND ep.name = 'MS_Description'
 where o.name <> 'sysdiagrams' and o.type = 'U' " + condition;
 
             result = SqlHelper.ExecuteDataTable(pConnection, CommandType.Text, sql, null);
