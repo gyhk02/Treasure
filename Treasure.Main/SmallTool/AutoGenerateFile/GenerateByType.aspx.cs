@@ -12,13 +12,13 @@ using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.SmallTool.AutoGenerateFile
 {
-    public partial class GenerateBySingleTable : System.Web.UI.Page
+    public partial class GenerateByType : System.Web.UI.Page
     {
-
         #region 自定义变量
 
         DataBaseBll bllDataBase = new DataBaseBll();
         SysMenuItemBll bllSysMenuItem = new SysMenuItemBll();
+        GeneralBll bllGeneral = new GeneralBll();
 
         #endregion
 
@@ -115,8 +115,10 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             lstFieldName.Add(DataSynchronVO.FieldName);
             lstFieldName.Add(DataSynchronVO.FieldType);
             lstFieldName.Add(DataSynchronVO.FieldDescription);
+            lstFieldName.Add(DataSynchronVO.ForeignTableName);
 
             List<object> lstQueryField = grdData.GetSelectedFieldValues(lstFieldName.ToArray());
+            List<string> lstExcludedField = bllGeneral.GetExcludedFields();
 
             string tableName = hdnTableName.Value;
 
@@ -154,7 +156,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             }
 
             //列表文件
-            string listFileMsg = CreateListFile(tableName, projectName, lstQueryField, fieldTable);
+            string listFileMsg = CreateListFile(tableName, projectName, lstQueryField, fieldTable, lstExcludedField);
             if (string.IsNullOrEmpty(listFileMsg) == false)
             {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + listFileMsg + "');</script>");
@@ -170,7 +172,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             }
 
             //BLL文件
-            string bllFileMsg = CreateBllFile(tableName, projectName, lstQueryField);
+            string bllFileMsg = CreateBllFile(tableName, projectName, lstQueryField, lstExcludedField);
             if (string.IsNullOrEmpty(bllFileMsg) == false)
             {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + bllFileMsg + "');</script>");
@@ -183,6 +185,28 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + modelFileMsg + "');</script>");
                 return;
+            }
+
+            //Model之类别
+            foreach (DataRow rowType in fieldTable.Rows)
+            {
+                if (lstExcludedField.Contains(TypeConversion.ToString(rowType[DataSynchronVO.FieldName])) == true)
+                {
+                    continue;
+                }
+
+                string foreignTableName = TypeConversion.ToString(rowType[DataSynchronVO.ForeignTableName]);
+                if (string.IsNullOrEmpty(foreignTableName) == false)
+                {
+                    DataTable dt = bllDataBase.GetTableInfoByName(1, foreignTableName);
+
+                    modelFileMsg = CreateModelFile(foreignTableName, projectName, dt);
+                    if (string.IsNullOrEmpty(modelFileMsg) == false)
+                    {
+                        clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('" + modelFileMsg + "');</script>");
+                        return;
+                    }
+                }
             }
 
             clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('生成成功');</script>");
@@ -239,7 +263,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
             {
                 string projectNamespace = hdnSolutionName.Value + ".Model." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-                string content = GenerateBySingleTableContent.GetCreateModelFileForEditContent(projectNamespace, className);
+                string content = GenerateByTypeContent.GetCreateModelFileForEditContent(projectNamespace, className);
 
                 File.AppendAllText(fileName, content, Encoding.UTF8);
             }
@@ -268,7 +292,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string projectNamespace = hdnSolutionName.Value + ".Model." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-            string content = GenerateBySingleTableContent.GetCreateModelFileForParentContent(
+            string content = GenerateByTypeContent.GetCreateModelFileForParentContent(
                 pTableName, projectNamespace, className, pFieldTable);
 
             File.Delete(fileName);
@@ -288,7 +312,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// <param name="pProjectName"></param>
         /// <param name="lstQueryField"></param>
         /// <returns></returns>
-        private string CreateBllFile(string pTableName, string pProjectName, List<object> lstQueryField)
+        private string CreateBllFile(string pTableName, string pProjectName, List<object> lstQueryField, List<string> pExcludedFiedList)
         {
             string errorMsg = "";
 
@@ -305,8 +329,8 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             DataTable dtAll = Session["FieldTable"] as DataTable;
 
-            string content = GenerateBySingleTableContent.GetCreateBllFileContent(
-                pTableName, lstQueryField, projectNamespace, className, hdnSolutionName.Value, dtAll);
+            string content = GenerateByTypeContent.GetCreateBllFileContent(
+                pTableName, lstQueryField, projectNamespace, className, hdnSolutionName.Value, dtAll, pExcludedFiedList);
 
             File.Delete(fileName);
             File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
@@ -322,7 +346,8 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// 创建列表文件主体
         /// </summary>
         /// <returns></returns>
-        private string CreateListFile(string pTableName, string pProjectName, List<object> lstQueryField, DataTable pFieldTable)
+        private string CreateListFile(string pTableName, string pProjectName, List<object> lstQueryField
+            , DataTable pFieldTable, List<string> pExcludedFiedList)
         {
             string errorMsg = "";
 
@@ -338,7 +363,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
                 return csMsg;
             }
 
-            string aspxMsg = CreateListFileForAspx(pTableName, pProjectName, lstQueryField, pFieldTable);
+            string aspxMsg = CreateListFileForAspx(pTableName, pProjectName, lstQueryField, pFieldTable, pExcludedFiedList);
             if (string.IsNullOrEmpty(aspxMsg) == false)
             {
                 return aspxMsg;
@@ -369,7 +394,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-            string content = GenerateBySingleTableContent.GetCreateListFileForDesignerContent(
+            string content = GenerateByTypeContent.GetCreateListFileForDesignerContent(
                pTableName, lstQueryField, projectNamespace, className);
 
             File.Delete(fileName);
@@ -404,7 +429,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             bool IsReport = chkReportExcel.Checked;
 
-            string content = GenerateBySingleTableContent.GetCreateListFileForCsContent(
+            string content = GenerateByTypeContent.GetCreateListFileForCsContent(
                 pTableName, pProjectName, lstQueryField, projectNamespace, className, solutionName, IsReport);
 
             File.Delete(fileName);
@@ -419,7 +444,8 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
         /// 列表之aspx
         /// </summary>
         /// <returns></returns>
-        private string CreateListFileForAspx(string pTableName, string pProjectName, List<object> lstQueryField, DataTable pFieldTable)
+        private string CreateListFileForAspx(string pTableName, string pProjectName, List<object> lstQueryField
+            , DataTable pFieldTable, List<string> pExcludedFiedList)
         {
             string errorMsg = "";
 
@@ -437,8 +463,8 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             bool IsReport = chkReportExcel.Checked;
 
-            string content = GenerateBySingleTableContent.CreateListFileForAspx(
-                pTableName, lstQueryField, projectNamespaceByPrefix, className, pFieldTable, IsReport);
+            string content = GenerateByTypeContent.CreateListFileForAspx(
+                pTableName, lstQueryField, projectNamespaceByPrefix, className, pFieldTable, IsReport, pExcludedFiedList);
 
             File.Delete(fileName);
             File.AppendAllText(fileName, content, Encoding.UTF8);
@@ -503,7 +529,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-            string content = GenerateBySingleTableContent.GetCreateEditFileForDesignerContent(
+            string content = GenerateByTypeContent.GetCreateEditFileForDesignerContent(
                pTableName, lstQueryField, projectNamespace, className, pFieldTable);
 
             File.Delete(fileName);
@@ -536,7 +562,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string solutionName = hdnSolutionName.Value;
 
-            string content = GenerateBySingleTableContent.GetCreateEditFileForCsContent(
+            string content = GenerateByTypeContent.GetCreateEditFileForCsContent(
                pTableName, pProjectName, lstQueryField, projectNamespaceByPrefix, className, pFieldTable, solutionName);
 
             File.Delete(fileName);
@@ -567,7 +593,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
 
             string projectNamespace = hdnRunProjectName.Value + "." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-            string content = GenerateBySingleTableContent.CreateEditFileForAspx(
+            string content = GenerateByTypeContent.CreateEditFileForAspx(
                 pTableName, lstQueryField, projectNamespace, className, pFieldTable);
 
             File.Delete(fileName);

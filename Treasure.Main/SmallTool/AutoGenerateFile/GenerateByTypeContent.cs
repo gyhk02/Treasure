@@ -8,13 +8,12 @@ using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.SmallTool.AutoGenerateFile
 {
-    public static class GenerateBySingleTableContent
+    public static class GenerateByTypeContent
     {
 
         #region Model之Parent
         /// <summary>
         /// Model之Parent
-        /// </summary>
         /// <param name="pTableName"></param>
         /// <param name="pProjectName"></param>
         /// <param name="pProjectNamespaceByPrefix"></param>
@@ -97,7 +96,7 @@ namespace " + pProjectNamespace + @"
         /// <returns></returns>
         public static string GetCreateBllFileContent(
             string pTableName, List<object> lstQueryField, string pProjectNamespace, string pClassName
-            , string pSolutionName, DataTable pDtAll)
+            , string pSolutionName, DataTable pDtAll, List<string> pExcludedFiedList)
         {
             string result = "";
 
@@ -109,29 +108,46 @@ namespace " + pProjectNamespace + @"
             //参数HTML
             StringBuilder paraHtml = new StringBuilder();
 
+            //sql后面的join
+            StringBuilder joinHtml = new StringBuilder();
+
             sqlHtml.Append("            string sql = \"SELECT");
+            int idx = 1;
             foreach (DataRow row in pDtAll.Rows)
             {
+                if (pExcludedFiedList.Contains(TypeConversion.ToString(row[DataSynchronVO.FieldName])) == true)
+                {
+                    continue;
+                }
+
                 string fieldName = TypeConversion.ToString(row[DataSynchronVO.FieldName]);
                 string fieldType = TypeConversion.ToString(row[DataSynchronVO.FieldType]);
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
+                pDic.Add("ForeignTableName", TypeConversion.ToString(row[DataSynchronVO.ForeignTableName]));
+                pDic.Add("ForeignFieldName", TypeConversion.ToString(row[DataSynchronVO.ForeignFieldName]));
+                pDic.Add("Idx", idx.ToString());
 
-                sqlHtml.Append(GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateBllFileContent_BoolStr", pDic));
+                sqlHtml.Append(GenerateByTypeForDataType.GetString(fieldType, "GetCreateBllFileContent_SqlStr", pDic));
+                joinHtml.Append(GenerateByTypeForDataType.GetString(fieldType, "GetCreateBllFileContent_JoinStr", pDic));
+                idx++;
             }
-            sqlHtml.Append(" * FROM " + pTableName + " WHERE 1 = 1\";");
+            sqlHtml.Append("  A.* FROM " + pTableName + " A" + joinHtml.ToString() + "  WHERE 1 = 1\";");
+
             foreach (object[] arrQueryField in lstQueryField)
             {
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
+                string foreignTableName = TypeConversion.ToString(arrQueryField[3]);
 
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
+                pDic.Add("ForeignTableName", foreignTableName);
 
-                sqlHtml.Append(GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateBllFileContent_Where", pDic));
+                sqlHtml.Append(GenerateByTypeForDataType.GetString(fieldType, "GetCreateBllFileContent_Where", pDic));
 
                 paraHtml.Append("            "
-                    + GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateBllFileContent_Para", pDic)
+                    + GenerateByTypeForDataType.GetString(fieldType, "GetCreateBllFileContent_Para", pDic)
                     + ConstantVO.ENTER_R);
             }
 
@@ -201,11 +217,13 @@ namespace " + pProjectNamespace + @"
             {
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
+                string foreignTableName = TypeConversion.ToString(arrQueryField[3]);
 
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
+                pDic.Add("ForeignTableName", foreignTableName);
                 queryHtml.Append("        "
-                    + GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateListFileForDesignerContent", pDic)
+                    + GenerateByTypeForDataType.GetString(fieldType, "GetCreateListFileForDesignerContent", pDic)
                     + ConstantVO.ENTER_R);
             }
             #endregion
@@ -331,9 +349,9 @@ namespace " + pProjectNamespace + @" {
 
             #region 查询相关的HTML
 
-            StringBuilder PageLoadBoolMothedHtml = new StringBuilder();
+            StringBuilder PageLoadMothedHtml = new StringBuilder();
             StringBuilder PageLoadIsPostBackHtml = new StringBuilder();
-            StringBuilder BoolMothedHtml = new StringBuilder();
+            StringBuilder MothedHtml = new StringBuilder();
 
             StringBuilder InitDataHtml = new StringBuilder();
             StringBuilder QueryHtml = new StringBuilder();
@@ -343,22 +361,24 @@ namespace " + pProjectNamespace + @" {
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
                 string fieldDescription = TypeConversion.ToString(arrQueryField[2]);
+                string foreignTableName = TypeConversion.ToString(arrQueryField[3]);
 
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
                 pDic.Add("FieldDescription", fieldDescription);
+                pDic.Add("ForeignTableName", foreignTableName);
 
                 InitDataHtml.Append("            "
-                    + GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateListFileForCsContent_InitData", pDic)
+                    + GenerateByTypeForDataType.GetString(fieldType, "GetCreateListFileForCsContent_InitData", pDic)
                     + ConstantVO.ENTER_R);
 
-                QueryHtml.Append(GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateListFileForCsContent_Query", pDic));
+                QueryHtml.Append(GenerateByTypeForDataType.GetString(fieldType, "GetCreateListFileForCsContent_Query", pDic));
 
-                PageLoadBoolMothedHtml.Append(GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateListFileForCsContent_PageLoadBoolMothed", pDic));
+                PageLoadMothedHtml.Append(GenerateByTypeForDataType.GetString(fieldType, "GetCreateListFileForCsContent_PageLoadBoolMothed", pDic));
                 PageLoadIsPostBackHtml.Append("                "
-                    + GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateListFileForCsContent_PageLoadIsPostBack", pDic)
+                    + GenerateByTypeForDataType.GetString(fieldType, "GetCreateListFileForCsContent_PageLoadIsPostBack", pDic)
                     + ConstantVO.ENTER_R);
-                BoolMothedHtml.Append(GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateListFileForCsContent_BoolMothed", pDic));
+                MothedHtml.Append(GenerateByTypeForDataType.GetString(fieldType, "GetCreateListFileForCsContent_BoolMothed", pDic));
             }
 
             #endregion
@@ -406,7 +426,7 @@ namespace " + pProjectNamespace + @"
                     return;
                 }
 " + PageLoadHtml + @"
-" + PageLoadBoolMothedHtml.ToString() + @"
+" + PageLoadMothedHtml.ToString() + @"
                 if (Request[""__CALLBACKID""] == ""grdData"")
                 {
                     InitData();
@@ -477,7 +497,7 @@ namespace " + pProjectNamespace + @"
         #endregion
 
         #region 自定义事件
-" + BoolMothedHtml.ToString() + @"
+" + MothedHtml.ToString() + @"
         #region 初始化列表
         /// <summary>
         /// 初始化列表
@@ -510,7 +530,7 @@ namespace " + pProjectNamespace + @"
         /// <returns></returns>
         public static string CreateListFileForAspx(
             string pTableName, List<object> lstQueryField, string pProjectNamespaceByPrefix, string pClassName
-            , DataTable pFieldTable, bool pIsReport)
+            , DataTable pFieldTable, bool pIsReport, List<string> pExcludedFiedList)
         {
             string result = "";
 
@@ -529,18 +549,23 @@ namespace " + pProjectNamespace + @"
                 string fieldName = TypeConversion.ToString(arrQueryField[0]);
                 string fieldType = TypeConversion.ToString(arrQueryField[1]);
                 string fieldDescription = TypeConversion.ToString(arrQueryField[2]);
+                string foreignTableName = TypeConversion.ToString(arrQueryField[3]);
 
                 Dictionary<string, string> pDic = new Dictionary<string, string>();
                 pDic.Add("FieldName", fieldName);
                 pDic.Add("FieldDescription", fieldDescription);
+                pDic.Add("ForeignTableName", foreignTableName);
                 queryHtml.Append("                        "
-                    + GenerateBySingleTableForDataType.GetString(fieldType, "CreateListFileForAspx_Query", pDic)
+                    + GenerateByTypeForDataType.GetString(fieldType, "CreateListFileForAspx_Query", pDic)
                     + ConstantVO.ENTER_R);
             }
 
-            queryHtml.Append("                    <td>" + ConstantVO.ENTER_R);
-            queryHtml.Append("                        <input id = \"btnQuery\" name = \"btnQuery\" type = \"submit\" value = \"查询\" /></td> " + ConstantVO.ENTER_R);
-            queryHtml.Append("                    <td> &nbsp; &nbsp; &nbsp;</td> " + ConstantVO.ENTER_R);
+            if (string.IsNullOrEmpty(queryHtml.ToString()) == false)
+            {
+                queryHtml.Append("                    <td>" + ConstantVO.ENTER_R);
+                queryHtml.Append("                        <input id = \"btnQuery\" name = \"btnQuery\" type = \"submit\" value = \"查询\" /></td> " + ConstantVO.ENTER_R);
+                queryHtml.Append("                    <td> &nbsp; &nbsp; &nbsp;</td> " + ConstantVO.ENTER_R);
+            }
 
             #endregion
 
@@ -549,7 +574,6 @@ namespace " + pProjectNamespace + @"
             StringBuilder gridColumnsHtml = new StringBuilder();
 
             GeneralBll bllGeneral = new GeneralBll();
-            List<string> lstExcludedField = bllGeneral.GetExcludedFields();
 
             int idx = 0;
             foreach (DataRow row in pFieldTable.Rows)
@@ -557,7 +581,7 @@ namespace " + pProjectNamespace + @"
                 string fieldName = TypeConversion.ToString(row[DataSynchronVO.FieldName]);
 
                 //默认要排序的字段
-                if (lstExcludedField.Contains(fieldName) == true)
+                if (pExcludedFiedList.Contains(fieldName) == true)
                 {
                     continue;
                 }
@@ -566,8 +590,9 @@ namespace " + pProjectNamespace + @"
                 pDic.Add("Caption", TypeConversion.ToString(row[DataSynchronVO.FieldDescription]));
                 pDic.Add("FieldName", fieldName);
                 pDic.Add("Idx", idx.ToString());
+                pDic.Add("ForeignTableName", TypeConversion.ToString(row[DataSynchronVO.ForeignTableName]));
                 gridColumnsHtml.Append("                    "
-                    + GenerateBySingleTableForDataType.GetString(TypeConversion.ToString(row[DataSynchronVO.FieldType]), "CreateListFileForAspx_Grid", pDic)
+                    + GenerateByTypeForDataType.GetString(TypeConversion.ToString(row[DataSynchronVO.FieldType]), "CreateListFileForAspx_Grid", pDic)
                     + ConstantVO.ENTER_R
                     );
             }
@@ -661,8 +686,9 @@ namespace " + pProjectNamespace + @"
 
                 Dictionary<string, string> dic = new Dictionary<string, string>();
                 dic.Add("FieldName", fieldName);
+                dic.Add("ForeignTableName", TypeConversion.ToString(row[DataSynchronVO.ForeignTableName]));
                 fieldHtml.Append("        "
-                    + GenerateBySingleTableForDataType.GetString(TypeConversion.ToString(row[DataSynchronVO.FieldType]), "GetCreateEditFileForDesignerContent", dic)
+                    + GenerateByTypeForDataType.GetString(TypeConversion.ToString(row[DataSynchronVO.FieldType]), "GetCreateEditFileForDesignerContent", dic)
                     + ConstantVO.ENTER_R);
 
             }
@@ -736,6 +762,10 @@ namespace " + pProjectNamespace + @" {
             //Edit方法中的HTML
             StringBuilder EditHtml = new StringBuilder();
 
+            StringBuilder PageLoadMothedHtml = new StringBuilder();
+            StringBuilder PageLoadIsPostBackHtml = new StringBuilder();
+            StringBuilder MothedHtml = new StringBuilder();
+
             GeneralBll bllGeneral = new GeneralBll();
             List<string> lstExcludedField = bllGeneral.GetExcludedFields();
 
@@ -754,15 +784,22 @@ namespace " + pProjectNamespace + @" {
                 Dictionary<string, string> dic = new Dictionary<string, string>();
                 dic.Add("ClassName", pClassName);
                 dic.Add("FieldName", fieldName);
+                dic.Add("FieldDescription", TypeConversion.ToString(row[DataSynchronVO.FieldDescription]));
+                dic.Add("ForeignTableName", TypeConversion.ToString(row[DataSynchronVO.ForeignTableName]));
                 InitDataHtml.Append("                    "
-                    + GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Init", dic)
+                    + GenerateByTypeForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Init", dic)
                     + ConstantVO.ENTER_R);
                 AddHtml.Append("                    "
-                    + GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Add", dic)
+                    + GenerateByTypeForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Add", dic)
                     + ConstantVO.ENTER_R);
                 EditHtml.Append("                    "
-                    + GenerateBySingleTableForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Edit", dic)
+                    + GenerateByTypeForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Edit", dic)
                     + ConstantVO.ENTER_R);
+                PageLoadMothedHtml.Append(GenerateByTypeForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_PageLoadMothed", dic));
+                PageLoadIsPostBackHtml.Append("                "
+                    + GenerateByTypeForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_PageLoadIsPostBack", dic)
+                    + ConstantVO.ENTER_R);
+                MothedHtml.Append(GenerateByTypeForDataType.GetString(fieldType, "GetCreateEditFileForCsContent_Mothed", dic));
             }
 
             #endregion
@@ -773,6 +810,7 @@ namespace " + pProjectNamespace + @" {
 using System;
 using System.Data;
 using System.Web.UI;
+using " + pSolutionName + @".Utility.Extend;
 using " + pSolutionName + @".Bll.ProjectCollection." + pProjectName + @";
 using " + pSolutionName + @".Model.ProjectCollection." + pProjectName + @";
 using " + pSolutionName + @".Utility.Utilitys;
@@ -808,6 +846,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
                 {
                     Back();
                 }
+" + PageLoadMothedHtml.ToString() + @"
             }
 
             if (IsPostBack == false)
@@ -826,6 +865,7 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
                     clientScript.RegisterStartupScript(this.GetType(), """", ""<script type=text/javascript>ShowAddOrEdit('btnAdd');</script>"");
                 }
 
+" + PageLoadIsPostBackHtml.ToString() + @"
                 InitData();
             }
         }
@@ -833,28 +873,8 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
         #endregion
 
         #region 按钮
-        #endregion
 
-        #region 自定义事件
-
-        #region 初始化数据
-        /// <summary>
-        /// 初始化数据
-        /// </summary>
-        private void InitData()
-        {
-            string id = hdnID.Value;
-
-            if (string.IsNullOrEmpty(id) == false)
-            {
-                DataRow row = bll.GetDataRowById(" + pClassName + @"Table.tableName, id);
-                if (row != null)
-                {
-" + InitDataHtml.ToString() + @"
-                }
-            }
-        }
-        #endregion
+" + MothedHtml.ToString() + @"
 
         #region 返回
         /// <summary>
@@ -906,6 +926,28 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
 
         #endregion
 
+        #region 自定义事件
+
+        #region 初始化数据
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitData()
+        {
+            string id = hdnID.Value;
+
+            if (string.IsNullOrEmpty(id) == false)
+            {
+                DataRow row = bll.GetDataRowById(" + pClassName + @"Table.tableName, id);
+                if (row != null)
+                {
+" + InitDataHtml.ToString() + @"
+                }
+            }
+        }
+        #endregion
+
+        #endregion
     }
 }";
 
@@ -945,7 +987,8 @@ namespace " + pProjectNamespaceByPrefix + @"." + pProjectName + @"
                 Dictionary<string, string> dic = new Dictionary<string, string>();
                 dic.Add("FieldDescription", TypeConversion.ToString(row[DataSynchronVO.FieldDescription]));
                 dic.Add("FieldName", fieldName);
-                editHtml.Append(GenerateBySingleTableForDataType.GetString(TypeConversion.ToString(row[DataSynchronVO.FieldType]), "CreateEditFileForAspx", dic)
+                dic.Add("ForeignTableName", TypeConversion.ToString(row[DataSynchronVO.ForeignTableName]));
+                editHtml.Append(GenerateByTypeForDataType.GetString(TypeConversion.ToString(row[DataSynchronVO.FieldType]), "CreateEditFileForAspx", dic)
                     + ConstantVO.ENTER_R);
             }
 

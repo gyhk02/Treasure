@@ -4,7 +4,7 @@ using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.SmallTool.AutoGenerateFile
 {
-    public static class GenerateForDataType
+    public static class GenerateBySingleTableForDataType
     {
 
         #region 根据不同的数据类型获取不同地方的值
@@ -45,7 +45,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
                     result = GetNvarcharStrig(pType, pDic);
                     break;
                 case "int":
-                    result = GetNvarcharStrig(pType, pDic);
+                    result = GetIntStrig(pType, pDic);
                     break;
                 case "datetime":
                     result = GetDatetimeStrig(pType, pDic);
@@ -163,6 +163,77 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
                                 </dx:GridViewDataTextColumn>
                             </Columns>
                         </dx:ASPxGridLookup>
+                    </td>";
+                    break;
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region 获取Int类型所返回的字符串
+        /// <summary>
+        /// 获取Int类型所返回的字符串。
+        /// 与GetNvarcharStrig仅GetCreateEditFileForCsContent_Edit的内容不同
+        /// </summary>
+        /// <param name="pType"></param>
+        /// <param name="pDic"></param>
+        /// <returns></returns>
+        public static string GetIntStrig(string pType, Dictionary<string, string> pDic)
+        {
+            string result = "";
+
+            switch (pType)
+            {
+                case "GetCreateBllFileContent_Where":
+                    result = @"
+            if (string.IsNullOrEmpty(TypeConversion.ToString(dicPara[""" + pDic["FieldName"] + @"""])) == false)
+            {
+                sql = sql + "" AND " + pDic["FieldName"] + @" LIKE '%' + @" + pDic["FieldName"] + @" + '%'"";
+            }";
+                    break;
+                case "GetCreateBllFileContent_Para":
+                    result = @"lstPara.Add(new SqlParameter(""@" + pDic["FieldName"] + @""", SqlDbType.NVarChar) { Value = dicPara[""" + pDic["FieldName"] + @"""] });";
+                    break;
+                case "CreateEditFileForAspx":
+                    result = @"
+                <tr>
+                    <td>" + pDic["FieldDescription"] + @"：</td>
+                    <td>
+                        <dx:ASPxTextBox ID=""txt" + pDic["FieldName"] + @""" runat=""server"" Width=""170px"">
+                        </dx:ASPxTextBox>
+                    </td>
+                </tr>";
+                    break;
+                case "GetCreateEditFileForCsContent_Add":
+                    result = "row[" + pDic["ClassName"] + "Table.Fields." + CamelName.getSmallCamelName(pDic["FieldName"]) + "] = txt" + pDic["FieldName"] + ".Text.Trim();";
+                    break;
+                case "GetCreateEditFileForCsContent_Edit":
+                    result = "row[" + pDic["ClassName"] + "Table.Fields." + CamelName.getSmallCamelName(pDic["FieldName"]) + "] = TypeConversion.ToInt(txt" + pDic["FieldName"] + ".Text.Trim());";
+                    break;
+                case "GetCreateEditFileForCsContent_Init":
+                    result = "txt" + pDic["FieldName"] + ".Text = TypeConversion.ToString(row[" + pDic["ClassName"] + "Table.Fields." + CamelName.getSmallCamelName(pDic["FieldName"]) + "]);";
+                    break;
+                case "GetCreateEditFileForDesignerContent":
+                    result = "protected global::DevExpress.Web.ASPxTextBox txt" + pDic["FieldName"] + ";";
+                    break;
+                case "GetCreateListFileForDesignerContent":
+                    result = "protected global::DevExpress.Web.ASPxTextBox txt" + pDic["FieldName"] + @";";
+                    break;
+                case "GetCreateListFileForCsContent_InitData":
+                    result = @"dicPara.Add(""" + pDic["FieldName"] + @""", txt" + pDic["FieldName"] + @".Text.Trim());";
+                    break;
+                case "CreateListFileForAspx_Grid":
+                    result = @"<dx:GridViewDataTextColumn Caption=""" + pDic["Caption"]
+                        + @""" FieldName=""" + pDic["FieldName"]
+                        + @""" Name=""col" + pDic["FieldName"]
+                        + @""" VisibleIndex=""" + pDic["Idx"] + @"""></dx:GridViewDataTextColumn>";
+                    break;
+                case "CreateListFileForAspx_Query":
+                    result = @"
+                    <td>" + pDic["FieldDescription"] + @"</td>
+                    <td>
+                        <dx:ASPxTextBox ID=""txt" + pDic["FieldName"] + @""" runat=""server"" Width=""170px""></dx:ASPxTextBox>
                     </td>";
                     break;
             }
@@ -289,7 +360,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateFile
                 case "GetCreateEditFileForCsContent_Edit":
                     result = @"
             string " + CamelName.getSmallCamelName(pDic["FieldName"]) + @" = dat" + pDic["FieldName"] + @".Text.Trim();
-            if (string.IsNullOrEmpty(testTime) == true)
+            if (string.IsNullOrEmpty(" + CamelName.getSmallCamelName(pDic["FieldName"]) + @") == true)
             {
                 row[" + pDic["ClassName"] + @"Table.Fields." + CamelName.getSmallCamelName(pDic["FieldName"]) + @"] = DBNull.Value;
             }
