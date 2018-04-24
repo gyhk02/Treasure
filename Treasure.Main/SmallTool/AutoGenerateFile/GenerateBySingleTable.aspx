@@ -53,7 +53,7 @@
                         </dx:GridViewDataTextColumn>
                         <dx:GridViewDataTextColumn Caption="是外键" VisibleIndex="4" FieldName="IsForeignStr">
                         </dx:GridViewDataTextColumn>
-                        <dx:GridViewCommandColumn Caption="是查询条件?" ShowSelectCheckbox="True" VisibleIndex="0">
+                        <dx:GridViewCommandColumn Caption="查询?" ShowSelectCheckbox="True" VisibleIndex="0">
                         </dx:GridViewCommandColumn>
                         <dx:GridViewDataTextColumn Caption="字段类型" FieldName="FieldType" VisibleIndex="2">
                         </dx:GridViewDataTextColumn>

@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Treasure.Main.Frame {
+namespace Treasure.Main.ProjectCollection.SystemSetup {
     
     
-    public partial class Login {
+    public partial class SysRole {
         
         /// <summary>
         /// form1 控件。
@@ -22,30 +22,48 @@ namespace Treasure.Main.Frame {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// txtUserName 控件。
+        /// txtNO 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtUserName;
+        protected global::DevExpress.Web.ASPxTextBox txtNO;
         
         /// <summary>
-        /// txtPwd 控件。
+        /// txtNAME 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtPwd;
+        protected global::DevExpress.Web.ASPxTextBox txtNAME;
         
         /// <summary>
-        /// btnLogin 控件。
+        /// grdData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::DevExpress.Web.ASPxGridView grdData;
+        
+        /// <summary>
+        /// ASPxGridViewExporter1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxGridViewExporter ASPxGridViewExporter1;
+        
+        /// <summary>
+        /// hidCondition 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidCondition;
     }
 }

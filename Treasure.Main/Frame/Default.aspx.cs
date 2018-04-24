@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using Treasure.Bll.Frame;
+using Treasure.Bll.General;
 using Treasure.Utility.Extend;
-using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.Frame
 {
@@ -23,8 +19,16 @@ namespace Treasure.Main.Frame
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Request.HttpMethod == "POST" && Request["btnSignOut"] == "退出登录")
+            {
+                BasicWebBll.SeUserID = null;
+                BasicWebBll.CheckLogin();
+                return;
+            }
             if (!IsPostBack)
             {
+                BasicWebBll.CheckLogin();
+
                 //加载项目列表
                 DataTable dtRootMenu = bllSysMenuItem.GetRootMenu();
                 DropDownListExtend.BindToShowName(ddlMenu, dtRootMenu, true);

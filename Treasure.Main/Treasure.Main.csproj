@@ -98,8 +98,14 @@
     <Content Include="Frame\Main.aspx" />
     <Content Include="Frame\MenuAdd.aspx" />
     <Content Include="Frame\MenuItemList.aspx" />
+    <Content Include="Frame\SysRelationUserRole.aspx" />
+    <Content Include="ProjectCollection\SystemSetup\SysRole.aspx" />
+    <Content Include="ProjectCollection\SystemSetup\SysRoleEdit.aspx" />
+    <Content Include="ProjectCollection\SystemSetup\SysUser.aspx" />
+    <Content Include="ProjectCollection\SystemSetup\SysUserEdit.aspx" />
     <Content Include="Script\Css\Basic.css" />
     <Content Include="Script\Js\jquery.min.js" />
+    <Content Include="SmallTool\AutoGenerateFile\GenerateBySingleTable.aspx" />
     <Content Include="SmallTool\AutoGenerateFile\GenerateByType.aspx" />
     <Content Include="SmallTool\DataSynchron\DataSynchron.aspx" />
     <Content Include="SmallTool\DataSynchron\QueryUsedTables.aspx" />
@@ -167,7 +173,51 @@
     <Compile Include="Frame\MenuItemList.aspx.designer.cs">
       <DependentUpon>MenuItemList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Frame\SysRelationUserRole.aspx.cs">
+      <DependentUpon>SysRelationUserRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\SysRelationUserRole.aspx.designer.cs">
+      <DependentUpon>SysRelationUserRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectCollection\SystemSetup\SysRole.aspx.cs">
+      <DependentUpon>SysRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProjectCollection\SystemSetup\SysRole.aspx.designer.cs">
+      <DependentUpon>SysRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectCollection\SystemSetup\SysRoleEdit.aspx.cs">
+      <DependentUpon>SysRoleEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProjectCollection\SystemSetup\SysRoleEdit.aspx.designer.cs">
+      <DependentUpon>SysRoleEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectCollection\SystemSetup\SysUser.aspx.cs">
+      <DependentUpon>SysUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProjectCollection\SystemSetup\SysUser.aspx.designer.cs">
+      <DependentUpon>SysUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectCollection\SystemSetup\SysUserEdit.aspx.cs">
+      <DependentUpon>SysUserEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProjectCollection\SystemSetup\SysUserEdit.aspx.designer.cs">
+      <DependentUpon>SysUserEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SmallTool\AutoGenerateFile\GenerateBySingleTable.aspx.cs">
+      <DependentUpon>GenerateBySingleTable.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SmallTool\AutoGenerateFile\GenerateBySingleTable.aspx.designer.cs">
+      <DependentUpon>GenerateBySingleTable.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SmallTool\AutoGenerateFile\GenerateBySingleTableContent.cs" />
+    <Compile Include="SmallTool\AutoGenerateFile\GenerateBySingleTableForDataType.cs" />
     <Compile Include="SmallTool\AutoGenerateFile\GenerateByType.aspx.cs">
       <DependentUpon>GenerateByType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -234,7 +284,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Document\DataSynchronSql\" />
-    <Folder Include="ProjectCollection\" />
     <Folder Include="Test\" />
   </ItemGroup>
   <ItemGroup>

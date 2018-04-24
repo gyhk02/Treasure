@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using Treasure.Bll.Frame;
+using Treasure.Bll.General;
 
 namespace Treasure.Main.Frame
 {
@@ -23,6 +19,8 @@ namespace Treasure.Main.Frame
         {
             if (!IsPostBack)
             {
+                BasicWebBll.CheckLogin();
+
                 hdnProjectId.Value = Request["ProjectId"];
             }
 
@@ -31,10 +29,6 @@ namespace Treasure.Main.Frame
             treMenu.DataSource = dtMenu;
             treMenu.DataBind();
             treMenu.ExpandAll();
-
-          //SysMenuItemInfo.Fields.ID
-              
-
         }
         #endregion
 

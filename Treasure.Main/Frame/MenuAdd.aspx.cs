@@ -50,6 +50,8 @@ namespace Treasure.Main.Frame
 
             if (IsPostBack == false)
             {
+                BasicWebBll.CheckLogin();
+
                 //父节点
                 DataTable dtTreeMenuItem = bll.GetMenuItemByTree();
 

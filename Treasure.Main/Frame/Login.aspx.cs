@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Treasure.Bll.Frame;
@@ -34,6 +35,7 @@ namespace Treasure.Main.Frame
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        [WebMethod(EnableSession = true)]
         protected void btnLogin_Click(object sender, EventArgs e)
         {
             string userName = txtUserName.Text.Trim();
@@ -47,7 +49,9 @@ namespace Treasure.Main.Frame
                 return;
             }
 
-            HttpContext.Current.Session["UserId"] = userId;
+            //Session["UserId"] = userId;
+
+            BasicWebBll.SeUserID = userId;
 
             Response.Redirect("Default.aspx");
         }

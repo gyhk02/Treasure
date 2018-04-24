@@ -10,7 +10,7 @@
 namespace Treasure.Main.Frame {
     
     
-    public partial class Login {
+    public partial class SysRelationUserRole {
         
         /// <summary>
         /// form1 控件。
@@ -22,30 +22,30 @@ namespace Treasure.Main.Frame {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// txtUserName 控件。
+        /// lblRole 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtUserName;
+        protected global::DevExpress.Web.ASPxLabel lblRole;
         
         /// <summary>
-        /// txtPwd 控件。
+        /// grdData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtPwd;
+        protected global::DevExpress.Web.ASPxGridView grdData;
         
         /// <summary>
-        /// btnLogin 控件。
+        /// hdnSysRoleId 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::System.Web.UI.WebControls.HiddenField hdnSysRoleId;
     }
 }

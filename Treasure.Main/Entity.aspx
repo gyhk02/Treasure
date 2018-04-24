@@ -28,11 +28,6 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td>&nbsp;</td>
-                    <td><a href="SmallTool/DataSynchron/DataSynchron.aspx" target="_blank">查询语句中用到哪些表</a></td>
-                </tr>
-                <tr>
-                    <td></td>
                     <td><a href="Treasure/SecondToDatetime.aspx" target="_blank">时间转换</a></td>
                     <td>&nbsp;</td>
                 </tr>
@@ -44,6 +39,10 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td><a href="SmallTool/ToTableClass/ToTableClass.aspx" target="_blank">生成Model</a></td>
+                    <td>&nbsp;</td>
+                </tr> <tr>
+                    <td>&nbsp;</td>
+                    <td><a href="SmallTool/AutoGenerateFile/GenerateByType.aspx" target="_blank">生成文件</a></td>
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
@@ -61,7 +60,11 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                 </tr>
-
+                <tr>
+                    <td>&nbsp;</td>
+                    <td><a href="Frame/Default.aspx" target="_blank">框架首页</a></td>
+                    <td>&nbsp;</td>
+                </tr>
             </table>
         </div>
     </form>

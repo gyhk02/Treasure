@@ -16,7 +16,9 @@
         <div>
             <table id="theTable" style="width: 100%; border-collapse: collapse; border-spacing: 0; border: 0px;">
                 <tr>
-                    <td colspan="2" style="height: 50px; background-color: gray;">&nbsp;</td>
+                    <td colspan="2" style="height: 50px; background-color: gray;">
+                        <div style="text-align:right;margin-right:20px;"><input id = "btnSignOut" name = "btnSignOut" type = "submit" value = "退出登录" /></div>
+                    </td>
                 </tr>
                 <tr>
                     <td style="width: 300px;">

@@ -627,7 +627,7 @@ namespace " + pProjectNamespace + @"
             <br />
             <dx:ASPxGridView ID=""grdData"" runat=""server"" AutoGenerateColumns=""False"" style=""margin-right: 0px""
                  KeyFieldName=""ID"" OnRowDeleting=""grdData_RowDeleting"">
-                <SettingsPager PageSize=""100"">
+                <SettingsPager PageSize=""20"">
                 </SettingsPager>
                 <SettingsBehavior ConfirmDelete=""True"" />
                 <Columns>
