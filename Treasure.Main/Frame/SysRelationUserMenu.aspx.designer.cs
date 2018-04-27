@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Treasure.Main.ProjectCollection.SystemSetup {
+namespace Treasure.Main.Frame {
     
     
-    public partial class SysUser {
+    public partial class SysRelationUserMenu {
         
         /// <summary>
         /// form1 控件。
@@ -22,57 +22,30 @@ namespace Treasure.Main.ProjectCollection.SystemSetup {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// txtNO 控件。
+        /// lblUser 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtNO;
+        protected global::DevExpress.Web.ASPxLabel lblUser;
         
         /// <summary>
-        /// txtNAME 控件。
+        /// treMenu 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtNAME;
+        protected global::DevExpress.Web.ASPxTreeList.ASPxTreeList treMenu;
         
         /// <summary>
-        /// txtLOGIN_NAME 控件。
+        /// hdnUserId 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtLOGIN_NAME;
-        
-        /// <summary>
-        /// grdData 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxGridView grdData;
-        
-        /// <summary>
-        /// ASPxGridViewExporter1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxGridViewExporter ASPxGridViewExporter1;
-        
-        /// <summary>
-        /// hidCondition 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hidCondition;
+        protected global::System.Web.UI.WebControls.HiddenField hdnUserId;
     }
 }

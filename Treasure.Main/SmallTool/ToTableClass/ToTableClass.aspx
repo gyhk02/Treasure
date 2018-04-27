@@ -12,8 +12,8 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <div>命名空间：<asp:TextBox ID="txtNamespace" runat="server" Width="459px">Treasure.Model.ProjectCollection.FirstProject</asp:TextBox></div>
-            <div>保存路径：<asp:TextBox ID="txtSavePath" runat="server" Width="628px">E:\Win8Expand\c\IISFold\Treasure\Treasure.Model\ProjectCollection\FirstProject</asp:TextBox>
+            <div>命名空间：<asp:TextBox ID="txtNamespace" runat="server" Width="459px">Treasure.Model.Frame</asp:TextBox></div>
+            <div>保存路径：<asp:TextBox ID="txtSavePath" runat="server" Width="628px">E:\Win8Expand\c\IISFold\Treasure\Treasure.Model\Frame</asp:TextBox>
                 </div>
             <table style="width: 100%;">
                 <tr>

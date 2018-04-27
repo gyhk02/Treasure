@@ -98,6 +98,7 @@
     <Content Include="Frame\Main.aspx" />
     <Content Include="Frame\MenuAdd.aspx" />
     <Content Include="Frame\MenuItemList.aspx" />
+    <Content Include="Frame\SysRelationUserMenu.aspx" />
     <Content Include="Frame\SysRelationUserRole.aspx" />
     <Content Include="ProjectCollection\SystemSetup\SysRole.aspx" />
     <Content Include="ProjectCollection\SystemSetup\SysRoleEdit.aspx" />
@@ -172,6 +173,13 @@
     </Compile>
     <Compile Include="Frame\MenuItemList.aspx.designer.cs">
       <DependentUpon>MenuItemList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Frame\SysRelationUserMenu.aspx.cs">
+      <DependentUpon>SysRelationUserMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\SysRelationUserMenu.aspx.designer.cs">
+      <DependentUpon>SysRelationUserMenu.aspx</DependentUpon>
     </Compile>
     <Compile Include="Frame\SysRelationUserRole.aspx.cs">
       <DependentUpon>SysRelationUserRole.aspx</DependentUpon>

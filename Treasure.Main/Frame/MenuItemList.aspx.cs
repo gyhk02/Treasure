@@ -18,8 +18,7 @@ namespace Treasure.Main.Frame
         #region 自定义变量
 
         SysMenuItemBll bll = new SysMenuItemBll();
-
-
+        
         #endregion
 
         #region 系统事件

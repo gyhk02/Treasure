@@ -1,23 +1,26 @@
-﻿using System;
+﻿using DevExpress.Web.ASPxTreeList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Treasure.Bll.Frame;
 using Treasure.Bll.General;
-using Treasure.BLL.Frame;
 using Treasure.Model.Frame;
 using Treasure.Model.General;
 using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.Frame
 {
-    public partial class SysRelationUserRole : System.Web.UI.Page
+    public partial class SysRelationUserMenu : System.Web.UI.Page
     {
+
         #region 自定义变量
 
-        SysRoleBll bll = new SysRoleBll();
+        SysUserBll bll = new SysUserBll();
+        SysMenuItemBll bllSysMenuItem = new SysMenuItemBll();
         DateTime today = DateTime.Now;
 
         #endregion
@@ -38,7 +41,7 @@ namespace Treasure.Main.Frame
                     ToBack();
                     return;
                 }
-                if (Request["__CALLBACKID"] == "grdData")
+                if (Request["__CALLBACKID"] == "treMenu")
                 {
                     InitData();
                     return;
@@ -50,15 +53,15 @@ namespace Treasure.Main.Frame
                 BasicWebBll.CheckLogin();
 
                 //接收参数
-                string roleId = Request["ID"];
-                hdnSysRoleId.Value = roleId;
+                string userId = Request["ID"];
+                hdnUserId.Value = userId;
 
                 InitData();
 
                 InitSelectedRow();
 
-                DataRow row = bll.GetDataRowById(SysRoleTable.tableName, roleId);
-                lblRole.Text = TypeConversion.ToString(row[SysRoleTable.Fields.name]);
+                DataRow row = bll.GetDataRowById(SysUserTable.tableName, userId);
+                lblUser.Text = TypeConversion.ToString(row[SysUserTable.Fields.name]);
             }
         }
 
@@ -74,30 +77,31 @@ namespace Treasure.Main.Frame
         {
             ClientScriptManager clientScript = Page.ClientScript;
 
-            string roleId = hdnSysRoleId.Value;
+            string userId = hdnUserId.Value;
 
             //删除角色原来的用户
-            if (bll.DeleteUserListByRoleId(roleId) == false)
+            if (bll.DeleteMenuListByUserId(userId) == false)
             {
-                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('修改角色碰到不明错误');</script>");
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('修改菜单碰到不明错误');</script>");
                 return;
             }
 
-            DataTable dt = bll.GetDataTableStructure(SysUserRoleListTable.tableName);
+            DataTable dt = bll.GetDataTableStructure(SysUserMenuTable.tableName);
 
-            List<object> lstResult = grdData.GetSelectedFieldValues(new string[] { GeneralVO.id });
+            List<TreeListNode> lstResult = treMenu.GetSelectedNodes();
+            
             foreach (object arr in lstResult)
             {
                 DataRow row = dt.NewRow();
 
-                row[SysUserRoleListTable.Fields.id] = Guid.NewGuid().ToString().Replace("-", "");
-                row[SysUserRoleListTable.Fields.sysUserId] = TypeConversion.ToString(arr);
-                row[SysUserRoleListTable.Fields.sysRoleId] = roleId;
+                row[SysUserMenuTable.Fields.id] = Guid.NewGuid().ToString().Replace("-", "");
+                row[SysUserMenuTable.Fields.sysUserId] = userId;
+                row[SysUserMenuTable.Fields.sysMenuItemId] =   TypeConversion.ToString(arr);
 
-                row[SysUserRoleListTable.Fields.createUserId] = BasicWebBll.SeUserID;
-                row[SysUserRoleListTable.Fields.createDatetime] = today;
-                row[SysUserRoleListTable.Fields.modifyUserId] = BasicWebBll.SeUserID;
-                row[SysUserRoleListTable.Fields.modifyDatetime] = today;
+                row[SysUserMenuTable.Fields.createUserId] = BasicWebBll.SeUserID;
+                row[SysUserMenuTable.Fields.createDatetime] = today;
+                row[SysUserMenuTable.Fields.modifyUserId] = BasicWebBll.SeUserID;
+                row[SysUserMenuTable.Fields.modifyDatetime] = today;
 
                 bll.AddDataRow(row);
             }
@@ -126,9 +130,10 @@ namespace Treasure.Main.Frame
         /// </summary>
         private void InitData()
         {
-            DataTable dt = bll.GetUserListByRoleId(hdnSysRoleId.Value);
-            grdData.DataSource = dt;
-            grdData.DataBind();
+            DataTable dt = bllSysMenuItem.GetMenuItemList();
+            treMenu.DataSource = dt;
+            treMenu.DataBind();
+            treMenu.ExpandAll();
         }
         #endregion
 
@@ -138,18 +143,22 @@ namespace Treasure.Main.Frame
         /// </summary>
         private void InitSelectedRow()
         {
-            for (int idx = 0; idx < grdData.VisibleRowCount; idx++)
-            {
-                DataRowView row = grdData.GetRow(idx) as DataRowView;
-                if (TypeConversion.ToInt(row["IS_SEFT"]) == 1)
-                {
-                    grdData.Selection.SelectRow(idx);
-                }
+            foreach(TreeListNode node in treMenu.GetAllNodes()) {
+                
             }
+
+            //for (int idx = 0; idx < grdData.VisibleRowCount; idx++)
+            //{
+            //    DataRowView row = grdData.GetRow(idx) as DataRowView;
+            //    if (TypeConversion.ToInt(row["IS_SELECTED"]) == 1)
+            //    {
+            //        grdData.Selection.SelectRow(idx);
+            //    }
+            //}
         }
         #endregion
 
         #endregion
-
+        
     }
 }
