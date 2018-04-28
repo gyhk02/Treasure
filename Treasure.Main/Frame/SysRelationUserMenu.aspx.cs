@@ -2,14 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Treasure.Bll.Frame;
 using Treasure.Bll.General;
 using Treasure.Model.Frame;
-using Treasure.Model.General;
+using Treasure.Utility.Extend;
 using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.Frame
@@ -20,7 +17,6 @@ namespace Treasure.Main.Frame
         #region 自定义变量
 
         SysUserBll bll = new SysUserBll();
-        SysMenuItemBll bllSysMenuItem = new SysMenuItemBll();
         DateTime today = DateTime.Now;
 
         #endregion
@@ -33,6 +29,7 @@ namespace Treasure.Main.Frame
             {
                 if (Request["btnConfirm"] == "确定")
                 {
+                    InitData();
                     Confirm();
                     return;
                 }
@@ -88,15 +85,13 @@ namespace Treasure.Main.Frame
 
             DataTable dt = bll.GetDataTableStructure(SysUserMenuTable.tableName);
 
-            List<TreeListNode> lstResult = treMenu.GetSelectedNodes();
-            
-            foreach (object arr in lstResult)
+            foreach (TreeListNode node in treMenu.GetSelectedNodes())
             {
                 DataRow row = dt.NewRow();
 
                 row[SysUserMenuTable.Fields.id] = Guid.NewGuid().ToString().Replace("-", "");
                 row[SysUserMenuTable.Fields.sysUserId] = userId;
-                row[SysUserMenuTable.Fields.sysMenuItemId] =   TypeConversion.ToString(arr);
+                row[SysUserMenuTable.Fields.sysMenuItemId] = TypeConversion.ToString(node[SysMenuItemTable.Fields.id]);
 
                 row[SysUserMenuTable.Fields.createUserId] = BasicWebBll.SeUserID;
                 row[SysUserMenuTable.Fields.createDatetime] = today;
@@ -107,6 +102,8 @@ namespace Treasure.Main.Frame
             }
 
             clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('修改成功');</script>");
+
+            treMenu.ExpandAll();
         }
         #endregion
 
@@ -116,10 +113,10 @@ namespace Treasure.Main.Frame
         /// </summary>
         private void ToBack()
         {
-            Response.Redirect("../ProjectCollection/SystemSetup/SysRole.aspx");
+            Response.Redirect("../ProjectCollection/SystemSetup/SysUser.aspx");
         }
         #endregion
-
+        
         #endregion
 
         #region 自定义事件
@@ -130,7 +127,7 @@ namespace Treasure.Main.Frame
         /// </summary>
         private void InitData()
         {
-            DataTable dt = bllSysMenuItem.GetMenuItemList();
+            DataTable dt = bll.GetMenuListByUserId(hdnUserId.Value);
             treMenu.DataSource = dt;
             treMenu.DataBind();
             treMenu.ExpandAll();
@@ -143,19 +140,17 @@ namespace Treasure.Main.Frame
         /// </summary>
         private void InitSelectedRow()
         {
-            foreach(TreeListNode node in treMenu.GetAllNodes()) {
-                
+            foreach (TreeListNode node in treMenu.GetVisibleNodes())
+            {
+                if (TypeConversion.ToInt(node["IS_SELECTED"]) == 1)
+                {
+                    node.Selected = true;
+                }
             }
-
-            //for (int idx = 0; idx < grdData.VisibleRowCount; idx++)
-            //{
-            //    DataRowView row = grdData.GetRow(idx) as DataRowView;
-            //    if (TypeConversion.ToInt(row["IS_SELECTED"]) == 1)
-            //    {
-            //        grdData.Selection.SelectRow(idx);
-            //    }
-            //}
         }
+
+
+
         #endregion
 
         #endregion

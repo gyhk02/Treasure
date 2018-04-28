@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Web.ASPxTreeList.v16.1, Version=16.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Web.v16.1, Version=16.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -44,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extend\ASPxGridLookupExtend.cs" />
+    <Compile Include="Extend\ASPxTreeListExtend.cs" />
     <Compile Include="Extend\DropDownListExtend.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />

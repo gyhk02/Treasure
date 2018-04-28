@@ -25,14 +25,15 @@
                 </table>
             <br />
             <div>
-                <dx:ASPxTreeList ID="treMenu" runat="server" AutoGenerateColumns="False">
+                <dx:ASPxTreeList ID="treMenu" runat="server" AutoGenerateColumns="False" KeyFieldName="ID"
+                    ParentFieldName="PARENT_ID"  >
                     <Columns>
                         <dx:TreeListTextColumn Caption="名称" FieldName="NAME" VisibleIndex="1">
                         </dx:TreeListTextColumn>
-                        <dx:TreeListTextColumn Caption="类型" FieldName="Type" VisibleIndex="3">
+                        <dx:TreeListTextColumn Caption="类型" FieldName="MENU_TYPE_NAME" VisibleIndex="3">
                         </dx:TreeListTextColumn>
                     </Columns>
-                    <SettingsSelection AllowSelectAll="True" Enabled="True" />
+                    <SettingsSelection Enabled="True" Recursive="True" />
                 </dx:ASPxTreeList>
                 <asp:HiddenField ID="hdnUserId" runat="server" />
             </div>
