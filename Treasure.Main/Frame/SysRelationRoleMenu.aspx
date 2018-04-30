@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SysRelationUserMenu.aspx.cs" Inherits="Treasure.Main.Frame.SysRelationUserMenu" %>
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SysRelationRoleMenu.aspx.cs" Inherits="Treasure.Main.Frame.SysRelationRoleMenu" %>
 <%@ Register Assembly="DevExpress.Web.ASPxTreeList.v16.1, Version=16.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxTreeList" TagPrefix="dx" %>
 <%@ Register Assembly="DevExpress.Web.v16.1, Version=16.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 
@@ -7,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
 </head>
 <body>
@@ -17,7 +16,7 @@
                 <tr>
                     <td>用户：</td>
                     <td>
-                        <dx:ASPxLabel ID="lblUser" runat="server" Text=" "></dx:ASPxLabel>
+                        <dx:ASPxLabel ID="lblRole" runat="server" Text=" "></dx:ASPxLabel>
                     </td>
                     <td style="width: 50px;">&nbsp;</td>
                     <td>
@@ -39,7 +38,7 @@
                     </Columns>
                     <SettingsSelection Enabled="True" Recursive="True" />
                 </dx:ASPxTreeList>
-                <asp:HiddenField ID="hdnUserId" runat="server" />
+                <asp:HiddenField ID="hdnRoleId" runat="server" />
             </div>
         </div>
     </form>

@@ -3,7 +3,9 @@ using System.Data;
 using System.Web;
 using Treasure.Bll.Frame;
 using Treasure.Bll.General;
+using Treasure.Model.Frame;
 using Treasure.Utility.Extend;
+using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.Frame
 {
@@ -30,7 +32,8 @@ namespace Treasure.Main.Frame
                 BasicWebBll.CheckLogin();
 
                 //加载项目列表
-                DataTable dtRootMenu = bllSysMenuItem.GetRootMenu();
+                DataTable dtRootMenu = bllSysMenuItem.GetMenuListByUser("", BasicWebBll.SeUserID);
+                dtRootMenu.DefaultView.RowFilter = "PARENT_ID = ''";
                 DropDownListExtend.BindToShowName(ddlMenu, dtRootMenu, true);
             }
         }

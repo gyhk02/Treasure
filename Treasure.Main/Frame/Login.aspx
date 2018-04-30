@@ -14,10 +14,10 @@
     <form id="form1" runat="server">
         <div style="background-color: green; height: 60px;"></div>
         <div class="bigDiv" style="height: 30px; width: 600px;">
-            用户名：<dx:ASPxTextBox ID="txtUserName" runat="server" Width="170px" Text="Admin"></dx:ASPxTextBox>
+            用户名：<dx:ASPxTextBox ID="txtUserName" runat="server" Width="170px" Text="lrz"></dx:ASPxTextBox>
             <br />
             <br />
-            密码：<dx:ASPxTextBox ID="txtPwd" runat="server" Width="170px" Text="abcd.1234"></dx:ASPxTextBox>
+            密码：<dx:ASPxTextBox ID="txtPwd" runat="server" Width="170px" Text="1"></dx:ASPxTextBox>
             <br />
             <br />
             <asp:Button ID="btnLogin" runat="server" Text="登录" OnClick="btnLogin_Click" />&nbsp;&nbsp;&nbsp;

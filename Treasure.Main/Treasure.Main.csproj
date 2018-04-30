@@ -88,6 +88,7 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="Document\常用代码.txt" />
+    <Content Include="Document\特殊地方说明.txt" />
     <Content Include="Document\特殊文件定位.txt" />
     <Content Include="Document\相关内容.txt" />
     <Content Include="Document\解决方案包含的内容.txt" />
@@ -98,6 +99,7 @@
     <Content Include="Frame\Main.aspx" />
     <Content Include="Frame\MenuAdd.aspx" />
     <Content Include="Frame\MenuItemList.aspx" />
+    <Content Include="Frame\SysRelationRoleMenu.aspx" />
     <Content Include="Frame\SysRelationUserMenu.aspx" />
     <Content Include="Frame\SysRelationUserRole.aspx" />
     <Content Include="ProjectCollection\SystemSetup\SysRole.aspx" />
@@ -173,6 +175,13 @@
     </Compile>
     <Compile Include="Frame\MenuItemList.aspx.designer.cs">
       <DependentUpon>MenuItemList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Frame\SysRelationRoleMenu.aspx.cs">
+      <DependentUpon>SysRelationRoleMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\SysRelationRoleMenu.aspx.designer.cs">
+      <DependentUpon>SysRelationRoleMenu.aspx</DependentUpon>
     </Compile>
     <Compile Include="Frame\SysRelationUserMenu.aspx.cs">
       <DependentUpon>SysRelationUserMenu.aspx</DependentUpon>

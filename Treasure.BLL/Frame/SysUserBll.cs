@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Treasure.Bll.General;
+using Treasure.Model.Frame;
 using Treasure.Model.General;
 using Treasure.Utility.Helpers;
 
@@ -10,7 +12,7 @@ namespace Treasure.Bll.Frame
 {
     public class SysUserBll : BasicBll
     {
-        
+
         #region 根据用户ID删除对应的菜单
         /// <summary>
         /// 根据用户ID删除对应的菜单
@@ -55,7 +57,7 @@ namespace Treasure.Bll.Frame
 SELECT SMI.ID, SMI.NAME, SMIT.NAME MENU_TYPE_NAME, SMI.PARENT_ID, IIF(SU.ID IS NULL, 0, 1) IS_SELECTED
 FROM SYS_MENU_ITEM SMI
 JOIN SYS_MENU_ITEM_TYPE SMIT ON SMI.SYS_MENU_ITEM_TYPE_ID = SMIT.ID
-LEFT JOIN SYS_USER_MENU SU ON SMI.ID = SU.SYS_MENU_ITEM_ID AND SU.SYS_USER_ID = '00'
+LEFT JOIN SYS_USER_MENU SU ON SMI.ID = SU.SYS_MENU_ITEM_ID AND SU.SYS_USER_ID = @SYS_USER_ID
 ORDER BY SMI.NO";
 
             List<SqlParameter> lstPara = new List<SqlParameter>();
@@ -73,7 +75,6 @@ ORDER BY SMI.NO";
             return dt;
         }
         #endregion
-
 
         #region 登录判断
         /// <summary>
@@ -110,6 +111,25 @@ ORDER BY SMI.NO";
             return result;
         }
         #endregion
-        
+
+        public List<string> GetSpecialUserIds()
+        {
+            List<string> lst = new List<string>();
+
+            string sql = @"SELECT * FROM SYS_USER WHERE EXPIRED_DATE > GETDATE() AND CREATE_DATETIME = '1900-01-01' ";
+
+            try
+            {
+                DataTable dt = base.GetDataTable(sql, null);
+                lst = (from d in dt.AsEnumerable() select d.Field<string>(SysUserTable.Fields.id)).ToList();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return lst;
+        }
+
     }
 }

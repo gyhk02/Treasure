@@ -25,7 +25,7 @@ namespace Treasure.Main.Frame
             }
 
             //加载
-            DataTable dtMenu = bllSysMenuItem.GetFunctionsAndPagesMenu(hdnProjectId.Value);
+            DataTable dtMenu = bllSysMenuItem.GetMenuListByUser(hdnProjectId.Value, BasicWebBll.SeUserID);
             treMenu.DataSource = dtMenu;
             treMenu.DataBind();
             treMenu.ExpandAll();

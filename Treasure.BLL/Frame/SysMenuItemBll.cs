@@ -258,17 +258,30 @@ ORDER BY SMI.NO
         /// </summary>
         /// <param name="pProjectId">项目id</param>
         /// <returns></returns>
-        public DataTable GetFunctionsAndPagesMenu(string pProjectId)
+        public DataTable GetMenuListByUser(string pRootMenuId, string pUserId)
         {
             DataTable dt = null;
 
-            string sql = @"
+            if (string.IsNullOrEmpty(pUserId) == true)
+            {
+                return dt;
+            }
+
+            SysUserBll bll = new SysUserBll();
+            List<string> lstSpecialUser = bll.GetSpecialUserIds();
+
+            #region sql
+
+            string sql = "";
+            if (lstSpecialUser.Contains(pUserId))
+            {
+                sql = @"
 WITH Sub(ID, NO, NAME, PARENT_ID,TypeName, FILE_URL ) AS 
 (
 	SELECT SMI.ID, SMI.NO, SMI.NAME, SMI.PARENT_ID, SMIT.NAME TypeName, SMI.FILE_URL
 	FROM SYS_MENU_ITEM SMI
 	JOIN SYS_MENU_ITEM_TYPE SMIT ON SMI.SYS_MENU_ITEM_TYPE_ID = SMIT.ID
-	WHERE PARENT_ID = @PARENT_ID
+	WHERE PARENT_ID = @ROOT_MENU_ID
 	UNION ALL 
 	SELECT SMI.ID, SMI.NO, SMI.NAME, SMI.PARENT_ID , SMIT.NAME, SMI.FILE_URL
 	FROM SYS_MENU_ITEM SMI 
@@ -277,12 +290,53 @@ WITH Sub(ID, NO, NAME, PARENT_ID,TypeName, FILE_URL ) AS
 )
 SELECT * FROM Sub ORDER BY NO
 ";
-            SqlParameter[] paras = new SqlParameter[1];
-            paras[0] = new SqlParameter("@PARENT_ID", pProjectId);
+            }
+            else
+            {
+                sql = @"
+DECLARE @ROOT_NO_PRE NVARCHAR(32) = ''
 
+SELECT @ROOT_NO_PRE = SUBSTRING(NO, 1, 2) FROM SYS_MENU_ITEM WHERE ID = @ROOT_MENU_ID
+
+SELECT SRM.SYS_MENU_ITEM_ID INTO #FIRST_MENU
+FROM SYS_USER_ROLE_LIST SURL 
+JOIN SYS_ROLE_MENU SRM ON SURL.SYS_ROLE_ID = SRM.SYS_ROLE_ID
+WHERE SURL.SYS_USER_ID = @USER_ID
+UNION
+SELECT SUME.SYS_MENU_ITEM_ID
+FROM SYS_USER SU
+JOIN SYS_USER_MENU SUME ON SU.ID = SUME.SYS_USER_ID
+WHERE SU.ID = @USER_ID
+
+;
+WITH Sub(ID, NO, NAME, PARENT_ID,TypeName, FILE_URL ) AS 
+(
+	SELECT SMI.ID, SMI.NO, SMI.NAME, SMI.PARENT_ID, SMIT.NAME TypeName, SMI.FILE_URL
+	FROM #FIRST_MENU T
+	JOIN SYS_MENU_ITEM SMI ON T.SYS_MENU_ITEM_ID = SMI.ID
+	JOIN SYS_MENU_ITEM_TYPE SMIT ON SMI.SYS_MENU_ITEM_TYPE_ID = SMIT.ID
+
+	UNION ALL 
+	SELECT SMI.ID, SMI.NO, SMI.NAME, SMI.PARENT_ID , SMIT.NAME, SMI.FILE_URL
+	FROM SYS_MENU_ITEM SMI 
+	JOIN SYS_MENU_ITEM_TYPE SMIT ON SMI.SYS_MENU_ITEM_TYPE_ID = SMIT.ID
+	JOIN Sub S ON SMI.ID = S.PARENT_ID
+)
+SELECT DISTINCT * FROM Sub WHERE NO LIKE @ROOT_NO_PRE + '%' ORDER BY NO
+
+DROP TABLE #FIRST_MENU
+";
+            }
+
+            #endregion
+
+            List<SqlParameter> lstPara = new List<SqlParameter>();
+            lstPara.Add(new SqlParameter("@ROOT_MENU_ID", pRootMenuId));
+            lstPara.Add(new SqlParameter("@USER_ID", pUserId));
+            
             try
             {
-                dt = base.GetDataTable(sql, paras);
+                dt = base.GetDataTable(sql, lstPara.ToArray());
             }
             catch (Exception ex)
             {

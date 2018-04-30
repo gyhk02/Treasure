@@ -50,6 +50,10 @@
                     <dx:GridViewDataHyperLinkColumn Caption="用户设置" FieldName="ID" PropertiesHyperLinkEdit-NavigateUrlFormatString="../../Frame/SysRelationUserRole.aspx?ID={0}" VisibleIndex="4">
 <PropertiesHyperLinkEdit NavigateUrlFormatString="../../Frame/SysRelationUserRole.aspx?ID={0}" Text="用户设置"></PropertiesHyperLinkEdit>
                     </dx:GridViewDataHyperLinkColumn>
+                    <dx:GridViewDataHyperLinkColumn Caption="菜单设置" FieldName="ID" VisibleIndex="5">
+                        <PropertiesHyperLinkEdit NavigateUrlFormatString="../../Frame/SysRelationRoleMenu.aspx?ID={0}" Text="菜单设置">
+                        </PropertiesHyperLinkEdit>
+                    </dx:GridViewDataHyperLinkColumn>
                 </Columns>
             </dx:ASPxGridView>
             <dx:ASPxGridViewExporter ID="ASPxGridViewExporter1" runat="server" GridViewID="grdData">
