@@ -25,12 +25,13 @@ namespace Treasure.Main.Frame
             {
                 BasicWebBll.SeUserID = null;
                 BasicWebBll.CheckLogin();
+
                 return;
             }
             if (!IsPostBack)
             {
                 BasicWebBll.CheckLogin();
-
+                
                 //加载项目列表
                 DataTable dtRootMenu = bllSysMenuItem.GetMenuListByUser("", BasicWebBll.SeUserID);
                 dtRootMenu.DefaultView.RowFilter = "PARENT_ID = ''";

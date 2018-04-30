@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Frame\SysMenuItemBll.cs" />
+    <Compile Include="Frame\SysReportBll.cs" />
     <Compile Include="Frame\SysRoleBll.cs" />
     <Compile Include="Frame\SysUserBll.cs" />
     <Compile Include="General\BasicBll.cs" />

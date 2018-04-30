@@ -2,6 +2,8 @@
 using System.Data;
 using Treasure.Bll.Frame;
 using Treasure.Bll.General;
+using Treasure.Model.Frame;
+using Treasure.Utility.Utilitys;
 
 namespace Treasure.Main.Frame
 {
@@ -26,6 +28,12 @@ namespace Treasure.Main.Frame
 
             //加载
             DataTable dtMenu = bllSysMenuItem.GetMenuListByUser(hdnProjectId.Value, BasicWebBll.SeUserID);
+            if (string.IsNullOrEmpty(hdnProjectId.Value) == true && dtMenu != null && dtMenu.Rows.Count > 0)
+            {
+                hdnProjectId.Value = TypeConversion.ToString(dtMenu.Rows[0][SysMenuItemTable.Fields.id]);
+                dtMenu = bllSysMenuItem.GetMenuListByUser(hdnProjectId.Value, BasicWebBll.SeUserID);
+            }
+
             treMenu.DataSource = dtMenu;
             treMenu.DataBind();
             treMenu.ExpandAll();

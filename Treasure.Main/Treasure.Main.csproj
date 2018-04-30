@@ -102,6 +102,8 @@
     <Content Include="Frame\SysRelationRoleMenu.aspx" />
     <Content Include="Frame\SysRelationUserMenu.aspx" />
     <Content Include="Frame\SysRelationUserRole.aspx" />
+    <Content Include="Frame\SysReport.aspx" />
+    <Content Include="Frame\SysReportEdit.aspx" />
     <Content Include="ProjectCollection\SystemSetup\SysRole.aspx" />
     <Content Include="ProjectCollection\SystemSetup\SysRoleEdit.aspx" />
     <Content Include="ProjectCollection\SystemSetup\SysUser.aspx" />
@@ -196,6 +198,20 @@
     </Compile>
     <Compile Include="Frame\SysRelationUserRole.aspx.designer.cs">
       <DependentUpon>SysRelationUserRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Frame\SysReport.aspx.cs">
+      <DependentUpon>SysReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\SysReport.aspx.designer.cs">
+      <DependentUpon>SysReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Frame\SysReportEdit.aspx.cs">
+      <DependentUpon>SysReportEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frame\SysReportEdit.aspx.designer.cs">
+      <DependentUpon>SysReportEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="ProjectCollection\SystemSetup\SysRole.aspx.cs">
       <DependentUpon>SysRole.aspx</DependentUpon>
