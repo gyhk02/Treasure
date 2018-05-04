@@ -117,6 +117,7 @@
     <Content Include="SmallTool\EncryptAndDecrypt\Encrypt_Decrypt.aspx" />
     <Content Include="SmallTool\evq\MianSynchron.aspx" />
     <Content Include="SmallTool\ToTableClass\ToTableClass.aspx" />
+    <Content Include="Template\Page\Report.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -299,6 +300,13 @@
     </Compile>
     <Compile Include="SmallTool\ToTableClass\ToTableClass.aspx.designer.cs">
       <DependentUpon>ToTableClass.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Page\Report.aspx.cs">
+      <DependentUpon>Report.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Template\Page\Report.aspx.designer.cs">
+      <DependentUpon>Report.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

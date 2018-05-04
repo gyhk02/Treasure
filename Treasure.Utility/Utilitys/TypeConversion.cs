@@ -1,11 +1,169 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 using Treasure.Model.General;
 
 namespace Treasure.Utility.Utilitys
 {
     public static class TypeConversion
     {
+
+        #region DataTable 序列化成字符串
+        /// <summary>
+        /// 序列化DataTable为String
+        /// </summary>
+        /// <param name="tb">包含数据的DataTable</param>
+        /// <returns>序列化的DataTable</returns>
+        public static string SerializeDataTableToString(this DataTable tb)
+        {
+            StringBuilder sb = new StringBuilder();
+            XmlWriter writer = XmlWriter.Create(sb);
+            XmlSerializer serializer = new XmlSerializer(typeof(DataTable));
+            serializer.Serialize(writer, tb);
+            writer.Close();
+            return sb.ToString();
+        }
+        #endregion
+
+        #region 字符串序列化成DataTable
+        /// <summary>
+        /// 反序列化String为DataTable
+        /// </summary>
+        /// <param name="strXml">序列化的DataTable</param>
+        /// <returns>DataTable</returns>
+        public static DataTable DeserializeStringToDataTable(this string strXml)
+        {
+            StringReader strReader = new StringReader(strXml);
+            XmlReader xmlReader = XmlReader.Create(strReader);
+            XmlSerializer serializer = new XmlSerializer(typeof(DataTable));
+            DataTable dt = serializer.Deserialize(xmlReader) as DataTable;
+            return dt;
+        }
+        #endregion
+
+        #region DataTable转换成实体类
+
+        /// <summary>  
+        /// 填充对象列表：用DataTable填充实体类
+        /// </summary>  
+        public static List<T> FillModel<T>(this DataTable dt) where T : new()
+        {
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                return null;
+            }
+            List<T> modelList = new List<T>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                //T model = (T)Activator.CreateInstance(typeof(T));  
+                T model = dr.FillModel<T>();
+
+                modelList.Add(model);
+            }
+            return modelList;
+        }
+
+        /// <summary>  
+        /// 填充对象：用DataRow填充实体类
+        /// </summary>  
+        public static T FillModel<T>(this DataRow dr) where T : new()
+        {
+            if (dr == null)
+            {
+                return default(T);
+            }
+
+            //T model = (T)Activator.CreateInstance(typeof(T));  
+            T model = new T();
+
+            for (int i = 0; i < dr.Table.Columns.Count; i++)
+            {
+                PropertyInfo propertyInfo = model.GetType().GetProperty(dr.Table.Columns[i].ColumnName);
+                if (propertyInfo != null && dr[i] != DBNull.Value)
+                {
+                    string v = dr[i].ToString();
+                    if (propertyInfo.PropertyType.FullName.ToUpper().Contains("GUID"))
+                    {
+                        if (!string.IsNullOrEmpty(v))
+                        {
+                            propertyInfo.SetValue(model, Guid.Parse(v), null);
+                        }
+                        else
+                        {
+                            propertyInfo.SetValue(model, null, null);
+                        }
+                    }
+                    else if (propertyInfo.PropertyType.FullName.ToUpper().Contains("BYTE"))
+                    {
+                        if (!string.IsNullOrEmpty(v))
+                        {
+                            propertyInfo.SetValue(model, byte.Parse(v), null);
+                        }
+                        else
+                        {
+                            propertyInfo.SetValue(model, null, null);
+                        }
+                    }
+                    else
+                    {
+                        propertyInfo.SetValue(model, dr[i], null);
+                    }
+                }
+            }
+            return model;
+        }
+
+        #endregion
+
+        #region 实体类转换成DataTable
+
+        /// <summary>
+        /// 实体类转换成DataTable
+        /// </summary>
+        /// <param name="modelList">实体类列表</param>
+        /// <returns></returns>
+        public static DataTable FillDataTable<T>(this List<T> modelList) where T : new()
+        {
+            if (modelList == null || modelList.Count == 0)
+            {
+                return null;
+            }
+            DataTable dt = CreateData<T>(modelList[0]);
+
+            foreach (T model in modelList)
+            {
+                DataRow dataRow = dt.NewRow();
+                foreach (PropertyInfo propertyInfo in typeof(T).GetProperties())
+                {
+                    dataRow[propertyInfo.Name] = propertyInfo.GetValue(model, null);
+                }
+                dt.Rows.Add(dataRow);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 根据实体类得到表结构
+        /// </summary>
+        /// <param name="model">实体类</param>
+        /// <returns></returns>
+        private static DataTable CreateData<T>(T model) where T : new()
+        {
+            DataTable dataTable = new DataTable(typeof(T).Name);
+            foreach (PropertyInfo propertyInfo in typeof(T).GetProperties())
+            {
+                dataTable.Columns.Add(new DataColumn(propertyInfo.Name, propertyInfo.PropertyType));
+            }
+            return dataTable;
+        }
+
+        #endregion
+
 
         #region CShare的字段类型转换成SQL字段类型
         /// <summary>
@@ -76,13 +234,13 @@ namespace Treasure.Utility.Utilitys
         /// </summary>
         /// <param name="DataColumnType"></param>
         /// <returns></returns>
-        public static bool ToBool(Object obj)
+        public static bool? ToBool(Object obj)
         {
             bool result = false;
 
             if (obj == null)
             {
-                return result;
+                return null;
             }
 
             Boolean.TryParse(obj.ToString(), out result);

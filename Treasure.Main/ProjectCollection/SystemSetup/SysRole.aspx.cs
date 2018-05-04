@@ -63,8 +63,6 @@ namespace Treasure.Main.ProjectCollection.SystemSetup
         /// </summary>
         private void Query()
         {
-
-
             InitData();
         }
         #endregion

@@ -67,6 +67,7 @@
     <Compile Include="ProjectCollection\SystemSetup\SysUserTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmallTool\DataSynchron\DataSynchronVO.cs" />
+    <Compile Include="Template\Page\ReportVo.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
