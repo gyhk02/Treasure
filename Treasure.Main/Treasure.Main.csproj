@@ -118,6 +118,8 @@
     <Content Include="SmallTool\evq\MianSynchron.aspx" />
     <Content Include="SmallTool\ToTableClass\ToTableClass.aspx" />
     <Content Include="Template\Page\Report.aspx" />
+    <Content Include="Test\WebForm1.aspx" />
+    <Content Include="Test\WebForm2.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -308,6 +310,20 @@
     <Compile Include="Template\Page\Report.aspx.designer.cs">
       <DependentUpon>Report.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Test\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Test\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Test\WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Test\WebForm2.aspx.designer.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Treasure.BLL\Treasure.Bll.csproj">
@@ -325,7 +341,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Document\DataSynchronSql\" />
-    <Folder Include="Test\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

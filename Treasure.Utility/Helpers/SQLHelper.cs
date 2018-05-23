@@ -327,6 +327,26 @@ namespace Treasure.Utility.Helpers
 
         #region 新增
 
+        #region 插入DataTable
+        /// <summary>
+        /// 插入DataTable
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static List<string> AddDataTable(DataTable dt)
+        {
+            List<string> lstId = new List<string>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                lstId.Add(AddDataRow(row));
+            }
+
+            return lstId;
+        }
+        #endregion
+
+        #region 新增一行数据
         /// <summary>
         /// 新增一行数据
         /// </summary>
@@ -336,6 +356,9 @@ namespace Treasure.Utility.Helpers
         {
             return AddDataRow(row, null);
         }
+        #endregion
+
+        #region 新增一行数据
         /// <summary>
         /// 新增一行数据
         /// </summary>
@@ -365,13 +388,21 @@ namespace Treasure.Utility.Helpers
                     string columnName = col.ColumnName;
 
                     //ID_INDEX是自增长
-                    if (columnName.Equals(GeneralVO.idIndex) == false)
+                    if (columnName.Equals(GeneralVO.idIndex) == true)
                     {
-                        lstColumnName.Add(columnName);
-                        lstVar.Add("@" + columnName);
+                        continue;
+                    }
 
-                        SqlDbType type = TypeConversion.ToSqlDbType(col.DataType);
-                        lstPara.Add(new SqlParameter("@" + columnName, type) { Value = row[col] });
+                    lstColumnName.Add(columnName);
+                    lstVar.Add("@" + columnName);
+
+                    SqlDbType type = TypeConversion.ToSqlDbType(col.DataType);
+                    lstPara.Add(new SqlParameter("@" + columnName, type) { Value = row[col] });
+
+                    //如果是ID，就返回ID的值
+                    if (columnName.Equals(GeneralVO.id) == true)
+                    {
+                        id = TypeConversion.ToString(row[col]);
                     }
                 }
 
@@ -390,6 +421,7 @@ namespace Treasure.Utility.Helpers
 
             return id;
         }
+        #endregion
 
         #endregion
 

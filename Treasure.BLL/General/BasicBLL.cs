@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using Treasure.Utility.Helpers;
 
@@ -85,6 +86,27 @@ namespace Treasure.Bll.General
         }
         #endregion
 
+
+        public DataSet GetDataSet(string pSql, params SqlParameter[] pParas)
+        {
+            return GetDataSet(pSql, CommandType.Text, pParas);
+        }
+
+        public DataSet GetDataSet(string pSql, CommandType pType, params SqlParameter[] pParas)
+        {
+            return GetDataSet("", pSql, pType, pParas);
+        }
+
+        public DataSet GetDataSet(string pConnstring, string pSql, CommandType pType = CommandType.Text, params SqlParameter[] pParas)
+        {
+            if (string.IsNullOrEmpty(pConnstring) == true)
+            {
+                pConnstring = SqlHelper.ConnString;
+            }
+
+            return SqlHelper.ExecuteDataSet(pConnstring, pType, pSql, pParas);
+        }
+
         #region 根据表的id获取一行记录
         /// <summary>
         /// 根据表的id获取一行记录
@@ -132,6 +154,7 @@ namespace Treasure.Bll.General
 
         #region 插入
 
+        #region 新增一行数据
         /// <summary>
         /// 新增一行数据
         /// </summary>
@@ -141,6 +164,19 @@ namespace Treasure.Bll.General
         {
             return SqlHelper.AddDataRow(row);
         }
+        #endregion
+
+        #region 插入DataTable
+        /// <summary>
+        /// 插入DataTable
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public List<string> AddDataTable(DataTable dt)
+        {
+            return SqlHelper.AddDataTable(dt);
+        }
+        #endregion
 
         #endregion
 

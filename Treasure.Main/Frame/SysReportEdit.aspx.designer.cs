@@ -22,40 +22,58 @@ namespace Treasure.Main.Frame {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// txtNO 控件。
+        /// txtSourceSQL 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtNO;
+        protected global::System.Web.UI.WebControls.TextBox txtSourceSQL;
         
         /// <summary>
-        /// txtNAME 控件。
+        /// txtCnTitle 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtNAME;
+        protected global::System.Web.UI.WebControls.TextBox txtCnTitle;
         
         /// <summary>
-        /// txtSOURCE_SQL 控件。
+        /// txtEnTitle 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtSOURCE_SQL;
+        protected global::System.Web.UI.WebControls.TextBox txtEnTitle;
         
         /// <summary>
-        /// txtTARGET_SQL 控件。
+        /// chkExcel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::DevExpress.Web.ASPxTextBox txtTARGET_SQL;
+        protected global::System.Web.UI.WebControls.CheckBox chkExcel;
+        
+        /// <summary>
+        /// chkPage 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkPage;
+        
+        /// <summary>
+        /// grdData 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxGridView grdData;
         
         /// <summary>
         /// hdnID 控件。
@@ -65,5 +83,14 @@ namespace Treasure.Main.Frame {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnID;
+        
+        /// <summary>
+        /// hdnReportId 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnReportId;
     }
 }

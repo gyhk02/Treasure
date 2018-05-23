@@ -187,7 +187,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
                 .Append("{" + ConstantVO.ENTER_R)
                 .Append("    public partial class " + className + ConstantVO.ENTER_R)
                 .Append("    {" + ConstantVO.ENTER_R)
-                .Append("        public static string tableName = \"" + tableName + "\"; " + ConstantVO.ENTER_R)
+                .Append("        public readonly static string tableName = \"" + tableName + "\"; " + ConstantVO.ENTER_R)
                 .Append("" + ConstantVO.ENTER_R)
                 .Append("        public static class Fields" + ConstantVO.ENTER_R)
                 .Append("        {" + ConstantVO.ENTER_R);
@@ -195,7 +195,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
             foreach (DataRow row in dtField.Rows)
             {
                 string fieldName = TypeConversion.ToString(row[DataSynchronVO.FieldName]);
-                content.Append("            public static string " + CamelName.getSmallCamelName(fieldName) + " = \"" + fieldName + "\"; " + ConstantVO.ENTER_R);
+                content.Append("            public readonly static string " + CamelName.getSmallCamelName(fieldName) + " = \"" + fieldName + "\"; " + ConstantVO.ENTER_R);
             }
 
             content.Append("        }" + ConstantVO.ENTER_R)

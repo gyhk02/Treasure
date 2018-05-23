@@ -1,0 +1,87 @@
+=====================================
+日志时间为:2018/5/23 21:56:25
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 21:56:26
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 21:56:26
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 21:56:26
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:01:17
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:01:24
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:01:26
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:01:29
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:01:46
+日志内容为(Treasure.Main.Frame.SysReportEdit.Complete):正在中止线程。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:04:12
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:04:12
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:04:12
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:04:12
+日志内容为(Treasure.Utility.Helpers.SqlHelper.AddDataRow):INSERT 语句与 FOREIGN KEY 约束"FK_SYS_REPORT_COL_SYS_REPORT"冲突。该冲突发生于数据库"Treasure"，表"dbo.SYS_REPORT", column 'ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:04:17
+日志内容为(Treasure.Main.Frame.SysReportEdit.Complete):正在中止线程。
+=====================================
+
+=====================================
+日志时间为:2018/5/23 22:05:21
+日志内容为(Treasure.Main.Frame.SysReportEdit.Complete):正在中止线程。
+=====================================
+

@@ -35,6 +35,7 @@ namespace Treasure.Main.Template.Page
                 }
                 if (Request["btnExcel"] == "导出Excel")
                 {
+                    InitData();
                     Excel();
                     return;
                 }
@@ -46,7 +47,7 @@ namespace Treasure.Main.Template.Page
             }
             if (IsPostBack == false)
             {
-                BasicWebBll.CheckLogin();
+                //BasicWebBll.CheckLogin();
 
                 //是否启用
                 DataTable dtYesOrNot = bllGeneral.GetYesOrNot();
@@ -92,9 +93,10 @@ namespace Treasure.Main.Template.Page
             Dictionary<string, object> dicPara = new Dictionary<string, object>();
 
             dicPara.Add("NAME", txtNAME.Text.Trim());            dicPara.Add("ID_INDEX", txtID_INDEX.Text.Trim());            dicPara.Add("IS_SYS", ddlIS_SYS.SelectedValue);            dicPara.Add("CREATE_DATETIME_FROM", datCREATE_DATETIME_FROM.Value);            dicPara.Add("CREATE_DATETIME_TO", datCREATE_DATETIME_TO.Value);
-            DataTable dt = bll.Query(grdData.PageIndex, dicPara);
+            DataTable dt = bll.Query(dicPara);
             grdData.DataSource = dt;
             grdData.DataBind();
+
         }
         #endregion
 

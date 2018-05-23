@@ -21,7 +21,7 @@ namespace Treasure.BLL.Template.Page
         /// <param name="pPageIndex">页码</param>
         /// <param name="pDic">参数集</param>
         /// <returns></returns>
-        public DataTable Query(int pPageIndex, Dictionary<string, object> pDic)
+        public DataTable Query( Dictionary<string, object> pDic)
         {
             DataTable dt = null;
 
@@ -32,8 +32,6 @@ namespace Treasure.BLL.Template.Page
             #region 参数
 
             List<SqlParameter> lstPara = new List<SqlParameter>();
-            lstPara.Add(new SqlParameter("@PAGE_INDEX", SqlDbType.Int) { Value = pPageIndex });
-            lstPara.Add(new SqlParameter("@PAGE_SIZE", SqlDbType.Int) { Value = pDic["PAGE_SIZE"] });
 
             if (string.IsNullOrEmpty(TypeConversion.ToString(pDic["NAME"])) == false)
             {
@@ -41,7 +39,7 @@ namespace Treasure.BLL.Template.Page
                 lstPara.Add(new SqlParameter("@NAME", SqlDbType.NVarChar) { Value = pDic["NAME"] });
             }
 
-            if (TypeConversion.ToInt(pDic["ID_INDEX"]) != -1)
+            if (TypeConversion.ToInt(pDic["ID_INDEX"]) > 0)
             {
                 sql_where.Append(" AND T.ID_INDEX = @ID_INDEX");
                 lstPara.Add(new SqlParameter("@ID_INDEX", SqlDbType.Int) { Value = pDic["ID_INDEX"] });
@@ -55,7 +53,7 @@ namespace Treasure.BLL.Template.Page
 
             if (TypeConversion.ToDateTime(pDic["CREATE_DATETIME_FROM"]) != null)
             {
-                sql_where.Append(" AND T.CREATE_DATETIME < @CREATE_DATETIME_FROM");
+                sql_where.Append(" AND T.CREATE_DATETIME > @CREATE_DATETIME_FROM");
                 lstPara.Add(new SqlParameter("@CREATE_DATETIME_FROM", SqlDbType.DateTime) { Value = pDic["CREATE_DATETIME_FROM"] });
             }
 
@@ -67,16 +65,14 @@ namespace Treasure.BLL.Template.Page
 
             #endregion
 
-            string sql = @"SELECT COUNT(1) FROM (" + sql_source + @") T " + sql_where + @"
-
+            string sql = @"
 SELECT *, IIF(T.IS_SYS = 1, '√', '') IS_SYS_STR, REPLACE(NEWID(), '-', '') T_ID 
 FROM (" + sql_source + @") T " + sql_where + @"
-ORDER BY ID_INDEX 
-OFFSET @PAGE_SIZE * (@PAGE_INDEX-1) ROW FETCH NEXT @PAGE_SIZE ROWS ONLY";
+ORDER BY ID_INDEX ";
 
             try
             {
-                dt = base.GetDataTable(sql, null);
+                dt = base.GetDataTable(sql, lstPara.ToArray());
             }
             catch (Exception ex)
             {

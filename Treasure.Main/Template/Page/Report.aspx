@@ -13,7 +13,7 @@
     <form id="form1" runat="server">
         <div>
 
-            <table style="width: 100%;">
+            <table>
                 <tr>
                     <td>名称</td>
                     <td>
@@ -47,14 +47,22 @@
             </table>
             <br />
             <dx:ASPxGridView ID="grdData" runat="server" AutoGenerateColumns="False" KeyFieldName="T_ID">
+                <SettingsPager PageSize="5" Mode="ShowAllRecords">
+                </SettingsPager>
+                <Settings ShowFilterRow="True" />
+                <SettingsDataSecurity AllowDelete="False" AllowInsert="False" />
                 <Columns>
-                    <dx:GridViewDataTextColumn Caption="名称" FieldName="NAME" VisibleIndex="0">
+                    <dx:GridViewCommandColumn ShowClearFilterButton="True" VisibleIndex="0">
+                    </dx:GridViewCommandColumn>
+                    <dx:GridViewDataTextColumn Caption="名称" FieldName="NAME" VisibleIndex="1">
                     </dx:GridViewDataTextColumn>
-                    <dx:GridViewDataTextColumn Caption="序号" FieldName="ID_INDEX" VisibleIndex="1">
+                    <dx:GridViewDataTextColumn Caption="序号" FieldName="ID_INDEX" VisibleIndex="2">
                     </dx:GridViewDataTextColumn>
-                    <dx:GridViewDataTextColumn Caption="是系统？" FieldName="IS_SYS_STR" VisibleIndex="2">
+                    <dx:GridViewDataTextColumn Caption="是系统？" FieldName="IS_SYS_STR" VisibleIndex="3">
                     </dx:GridViewDataTextColumn>
-                    <dx:GridViewDataTextColumn Caption="创建日期" FieldName="CREATE_DATETIME" VisibleIndex="3">
+                    <dx:GridViewDataTextColumn Caption="创建日期" FieldName="CREATE_DATETIME" VisibleIndex="4" Name="colCREATE_DATETIME">
+                        <PropertiesTextEdit DisplayFormatString="yyyy-MM-dd">
+                        </PropertiesTextEdit>
                     </dx:GridViewDataTextColumn>
                 </Columns>
             </dx:ASPxGridView>
