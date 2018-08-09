@@ -275,7 +275,7 @@ namespace Treasure.Main.SmallTool.ToTableClass
                 string strSouceConnection = "Data Source=" + row[DataSynchronVO.Ip].ToString()
                     + ";Initial Catalog=" + row[DataSynchronVO.DbName].ToString()
                     + ";User ID=" + row[DataSynchronVO.LoginName].ToString()
-                    + ";Password=" + row[DataSynchronVO.Pwd].ToString() + ";Persist Security Info=True;";
+                    + ";Password=" + row[DataSynchronVO.PassWord].ToString() + ";Persist Security Info=True;";
 
                 hdnConnection.Value = strSouceConnection;
             }

@@ -1,0 +1,57 @@
+=====================================
+日志时间为:2018/6/4 8:50:33
+日志内容为(Treasure.Bll.General.DataBaseBll.JudgeConneStr):用户 'sa' 登录失败。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 8:54:48
+日志内容为(Treasure.Bll.SmallTool.DataSynchron.DataSynchronBll.GetTableListBySort):对象名 'fn_Split' 无效。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 8:54:48
+日志内容为(Treasure.Main.SmallTool.DataSynchron.DataSynchron.btnSynchron_Click):未将对象引用设置到对象的实例。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 9:18:25
+日志内容为(Treasure.Utility.Helpers.SqlHelper.DeleteByWhere):DELETE 语句与 REFERENCE 约束"FK_ROUTE_TREE_ARTICLE_R_ROUTE_TREE_ON_ROUTE_TREE_ID"冲突。该冲突发生于数据库"EVNERP20180531"，表"dbo.ROUTE_TREE_ARTICLE", column 'ROUTE_TREE_ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 9:19:11
+日志内容为(Treasure.Main.SmallTool.DataSynchron.DataSynchron.JudgeSynchronData):集合已修改；可能无法执行枚举操作。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 9:19:43
+日志内容为(Treasure.Utility.Helpers.SqlHelper.DeleteByWhere):DELETE 语句与 REFERENCE 约束"FK_ROUTE_TREE_ARTICLE_R_ROUTE_TREE_ON_ROUTE_TREE_ID"冲突。该冲突发生于数据库"EVNERP20180531"，表"dbo.ROUTE_TREE_ARTICLE", column 'ROUTE_TREE_ID'。
+语句已终止。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 9:21:31
+日志内容为(Treasure.Main.SmallTool.DataSynchron.DataSynchron.JudgeSynchronData):集合已修改；可能无法执行枚举操作。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 9:21:37
+日志内容为(Treasure.Main.SmallTool.DataSynchron.DataSynchron.JudgeSynchronData):集合已修改；可能无法执行枚举操作。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 9:22:27
+日志内容为(Treasure.Main.SmallTool.DataSynchron.DataSynchron.JudgeSynchronData):集合已修改；可能无法执行枚举操作。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 9:22:52
+日志内容为(Treasure.Main.SmallTool.DataSynchron.DataSynchron.JudgeSynchronData):集合已修改；可能无法执行枚举操作。
+=====================================
+
+=====================================
+日志时间为:2018/6/4 9:46:58
+日志内容为(Treasure.Main.SmallTool.DataSynchron.DataSynchron.JudgeSynchronData):集合已修改；可能无法执行枚举操作。
+=====================================
+

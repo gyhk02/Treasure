@@ -26,7 +26,7 @@ namespace Treasure.Bll.General
             dtDatabase.Columns.Add(GeneralVO.no, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.Ip, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.LoginName, Type.GetType("System.String"));
-            dtDatabase.Columns.Add(DataSynchronVO.Pwd, Type.GetType("System.String"));
+            dtDatabase.Columns.Add(DataSynchronVO.PassWord, Type.GetType("System.String"));
             dtDatabase.Columns.Add(DataSynchronVO.DbName, Type.GetType("System.String"));
 
             DataRow row12 = dtDatabase.NewRow();
@@ -35,7 +35,7 @@ namespace Treasure.Bll.General
             row12[GeneralVO.no] = "ePDM_正式版_18";
             row12[DataSynchronVO.Ip] = "172.16.96.18";
             row12[DataSynchronVO.LoginName] = "erp";
-            row12[DataSynchronVO.Pwd] = "0.123456789";
+            row12[DataSynchronVO.PassWord] = "0.123456789";
             row12[DataSynchronVO.DbName] = "EVNERP";
             dtDatabase.Rows.Add(row12);
 
@@ -45,7 +45,7 @@ namespace Treasure.Bll.General
             row11[GeneralVO.no] = "Treasure_56";
             row11[DataSynchronVO.Ip] = "172.16.96.56";
             row11[DataSynchronVO.LoginName] = "erp";
-            row11[DataSynchronVO.Pwd] = "erp.123";
+            row11[DataSynchronVO.PassWord] = "erp.123";
             row11[DataSynchronVO.DbName] = "EVNERP20180203";
             dtDatabase.Rows.Add(row11);
 
@@ -55,7 +55,7 @@ namespace Treasure.Bll.General
             row10[GeneralVO.no] = "小采购正式版_GSP_93";
             row10[DataSynchronVO.Ip] = "172.16.96.93";
             row10[DataSynchronVO.LoginName] = "gsp";
-            row10[DataSynchronVO.Pwd] = "gsp.123456789";
+            row10[DataSynchronVO.PassWord] = "gsp.123456789";
             row10[DataSynchronVO.DbName] = "GSP";
             dtDatabase.Rows.Add(row10);
 
@@ -65,7 +65,7 @@ namespace Treasure.Bll.General
             row9[GeneralVO.no] = "小采购开发版_GSPDev_172.16.96.55\\sql2014";
             row9[DataSynchronVO.Ip] = "172.16.96.55\\sql2014";
             row9[DataSynchronVO.LoginName] = "csharp";
-            row9[DataSynchronVO.Pwd] = "csharp.123";
+            row9[DataSynchronVO.PassWord] = "csharp.123";
             row9[DataSynchronVO.DbName] = "GSPDev";
             dtDatabase.Rows.Add(row9);
 
@@ -75,7 +75,7 @@ namespace Treasure.Bll.General
             row8[GeneralVO.no] = "Treasure";
             row8[DataSynchronVO.Ip] = ".";
             row8[DataSynchronVO.LoginName] = "sa";
-            row8[DataSynchronVO.Pwd] = "1";
+            row8[DataSynchronVO.PassWord] = "1";
             row8[DataSynchronVO.DbName] = "Treasure";
             dtDatabase.Rows.Add(row8);
 
@@ -85,7 +85,7 @@ namespace Treasure.Bll.General
             row7[GeneralVO.no] = "EVN_Frame_测_55";
             row7[DataSynchronVO.Ip] = "172.16.96.55";
             row7[DataSynchronVO.LoginName] = "programmer";
-            row7[DataSynchronVO.Pwd] = "123456";
+            row7[DataSynchronVO.PassWord] = "123456";
             row7[DataSynchronVO.DbName] = "Frame";
             dtDatabase.Rows.Add(row7);
 
@@ -95,27 +95,27 @@ namespace Treasure.Bll.General
             row6[GeneralVO.no] = "EVN_Frame_正_48";
             row6[DataSynchronVO.Ip] = "172.16.96.48";
             row6[DataSynchronVO.LoginName] = "csharp";
-            row6[DataSynchronVO.Pwd] = "csharp.123";
+            row6[DataSynchronVO.PassWord] = "csharp.123";
             row6[DataSynchronVO.DbName] = "Frame";
             dtDatabase.Rows.Add(row6);
 
             DataRow row5 = dtDatabase.NewRow();
             row5[GeneralVO.id] = 5;
-            row5[DataSynchronVO.Version] = ConstantVO.OFFICIAL_VERSION;
-            row5[GeneralVO.no] = "ePDM_正_56";
+            row5[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
+            row5[GeneralVO.no] = "ePDM_测_56_0531";
             row5[DataSynchronVO.Ip] = "172.16.96.56";
-            row5[DataSynchronVO.LoginName] = "sa";
-            row5[DataSynchronVO.Pwd] = "sa.123";
-            row5[DataSynchronVO.DbName] = "EVNERP";
+            row5[DataSynchronVO.LoginName] = "erp";
+            row5[DataSynchronVO.PassWord] = "erp.123";
+            row5[DataSynchronVO.DbName] = "EVNERP20180531";
             dtDatabase.Rows.Add(row5);
 
             DataRow row4 = dtDatabase.NewRow();
             row4[GeneralVO.id] = 4;
             row4[DataSynchronVO.Version] = ConstantVO.TEST_VERSION;
-            row4[GeneralVO.no] = "ePDM_测试库";
+            row4[GeneralVO.no] = "ePDM_测试库_TEST";
             row4[DataSynchronVO.Ip] = "172.16.96.56";
             row4[DataSynchronVO.LoginName] = "erp";
-            row4[DataSynchronVO.Pwd] = "erp.123";
+            row4[DataSynchronVO.PassWord] = "erp.123";
             row4[DataSynchronVO.DbName] = "NERP_TEST";
             dtDatabase.Rows.Add(row4);
 
@@ -125,7 +125,7 @@ namespace Treasure.Bll.General
             row3[GeneralVO.no] = "LoadGSP01";
             row3[DataSynchronVO.Ip] = ".";
             row3[DataSynchronVO.LoginName] = "sa";
-            row3[DataSynchronVO.Pwd] = "1";
+            row3[DataSynchronVO.PassWord] = "1";
             row3[DataSynchronVO.DbName] = "GSP01";
             dtDatabase.Rows.Add(row3);
 
@@ -135,7 +135,7 @@ namespace Treasure.Bll.General
             row2[GeneralVO.no] = "LoadGSP08";
             row2[DataSynchronVO.Ip] = ".";
             row2[DataSynchronVO.LoginName] = "sa";
-            row2[DataSynchronVO.Pwd] = "1";
+            row2[DataSynchronVO.PassWord] = "1";
             row2[DataSynchronVO.DbName] = "GSP08";
             dtDatabase.Rows.Add(row2);
 
@@ -145,7 +145,7 @@ namespace Treasure.Bll.General
             row1[GeneralVO.no] = "小采购测试版_GSP_TEST_55\\sql2014";
             row1[DataSynchronVO.Ip] = "172.16.96.55\\sql2014";
             row1[DataSynchronVO.LoginName] = "csharp";
-            row1[DataSynchronVO.Pwd] = "csharp.123";
+            row1[DataSynchronVO.PassWord] = "csharp.123";
             row1[DataSynchronVO.DbName] = "GSP_TEST";
             dtDatabase.Rows.Add(row1);
 

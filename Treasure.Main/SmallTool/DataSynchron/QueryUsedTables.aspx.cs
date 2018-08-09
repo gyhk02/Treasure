@@ -111,7 +111,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 DataRow row = lstRow[0];
                 txtSourceIp.Text = row[DataSynchronVO.Ip].ToString();
                 txtSourceLoginName.Text = row[DataSynchronVO.LoginName].ToString();
-                txtSourcePwd.Text = row[DataSynchronVO.Pwd].ToString();
+                txtSourcePwd.Text = row[DataSynchronVO.PassWord].ToString();
                 txtSourceDbName.Text = row[DataSynchronVO.DbName].ToString();
             }
             else

@@ -1,0 +1,50 @@
+=====================================
+日志时间为:2018/5/27 10:23:34
+日志内容为(Treasure.Utility.Helpers.SqlHelper.DeleteByWhere):“fa25bb12ff948918c6615391fbc24a1”附近有语法错误。
+=====================================
+
+=====================================
+日志时间为:2018/5/27 10:24:18
+日志内容为(Treasure.Utility.Helpers.SqlHelper.DeleteByWhere):“f45ecccb412417e90d23d9781dbbdcb”附近有语法错误。
+=====================================
+
+=====================================
+日志时间为:2018/5/27 12:37:07
+日志内容为(Treasure.Utility.Helpers.SqlHelper.DeleteByWhere):在应使用条件的上下文(在 'WhereCondition' 附近)中指定了非布尔类型的表达式。
+=====================================
+
+=====================================
+日志时间为:2018/5/27 12:38:21
+日志内容为(Treasure.Main.Frame.SysReportEdit.Complete):正在中止线程。
+=====================================
+
+=====================================
+日志时间为:2018/5/27 12:38:49
+日志内容为(Treasure.Main.Frame.SysReportEdit.Complete):正在中止线程。
+=====================================
+
+=====================================
+日志时间为:2018/5/27 13:13:24
+日志内容为(Treasure.Main.SmallTool.AutoGenerateReport.GenerateReportEdit.Complete):正在中止线程。
+=====================================
+
+=====================================
+日志时间为:2018/5/27 13:15:49
+日志内容为(Treasure.Main.SmallTool.AutoGenerateReport.GenerateReportEdit.Complete):正在中止线程。
+=====================================
+
+=====================================
+日志时间为:2018/5/27 13:16:32
+日志内容为(Treasure.Main.SmallTool.AutoGenerateReport.GenerateReportEdit.Complete):正在中止线程。
+=====================================
+
+=====================================
+日志时间为:2018/5/27 13:22:30
+日志内容为(Treasure.Main.SmallTool.AutoGenerateReport.GenerateReportEdit.Complete):正在中止线程。
+=====================================
+
+=====================================
+日志时间为:2018/5/27 13:26:02
+日志内容为(Treasure.Main.SmallTool.AutoGenerateReport.GenerateReportEdit.Complete):正在中止线程。
+=====================================
+

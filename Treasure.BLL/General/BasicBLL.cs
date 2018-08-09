@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using Treasure.Utility.Helpers;
+using Treasure.Utility.Utilitys.Lambda;
 
 namespace Treasure.Bll.General
 {
@@ -134,6 +135,19 @@ namespace Treasure.Bll.General
         public bool DeleteById(string pTableName, string pId)
         {
             return SqlHelper.DeleteById(pTableName, pId);
+        }
+        #endregion
+
+        #region 根据条件删除记录
+        /// <summary>
+        /// 根据条件删除记录
+        /// </summary>
+        /// <param name="pTableName"></param>
+        /// <param name="pWhere"></param>
+        /// <returns></returns>
+        public bool DeleteByWhere(string pTableName, WhereCondition pWhere)
+        {
+            return SqlHelper.DeleteByWhere(pTableName, pWhere);
         }
         #endregion
 

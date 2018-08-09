@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Treasure.Model.General;
 using Treasure.Utility.Utilitys;
+using Treasure.Utility.Utilitys.Lambda;
 
 namespace Treasure.Utility.Helpers
 {
@@ -101,6 +99,53 @@ namespace Treasure.Utility.Helpers
         }
         #endregion
 
+        #region 根据条件删除记录
+
+        /// <summary>
+        /// 根据条件删除记录
+        /// </summary>
+        /// <param name="pTableName"></param>
+        /// <param name="pWhere"></param>
+        /// <returns></returns>
+        public static bool DeleteByWhere(string pTableName, WhereCondition pWhere)
+        {
+            return DeleteByWhere(null, pTableName, pWhere);
+        }
+
+        /// <summary>
+        /// 根据条件删除记录
+        /// </summary>
+        /// <param name="pConnString"></param>
+        /// <param name="pTableName"></param>
+        /// <param name="pWhere"></param>
+        /// <returns></returns>
+        public static bool DeleteByWhere(string pConnString, string pTableName, WhereCondition pWhere)
+        {
+            bool result = false;
+
+            if (string.IsNullOrEmpty(pWhere.sqlWhere) == true) { return result; }
+
+            string strsql = @"DELETE FROM [" + pTableName + "] WHERE " + pWhere.sqlWhere;
+
+            try
+            {
+                if (string.IsNullOrEmpty(pConnString) == true)
+                {
+                    pConnString = ConnString;
+                }
+
+                ExecuteNonQuery(pConnString, CommandType.Text, strsql);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 根据表名删除表的全部数据
 
         /// <summary>
@@ -121,26 +166,7 @@ namespace Treasure.Utility.Helpers
         /// <returns></returns>
         public static bool DeleteDataTableByName(string pConnString, string pTableName)
         {
-            bool result = false;
-
-            string strsql = @"DELETE FROM [" + pTableName + "]";
-
-            try
-            {
-                if (string.IsNullOrEmpty(pConnString) == true)
-                {
-                    pConnString = ConnString;
-                }
-
-                ExecuteNonQuery(pConnString, CommandType.Text, strsql, null);
-                result = true;
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error(ex.Message, System.Reflection.MethodBase.GetCurrentMethod());
-            }
-
-            return result;
+            return DeleteByWhere(pConnString, pTableName, new WhereCondition().Add("1", CompareType.Equal, "1"));
         }
         #endregion
 

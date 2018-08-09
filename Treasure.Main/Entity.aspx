@@ -44,6 +44,10 @@
                     <td>&nbsp;</td>
                     <td><a href="SmallTool/AutoGenerateFile/GenerateByType.aspx" target="_blank">生成文件</a></td>
                     <td>&nbsp;</td>
+                </tr> <tr>
+                    <td>&nbsp;</td>
+                    <td><a href="SmallTool/AutoGenerateReport/GenerateReport.aspx" target="_blank">生成报表</a></td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr>
                     <td>EVQ</td>

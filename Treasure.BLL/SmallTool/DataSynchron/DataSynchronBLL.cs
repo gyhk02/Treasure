@@ -669,7 +669,7 @@ CREATE TABLE #Sort(idx int, TableName NVARCHAR(50))
 
 --iSign 1:最初的表	2:关联后的表	3:已经插入排序表
 SELECT position, RTRIM(LTRIM(value)) mainTable, CONVERT(NVARCHAR(200), '') foreignTable , 1 iSign
-INTO #Tables FROM fn_Split(@Tables, ',')
+INTO #Tables FROM uf_split(@Tables, ',')
 
 INSERT INTO #Tables
 SELECT T.mainTable, OBJECT_NAME(fk.referenced_object_id), 2

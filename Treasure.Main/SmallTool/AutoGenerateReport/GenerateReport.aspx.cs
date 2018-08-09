@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using Treasure.Bll.General;
 using Treasure.BLL.Frame;
 using Treasure.Model.Frame;
 using Treasure.Model.General;
 using Treasure.Utility.Utilitys;
+using Treasure.Utility.Utilitys.Lambda;
 
-namespace Treasure.Main.Frame
+namespace Treasure.Main.SmallTool.AutoGenerateReport
 {
-    public partial class SysReport : System.Web.UI.Page
+    public partial class GenerateReport : System.Web.UI.Page
     {
         #region 自定义变量
 
         SysReportBll bll = new SysReportBll();
-        GeneralBll bllGeneral = new GeneralBll();
 
         #endregion
 
@@ -75,7 +71,7 @@ namespace Treasure.Main.Frame
         /// </summary>
         private void Add()
         {
-            Response.Redirect("SysReportEdit.aspx");
+            Response.Redirect("GenerateReportEdit.aspx");
         }
         #endregion
 
@@ -90,9 +86,18 @@ namespace Treasure.Main.Frame
             ClientScriptManager clientScript = Page.ClientScript;
 
             string id = TypeConversion.ToString(e.Keys[GeneralVO.id]);
+
+            if (bll.DeleteByWhere(SysReportColTable.tableName
+                , new WhereCondition().Add(SysReportColTable.Fields.sysReportId, CompareType.Equal, id)) == false)
+            {
+                clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('删除失败');</script>");
+                return;
+            }
+
             if (bll.DeleteById(SysReportTable.tableName, id) == false)
             {
                 clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('删除失败');</script>");
+                return;
             }
 
             clientScript.RegisterStartupScript(this.GetType(), "", "<script type=text/javascript>alert('删除成功');</script>");

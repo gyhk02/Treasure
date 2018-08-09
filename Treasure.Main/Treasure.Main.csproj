@@ -102,8 +102,6 @@
     <Content Include="Frame\SysRelationRoleMenu.aspx" />
     <Content Include="Frame\SysRelationUserMenu.aspx" />
     <Content Include="Frame\SysRelationUserRole.aspx" />
-    <Content Include="Frame\SysReport.aspx" />
-    <Content Include="Frame\SysReportEdit.aspx" />
     <Content Include="ProjectCollection\SystemSetup\SysRole.aspx" />
     <Content Include="ProjectCollection\SystemSetup\SysRoleEdit.aspx" />
     <Content Include="ProjectCollection\SystemSetup\SysUser.aspx" />
@@ -112,11 +110,58 @@
     <Content Include="Script\Js\jquery.min.js" />
     <Content Include="SmallTool\AutoGenerateFile\GenerateBySingleTable.aspx" />
     <Content Include="SmallTool\AutoGenerateFile\GenerateByType.aspx" />
+    <Content Include="SmallTool\AutoGenerateReport\GenerateReport.aspx" />
+    <Content Include="SmallTool\AutoGenerateReport\GenerateReportEdit.aspx" />
     <Content Include="SmallTool\DataSynchron\DataSynchron.aspx" />
     <Content Include="SmallTool\DataSynchron\QueryUsedTables.aspx" />
     <Content Include="SmallTool\EncryptAndDecrypt\Encrypt_Decrypt.aspx" />
     <Content Include="SmallTool\evq\MianSynchron.aspx" />
     <Content Include="SmallTool\ToTableClass\ToTableClass.aspx" />
+    <Content Include="T4Template\ReportAspx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReportAspx.txt</LastGenOutput>
+    </Content>
+    <Content Include="T4Template\ReportAspx.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportAspx.tt</DependentUpon>
+    </Content>
+    <Content Include="T4Template\ReportAspxCs.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReportAspxCs.txt</LastGenOutput>
+    </Content>
+    <Content Include="T4Template\ReportAspxCs.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportAspxCs.tt</DependentUpon>
+    </Content>
+    <Content Include="T4Template\ReportAspxDesigner.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReportAspxDesigner.txt</LastGenOutput>
+    </Content>
+    <Content Include="T4Template\ReportAspxDesigner.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportAspxDesigner.tt</DependentUpon>
+    </Content>
+    <Content Include="T4Template\ReportBll.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReportBll.txt</LastGenOutput>
+    </Content>
+    <Content Include="T4Template\ReportBll.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportBll.tt</DependentUpon>
+    </Content>
+    <Content Include="T4Template\ReportVo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReportVo.txt</LastGenOutput>
+    </Content>
+    <Content Include="T4Template\ReportVo.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportVo.tt</DependentUpon>
+    </Content>
     <Content Include="Template\Page\Report.aspx" />
     <Content Include="Test\WebForm1.aspx" />
     <Content Include="Test\WebForm2.aspx" />
@@ -202,20 +247,6 @@
     <Compile Include="Frame\SysRelationUserRole.aspx.designer.cs">
       <DependentUpon>SysRelationUserRole.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Frame\SysReport.aspx.cs">
-      <DependentUpon>SysReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Frame\SysReport.aspx.designer.cs">
-      <DependentUpon>SysReport.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Frame\SysReportEdit.aspx.cs">
-      <DependentUpon>SysReportEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Frame\SysReportEdit.aspx.designer.cs">
-      <DependentUpon>SysReportEdit.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ProjectCollection\SystemSetup\SysRole.aspx.cs">
       <DependentUpon>SysRole.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -263,6 +294,20 @@
     </Compile>
     <Compile Include="SmallTool\AutoGenerateFile\GenerateByTypeContent.cs" />
     <Compile Include="SmallTool\AutoGenerateFile\GenerateByTypeForDataType.cs" />
+    <Compile Include="SmallTool\AutoGenerateReport\GenerateReport.aspx.cs">
+      <DependentUpon>GenerateReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SmallTool\AutoGenerateReport\GenerateReport.aspx.designer.cs">
+      <DependentUpon>GenerateReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SmallTool\AutoGenerateReport\GenerateReportEdit.aspx.cs">
+      <DependentUpon>GenerateReportEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SmallTool\AutoGenerateReport\GenerateReportEdit.aspx.designer.cs">
+      <DependentUpon>GenerateReportEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SmallTool\DataSynchron\CreateTableSub.cs" />
     <Compile Include="SmallTool\DataSynchron\DataSynchron.aspx.cs">
       <DependentUpon>DataSynchron.aspx</DependentUpon>
@@ -344,6 +389,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

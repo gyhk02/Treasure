@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Treasure.Main.Frame {
+namespace Treasure.Main.SmallTool.AutoGenerateReport {
     
     
-    public partial class SysReport {
+    public partial class GenerateReport {
         
         /// <summary>
         /// form1 控件。

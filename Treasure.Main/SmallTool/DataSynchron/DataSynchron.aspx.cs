@@ -75,7 +75,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 lblSourceVersion.Text = row[DataSynchronVO.Version].ToString();
                 txtSourceIp.Text = row[DataSynchronVO.Ip].ToString();
                 txtSourceLoginName.Text = row[DataSynchronVO.LoginName].ToString();
-                txtSourcePwd.Text = row[DataSynchronVO.Pwd].ToString();
+                txtSourcePwd.Text = row[DataSynchronVO.PassWord].ToString();
                 txtSourceDbName.Text = row[DataSynchronVO.DbName].ToString();
             }
             else
@@ -106,7 +106,7 @@ namespace Treasure.Main.SmallTool.DataSynchron
                 lblTargetVersion.Text = row[DataSynchronVO.Version].ToString();
                 txtTargetIp.Text = row[DataSynchronVO.Ip].ToString();
                 txtTargetLoginName.Text = row[DataSynchronVO.LoginName].ToString();
-                txtTargetPwd.Text = row[DataSynchronVO.Pwd].ToString();
+                txtTargetPwd.Text = row[DataSynchronVO.PassWord].ToString();
                 txtTargetDbName.Text = row[DataSynchronVO.DbName].ToString();
             }
             else

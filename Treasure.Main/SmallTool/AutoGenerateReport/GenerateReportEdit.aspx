@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SysReportEdit.aspx.cs" Inherits="Treasure.Main.Frame.SysReportEdit" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GenerateReportEdit.aspx.cs" Inherits="Treasure.Main.SmallTool.AutoGenerateReport.GenerateReportEdit" %>
 
 <%@ Register Assembly="DevExpress.Web.v16.1, Version=16.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 
@@ -26,6 +26,20 @@
     <form id="form1" runat="server">
         <div>
             <table>
+                <tr>
+                    <td>选择项目</td>
+                    <td>
+                        <dx:ASPxGridLookup ID="gluProject" runat="server" NullText="选择项目" KeyFieldName="ID" AutoGenerateColumns="False">
+                            <GridViewProperties>
+                                <SettingsBehavior AllowFocusedRow="True" AllowSelectSingleRowOnly="True"></SettingsBehavior>
+                            </GridViewProperties>
+                            <Columns>
+                                <dx:GridViewDataTextColumn Caption="项目名称" FieldName="NAME" VisibleIndex="0">
+                                </dx:GridViewDataTextColumn>
+                            </Columns>
+                        </dx:ASPxGridLookup>
+                    </td>
+                </tr>
                 <tr>
                     <td>原SQL</td>
                     <td>
@@ -57,7 +71,7 @@
                     <td>
                         <input id="btnNext" name="btnNext" type="submit" value="转下一步" />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input id="btnComplete" name="btnComplete" type="submit" value="完成" />
+                        <input id="btnComplete" name="btnComplete" type="submit" value="完成" />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input id="btnBack" name="btnBack" type="submit" value="返回" />
                     </td>
@@ -108,8 +122,21 @@
             </dx:ASPxGridView>
 
         </div>
+
+        <%--修改时传过来的ID--%>
         <asp:HiddenField ID="hdnID" runat="server" />
+
+        <%--报表ID--%>
         <asp:HiddenField ID="hdnReportId" runat="server" />
+
+        <asp:HiddenField ID="hdnTableName" runat="server" />
+
+        <%--项目存储目录:ProjectCollection--%>
+        <asp:HiddenField ID="hdnProjectRootFolder" runat="server" />
+
+        <asp:HiddenField ID="hdnRunProjectName" runat="server" />
+        <asp:HiddenField ID="hdnSolutionPath" runat="server" />
+        <asp:HiddenField ID="hdnSolutionName" runat="server" />
     </form>
 </body>
 </html>

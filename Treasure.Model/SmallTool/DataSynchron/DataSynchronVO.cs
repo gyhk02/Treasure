@@ -2,76 +2,76 @@
 {
     public static class DataSynchronVO
     {
-        public static string ISIGN = "ISIGN";
+        public readonly static string ISIGN = "ISIGN";
 
         //用于数据库链接
-        public static string Ip = "IP";
-        public static string LoginName = "LOGIN_NAME";
-        public static string Pwd = "PASSWORD";
-        public static string DbName = "DATABASE_NAME";
-        public static string Version = "VERSION";
+        public readonly static string Ip = "IP";
+        public readonly static string LoginName = "LOGIN_NAME";
+        public readonly static string PassWord = "PASSWORD";
+        public readonly static string DbName = "DATABASE_NAME";
+        public readonly static string Version = "VERSION";
 
         //用于表结构
-        public static string TableName = "TableName";
-        public static string Description = "Description";
-        public static string TableDescription = "TableDescription";
+        public readonly static string TableName = "TableName";
+        public readonly static string Description = "Description";
+        public readonly static string TableDescription = "TableDescription";
 
         //用于表字段
-        public static string FieldName = "FieldName";
-        public static string FieldType = "FieldType";
-        public static string FiledLen = "FiledLen";
-        public static string FieldDescription = "FieldDescription";
-        public static string DecimalPrecision = "DecimalPrecision";
-        public static string DecimalDigits = "DecimalDigits";
-        public static string IsNullable = "IsNullable";
-        public static string IsIdentity = "IsIdentity";
-        public static string IsMax = "IsMax";
-        public static string DefaultValue = "DefaultValue";
+        public readonly static string FieldName = "FieldName";
+        public readonly static string FieldType = "FieldType";
+        public readonly static string FiledLen = "FiledLen";
+        public readonly static string FieldDescription = "FieldDescription";
+        public readonly static string DecimalPrecision = "DecimalPrecision";
+        public readonly static string DecimalDigits = "DecimalDigits";
+        public readonly static string IsNullable = "IsNullable";
+        public readonly static string IsIdentity = "IsIdentity";
+        public readonly static string IsMax = "IsMax";
+        public readonly static string DefaultValue = "DefaultValue";
 
         //用于目标表字段
-        public static string TargetTableName = "TargetTableName";
-        public static string TargetFieldName = "TargetFieldName";
-        public static string TargetFiledType = "TargetFiledType";
-        public static string TargetFiledLen = "TargetFiledLen";
-        public static string TargetFiledDescription = "TargetFiledDescription";
-        public static string TargetDecimalPrecision = "TargetDecimalPrecision";
-        public static string TargetDecimalDigits = "TargetDecimalDigits";
-        public static string TargetIsNullable = "TargetIsNullable";
-        public static string TargetIsIdentity = "TargetIsIdentity";
-        public static string TargetDefaultValue = "TargetDefaultValue";
+        public readonly static string TargetTableName = "TargetTableName";
+        public readonly static string TargetFieldName = "TargetFieldName";
+        public readonly static string TargetFiledType = "TargetFiledType";
+        public readonly static string TargetFiledLen = "TargetFiledLen";
+        public readonly static string TargetFiledDescription = "TargetFiledDescription";
+        public readonly static string TargetDecimalPrecision = "TargetDecimalPrecision";
+        public readonly static string TargetDecimalDigits = "TargetDecimalDigits";
+        public readonly static string TargetIsNullable = "TargetIsNullable";
+        public readonly static string TargetIsIdentity = "TargetIsIdentity";
+        public readonly static string TargetDefaultValue = "TargetDefaultValue";
 
         //存储过程
-        public static string ProcedureDescription = "ProcedureDescription";
+        public readonly static string ProcedureDescription = "ProcedureDescription";
 
         //函数
-        public static string FunctionDescription = "FunctionDescription";
+        public readonly static string FunctionDescription = "FunctionDescription";
 
         #region 约束
 
         /// <summary>
         /// 约束名称
         /// </summary>
-        public static string ConstraintName = "ConstraintName";
+        public readonly static string ConstraintName = "ConstraintName";
         /// <summary>
         /// 约束类型
         /// </summary>
-        public static string ConstraintType = "ConstraintType";
+        public readonly static string ConstraintType = "ConstraintType";
         /// <summary>
         /// 外键表名
         /// </summary>
-        public static string ForeignTableName = "ForeignTableName";
+        public readonly static string ForeignTableName = "ForeignTableName";
         /// <summary>
         /// 外键字段名
         /// </summary>
-        public static string ForeignFieldName = "ForeignFieldName";
+        public readonly static string ForeignFieldName = "ForeignFieldName";
         /// <summary>
         /// 索引描述
         /// </summary>
-        public static string IndexDescripton = "IndexDescripton";
+        public readonly static string IndexDescripton = "IndexDescripton";
 
         #endregion
 
         //字段描述
-        public static string DescriptionName = "DescriptionName";
+        public readonly static string DescriptionName = "DescriptionName";
     }
 }
