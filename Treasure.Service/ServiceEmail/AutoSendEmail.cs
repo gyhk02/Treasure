@@ -20,10 +20,17 @@ namespace Treasure.Service.ServiceEmail
 
                 IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
 
-                IJobDetail job = JobBuilder.Create<SrbFifthDecimal>().WithIdentity("job").Build();
-                ITrigger trigger = TriggerBuilder.Create().WithIdentity("trigger").ForJob(job).StartNow()
+                /**
+                IJobDetail jobSrbFifthDecimal = JobBuilder.Create<SrbFifthDecimal>().WithIdentity("jobSrbFifthDecimal").Build();
+                ITrigger triggerSrbFifthDecimal = TriggerBuilder.Create().WithIdentity("triggerSrbFifthDecimal").ForJob(jobSrbFifthDecimal).StartNow()
                 .WithCronSchedule("5 * * * * ?").Build();
-                scheduler.ScheduleJob(job, trigger);
+                scheduler.ScheduleJob(jobSrbFifthDecimal, triggerSrbFifthDecimal);
+    */
+
+                IJobDetail jobDoNoDecimalMaterial = JobBuilder.Create<DoNoDecimalMaterial>().WithIdentity("jobDoNoDecimalMaterial").Build();
+                ITrigger triggerDoNoDecimalMaterial = TriggerBuilder.Create().WithIdentity("triggerDoNoDecimalMaterial").ForJob(jobDoNoDecimalMaterial).StartNow()
+                .WithCronSchedule("5 * * * * ?").Build();
+                scheduler.ScheduleJob(jobDoNoDecimalMaterial, triggerDoNoDecimalMaterial);
 
                 scheduler.Start();
             }

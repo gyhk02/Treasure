@@ -2,31 +2,26 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
-using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Treasure.Service.ServiceEmail;
 
-namespace Treasure.Service
+namespace Treasure.WFTest
 {
-    public partial class LrzService : ServiceBase
+    public partial class Form1 : Form
     {
-        public LrzService()
+        public Form1()
         {
             InitializeComponent();
-            base.ServiceName = "Lrz的服务";
         }
 
-        protected override void OnStart(string[] args)
+        private void button1_Click(object sender, EventArgs e)
         {
             AutoSendEmail auto = new AutoSendEmail();
             auto.SendEmail();
-        }
-
-        protected override void OnStop()
-        {
         }
     }
 }

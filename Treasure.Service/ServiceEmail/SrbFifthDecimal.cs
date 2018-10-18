@@ -26,7 +26,7 @@ namespace Treasure.Service.ServiceEmail
             {
                 string pSubject = subjectStr + "(发送日期：" + dToday.ToString("yyyy.MM.dd") + ")";
 
-                DataTable dt = new SrbFifthDecimalBll().GetSrbFifthDecimalList(ConfigurationManager.AppSettings["ConnectionString"]);
+                DataTable dt = new SrbFifthDecimalBll().GetSrbFifthDecimalList(ConfigurationManager.AppSettings["ServericeEmailConnectionString"]);
                 if (dt.Rows.Count == 0)
                 {
                     LogHelper.Error(subjectStr + "在" + dToday.ToString("yyyy.MM.dd") + "没有数据", System.Reflection.MethodBase.GetCurrentMethod());
