@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Treasure.Utility.Helpers
 {
@@ -14,13 +9,13 @@ namespace Treasure.Utility.Helpers
         private MailMessage mMailMessage;   //主要处理发送邮件的内容（如：收发人地址、标题、主体、图片等等）
         private SmtpClient mSmtpClient; //主要处理用smtp方式发送此邮件的配置信息（如：邮件服务器、发送端口号、验证方式等等）
         private int mSenderPort = 25;   //发送邮件所用的端口号（htmp协议默认为25）
-        private string mSenderServerHost = "evervan.com.cn";    //发件箱的邮件服务器地址（IP形式或字符串形式均可）
-        private  string mSenderPwd = "12Evq34";    //发件箱的密码
-        private string mSenderUsername = "erp";   //发件箱的用户名（即@符号前面的字符串，例如：hello@163.com，用户名为：hello）
+        private string mSenderServerHost = "epfootwear.com";    //发件箱的邮件服务器地址（IP形式或字符串形式均可）
+        private string mSenderPwd = "abcd.1234";    //发件箱的密码
+        private string mSenderUsername = "sys.info";   //发件箱的用户名（即@符号前面的字符串，例如：hello@163.com，用户名为：hello）
         private bool mEnableSsl = false;    //是否对邮件内容进行socket层加密传输
         private bool mEnablePwdAuthentication = false;  //是否对发件人邮箱进行密码验证
-        private  readonly string mFromEmail = "erp@evervan.com.cn";
-        private readonly string mToEmail = "rongzhi.liu@evervan.com.cn";
+        private readonly string mFromEmail = "sys.info@epfootwear.com";
+        private readonly string mToEmail = "rongzhi.liu@epfootwear.com";
 
         public void SendEmail(string pSubject, string pEmailBody)
         {
@@ -108,11 +103,11 @@ namespace Treasure.Utility.Helpers
             {
                 string[] path = attachmentsPath.Split(';'); //分隔符可以自定义
                 Attachment data;
-          
+
                 for (int i = 0; i < path.Length; i++)
                 {
                     data = new Attachment(path[i], MediaTypeNames.Application.Octet);
-                  
+
                     mMailMessage.Attachments.Add(data);
                 }
             }

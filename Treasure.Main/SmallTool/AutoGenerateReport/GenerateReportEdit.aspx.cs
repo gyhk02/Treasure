@@ -391,7 +391,7 @@ namespace Treasure.Main.SmallTool.AutoGenerateReport
 
             File.Delete(fileName);
             File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);
-            /*
+            */
             return errorMsg;
         }
         #endregion
@@ -429,7 +429,8 @@ namespace Treasure.Main.SmallTool.AutoGenerateReport
 
             string projectNamespace = hdnSolutionName.Value + ".Model." + hdnProjectRootFolder.Value + "." + pProjectName;
 
-            string content = GenerateReportContent.GetCreateModelFileContent(projectNamespace, className, pFieldTable);
+            string content = "";
+            //string content = GenerateReportContent.GetCreateModelFileContent(projectNamespace, className, pFieldTable);
 
             File.Delete(fileName);
             File.AppendAllText(fileName, content.ToString(), Encoding.UTF8);

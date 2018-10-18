@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Treasure.Model", "Treasure.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Treasure.Bll", "Treasure.BLL\Treasure.Bll.csproj", "{1EEBD6D2-6382-4020-9D69-E7DE853232A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Treasure.Service", "Treasure.Service\Treasure.Service.csproj", "{10C4A5ED-5642-4905-9AAB-35BC37641794}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1EEBD6D2-6382-4020-9D69-E7DE853232A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EEBD6D2-6382-4020-9D69-E7DE853232A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EEBD6D2-6382-4020-9D69-E7DE853232A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10C4A5ED-5642-4905-9AAB-35BC37641794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10C4A5ED-5642-4905-9AAB-35BC37641794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10C4A5ED-5642-4905-9AAB-35BC37641794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10C4A5ED-5642-4905-9AAB-35BC37641794}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
